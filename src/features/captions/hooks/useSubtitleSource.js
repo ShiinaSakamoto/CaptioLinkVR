@@ -15,6 +15,7 @@ import {
   subtitleFileAtom,
 } from "../../../stores/subtitleStore.js";
 import { ui } from "../../../shared/uiText.js";
+import { OVERLAY_MESSAGE_MAX_MS } from "../../subtitles/constants/overlayTiming.js";
 import { parseSubtitleFile } from "../../subtitles/utils/subtitleParsers.js";
 import { getCaptionPresetMeta, readCaptionPresetSubtitle } from "../captionPresetApi.js";
 import {
@@ -60,6 +61,13 @@ export const useSubtitleSource = ({ stopPlayback, showOverlayMessage }) => {
     [setActiveCueText, setCueListScrollTop, setCues, setFile, setSelectedCueId],
   );
 
+  const showLoadOverlayMessage = useCallback(
+    (message) => {
+      showOverlayMessage(message, { maxMs: OVERLAY_MESSAGE_MAX_MS });
+    },
+    [showOverlayMessage],
+  );
+
   const applyParsedSubtitle = useCallback(
     (nextFile, parsedCues, loadedMessage) => {
       const firstCue = parsedCues[0] || null;
@@ -67,9 +75,9 @@ export const useSubtitleSource = ({ stopPlayback, showOverlayMessage }) => {
       setCues(parsedCues);
       setSelectedCueId(firstCue?.id || null);
       setCueListScrollTop(0);
-      showOverlayMessage(loadedMessage);
+      showLoadOverlayMessage(loadedMessage);
     },
-    [setCueListScrollTop, setCues, setFile, setSelectedCueId, showOverlayMessage],
+    [setCueListScrollTop, setCues, setFile, setSelectedCueId, showLoadOverlayMessage],
   );
 
   const applyRecommendedPlayback = useCallback(
@@ -143,7 +151,7 @@ export const useSubtitleSource = ({ stopPlayback, showOverlayMessage }) => {
       } catch (error) {
         setPresetMeta(null);
         setPresetMetaError(String(error));
-        showOverlayMessage(ui.presetLoadFailed);
+        showLoadOverlayMessage(ui.presetLoadFailed);
       } finally {
         setLoadingPresetId("");
       }
@@ -155,7 +163,7 @@ export const useSubtitleSource = ({ stopPlayback, showOverlayMessage }) => {
       setPresetMeta,
       setPresetMetaError,
       setSelectedPresetId,
-      showOverlayMessage,
+      showLoadOverlayMessage,
       stopPlayback,
       isPlaybackLocked,
     ],

@@ -25,14 +25,33 @@ export const useSampleOverlayPreview = () => {
   const sampleIndexRef = useRef(0);
   const settingsRef = useRef(settings);
   const overlayConnectedRef = useRef(overlayStatus.connected);
+  const messageDismissTimerRef = useRef(null);
 
   settingsRef.current = settings;
   overlayConnectedRef.current = overlayStatus.connected;
 
-  const showOverlayMessage = useCallback((text) => {
+  const clearMessageDismissTimer = useCallback(() => {
+    if (messageDismissTimerRef.current != null) {
+      window.clearTimeout(messageDismissTimerRef.current);
+      messageDismissTimerRef.current = null;
+    }
+  }, []);
+
+  // options.maxMs: 指定時のみ自動消去（読み込み通知用）。字幕テストの巡回表示では使わない。
+  const showOverlayMessage = useCallback((text, options = {}) => {
+    clearMessageDismissTimer();
     setSelectedCueId(null);
     setActiveCueText(text);
-  }, [setActiveCueText, setSelectedCueId]);
+
+    const maxMs = Number(options.maxMs);
+    if (!Number.isFinite(maxMs) || maxMs <= 0) return;
+
+    messageDismissTimerRef.current = window.setTimeout(() => {
+      messageDismissTimerRef.current = null;
+      // 再生や別メッセージで上書き済みなら消さない。
+      setActiveCueText((current) => (current === text ? "" : current));
+    }, maxMs);
+  }, [clearMessageDismissTimer, setActiveCueText, setSelectedCueId]);
 
   const nextSampleText = useCallback(() => {
     const texts = ui.sampleTexts;
@@ -43,6 +62,7 @@ export const useSampleOverlayPreview = () => {
   }, []);
 
   const stopSampleText = useCallback(() => {
+    clearMessageDismissTimer();
     sampleIndexRef.current = 0;
     setTimers((current) => {
       if (current.sampleTimerId) window.clearInterval(current.sampleTimerId);
@@ -59,7 +79,7 @@ export const useSampleOverlayPreview = () => {
         console.warn("[overlay] proactive restart after sample failed:", error);
       });
     }
-  }, [setActiveCueText, setTimers]);
+  }, [clearMessageDismissTimer, setActiveCueText, setTimers]);
 
   const toggleSampleText = useCallback(() => {
     if (playback.isPlaying) return;
@@ -81,6 +101,8 @@ export const useSampleOverlayPreview = () => {
       stopSampleText();
     }
   }, [playback.isPlaying, stopSampleText, timers.sampleTimerId]);
+
+  useEffect(() => () => clearMessageDismissTimer(), [clearMessageDismissTimer]);
 
   return { toggleSampleText, showOverlayMessage, stopSampleText };
 };
