@@ -228,12 +228,13 @@ impl OverlayRuntime {
         force: bool,
         min_frames: u64,
     ) -> Result<bool, OverlayError> {
+        if !should_proactive_restart(force, self.frames_since_restart, min_frames) {
+            return Ok(false);
+        }
+
         #[cfg(feature = "steamvr-overlay")]
         {
             if self.context.is_none() {
-                return Ok(false);
-            }
-            if !should_proactive_restart(force, self.frames_since_restart, min_frames) {
                 return Ok(false);
             }
             self.restart_overlay_context()?;
@@ -241,7 +242,6 @@ impl OverlayRuntime {
         }
         #[cfg(not(feature = "steamvr-overlay"))]
         {
-            let _ = (force, min_frames);
             Ok(false)
         }
     }
