@@ -10,7 +10,7 @@ const clampPercent = (value, fallback = 100) => {
 export const normalizeTextOpacityPercent = (value) => clampPercent(value, 100);
 
 /** 背景透過（10〜100%）。字幕透過を基準にした割合。 */
-export const normalizeBackgroundOpacityPercent = (value) => clampPercent(value, 62);
+export const normalizeBackgroundOpacityPercent = (value) => clampPercent(value, 90);
 
 export const calcTextOpacityFactor = (textOpacityPercent) =>
   normalizeTextOpacityPercent(textOpacityPercent) / 100;

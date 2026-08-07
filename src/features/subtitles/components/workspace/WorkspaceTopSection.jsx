@@ -1,6 +1,7 @@
 import { useAtomValue } from "jotai";
 import { memo } from "react";
 import { isSubtitlePreviewVisibleAtom } from "../../../../stores/subtitleStore.js";
+import { SettingsLoadNotice } from "../../../settings/components/SettingsLoadNotice.jsx";
 import { UpdateBanner } from "../../../updates/components/UpdateBanner.jsx";
 import { SubtitleSourceControls } from "../../../captions/components/SubtitleSourceControls.jsx";
 import { LiveSubtitlePreview } from "./LiveSubtitlePreview.jsx";
@@ -26,6 +27,7 @@ export const WorkspaceTopSection = memo(({
       aria-label="操作パネル"
     >
       <UpdateBanner updateInfo={updateInfo} />
+      <SettingsLoadNotice />
       <WorkspaceHeader appVersion={appVersion} updateCheckError={updateCheckError} />
       <SubtitleSourceControls />
       <CountdownModeControls />

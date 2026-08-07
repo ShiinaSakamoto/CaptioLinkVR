@@ -69,6 +69,9 @@ export const subtitleFileAtom = atom({
 // --- 描画設定 ---
 export const renderSettingsAtom = atom({ ...DEFAULT_RENDER_SETTINGS });
 
+/** 設定読み込み失敗時のUI通知。null で非表示 */
+export const settingsLoadNoticeAtom = atom(null);
+
 export const updateRenderSettingAtom = atom(null, (_get, set, { key, value }) => {
   set(renderSettingsAtom, (current) => ({ ...current, [key]: value }));
 });

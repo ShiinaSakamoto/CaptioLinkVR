@@ -130,6 +130,13 @@ export const ui = {
   fileLoaded: "字幕ファイルを読み込みました",
   presetLockedWhilePlaying: "再生中は変更できません。停止してから選び直してください。",
 
+  // --- 設定の読み込み ---
+  settingsLoadFailed: "設定データの読み込みに失敗しました。",
+  settingsLoadResetAll: "設定は初期値で設定し直されました。",
+  settingsLoadResetFields: (labels) =>
+    `該当箇所（${labels.join("、")}）は初期値で設定し直されました。`,
+  dismissNotice: "通知を閉じる",
+
   // --- アップデート ---
   updateAction: "アップデート",
   updateConfirmTitle: "アップデートの確認",
