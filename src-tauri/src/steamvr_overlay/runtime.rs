@@ -9,6 +9,8 @@ use ovr_overlay::overlay::{EVROverlayError, OverlayHandle};
 use ovr_overlay::{sys, Context};
 
 use super::error::OverlayError;
+#[cfg(all(windows, feature = "steamvr-overlay"))]
+use super::d3d11_texture::D3d11OverlayTexture;
 #[cfg(feature = "steamvr-overlay")]
 use super::transform;
 
@@ -55,6 +57,9 @@ pub struct OverlayRuntime {
     pending_frame: Option<PendingFrame>,
     #[cfg(feature = "steamvr-overlay")]
     visible: bool,
+    /// SetOverlayTexture 用の D3D11 バックバッファ（寸法は字幕ごとに可変）。
+    #[cfg(all(windows, feature = "steamvr-overlay"))]
+    d3d11_texture: Option<D3d11OverlayTexture>,
 }
 
 impl Default for OverlayRuntime {
@@ -81,6 +86,8 @@ impl Default for OverlayRuntime {
             pending_frame: None,
             #[cfg(feature = "steamvr-overlay")]
             visible: true,
+            #[cfg(all(windows, feature = "steamvr-overlay"))]
+            d3d11_texture: None,
         }
     }
 }
@@ -297,15 +304,45 @@ impl OverlayRuntime {
         width: u32,
         height: u32,
     ) -> Result<(), OverlayError> {
+        #[cfg(all(windows, feature = "steamvr-overlay"))]
+        let texture_ptr = {
+            if self.d3d11_texture.is_none() {
+                self.d3d11_texture = Some(
+                    D3d11OverlayTexture::new().map_err(|error| OverlayError::SteamVr(error))?,
+                );
+            }
+            self.d3d11_texture
+                .as_mut()
+                .ok_or_else(|| OverlayError::SteamVr("D3D11 texture missing".to_string()))?
+                .upload_rgba(frame, width, height)
+                .map_err(OverlayError::SteamVr)?
+        };
+
         self.with_context(|runtime, manager| {
             runtime.ensure_overlay(manager)?;
             runtime.apply_overlay_config(manager)?;
 
             let handle = runtime.handle.ok_or(OverlayError::NotInitialized)?;
-            manager
-                .set_raw_data(handle, frame, width as usize, height as usize, 4)
-                .map_err(|error| OverlayError::SteamVr(error.to_string()))
-        })
+            #[cfg(all(windows, feature = "steamvr-overlay"))]
+            {
+                manager
+                    .set_texture_d3d11(handle, texture_ptr)
+                    .map_err(|error| OverlayError::SteamVr(error.to_string()))?;
+            }
+            #[cfg(not(all(windows, feature = "steamvr-overlay")))]
+            {
+                manager
+                    .set_raw_data(handle, frame, width as usize, height as usize, 4)
+                    .map_err(|error| OverlayError::SteamVr(error.to_string()))?;
+            }
+            Ok(())
+        })?;
+
+        #[cfg(all(windows, feature = "steamvr-overlay"))]
+        if let Some(d3d) = self.d3d11_texture.as_ref() {
+            d3d.flush();
+        }
+        Ok(())
     }
 
     #[cfg(feature = "steamvr-overlay")]

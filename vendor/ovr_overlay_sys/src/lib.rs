@@ -18,6 +18,9 @@ include_cpp! {
     generate!("vr::VROverlay")
     generate_pod!("vr::EVROverlayError")
     generate_pod!("vr::VROverlayHandle_t")
+    generate_pod!("vr::ETextureType")
+    generate_pod!("vr::EColorSpace")
+    generate_pod!("vr::Texture_t")
 
     generate_pod!("vr::EVRInitError")
 

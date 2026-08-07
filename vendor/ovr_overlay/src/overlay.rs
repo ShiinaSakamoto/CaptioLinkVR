@@ -201,6 +201,7 @@ impl<'c> OverlayManager<'c> {
     }
 
     // RGBAなどの生ピクセル列をオーバーレイテクスチャとして渡す。
+    // 高頻度更新には向かない（前フレームが消えてちらつく）。通常は set_texture_d3d11 を使う。
     pub fn set_raw_data(
         &mut self,
         overlay: OverlayHandle,
@@ -223,6 +224,22 @@ impl<'c> OverlayManager<'c> {
                 bytes_per_pixel as u32,
             )
         };
+        EVROverlayError::new(err)
+    }
+
+    /// D3D11 テクスチャを overlay に載せる（高頻度更新向け）。
+    /// `texture` は `ID3D11Texture2D*`（`ID3D11Resource*`）を渡す。
+    pub fn set_texture_d3d11(
+        &mut self,
+        overlay: OverlayHandle,
+        texture: *mut std::ffi::c_void,
+    ) -> Result<(), EVROverlayError> {
+        let tex = sys::Texture_t {
+            handle: texture,
+            eType: sys::ETextureType::TextureType_DirectX,
+            eColorSpace: sys::EColorSpace::ColorSpace_Auto,
+        };
+        let err = unsafe { self.inner.as_mut().SetOverlayTexture(overlay.0, &tex) };
         EVROverlayError::new(err)
     }
 
