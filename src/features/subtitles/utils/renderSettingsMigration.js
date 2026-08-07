@@ -13,6 +13,7 @@ const MAX_TEXTURE_HEIGHT_DEFAULT = DEFAULT_RENDER_SETTINGS.maxTextureHeight;
 // 旧デフォルト。保存済み設定がこの値のままなら新上限へ上げる。
 const LEGACY_MAX_TEXTURE_WIDTH = 2048;
 const LEGACY_MAX_TEXTURE_HEIGHT = 1024;
+const LEGACY_MAX_TEXTURE_HEIGHT_PRE_4096 = 2048;
 
 const clampRubyDistance = (value) => {
   if (!Number.isFinite(value)) return RUBY_DISTANCE_DEFAULT;
@@ -62,10 +63,14 @@ const migrateMaxTextureWidth = (value) => {
 
 const migrateMaxTextureHeight = (value) => {
   const height = Number(value);
-  if (!Number.isFinite(height) || height === LEGACY_MAX_TEXTURE_HEIGHT) {
+  if (
+    !Number.isFinite(height)
+    || height === LEGACY_MAX_TEXTURE_HEIGHT
+    || height === LEGACY_MAX_TEXTURE_HEIGHT_PRE_4096
+  ) {
     return MAX_TEXTURE_HEIGHT_DEFAULT;
   }
-  return Math.min(MAX_TEXTURE_WIDTH_DEFAULT, Math.max(128, Math.round(height)));
+  return Math.min(MAX_TEXTURE_HEIGHT_DEFAULT, Math.max(128, Math.round(height)));
 };
 
 // 古いfontSize/% を現行基準（fontSize=53 が100%）へ折り込み、保存済みの見た目を保つ。

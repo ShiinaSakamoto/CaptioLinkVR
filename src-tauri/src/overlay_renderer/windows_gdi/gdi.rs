@@ -183,6 +183,7 @@ pub(super) fn cached_gdi_font(size: u32) -> Result<GdiFont, String> {
             DEFAULT_CHARSET,
             OUT_DEFAULT_PRECIS,
             CLIP_DEFAULT_PRECIS,
+            // VR テクスチャ用。ClearType（サブピクセル）は 3D 平面で色縁が出るので使わない。
             ANTIALIASED_QUALITY,
             DEFAULT_PITCH | FF_DONTCARE,
             face.as_ptr(),

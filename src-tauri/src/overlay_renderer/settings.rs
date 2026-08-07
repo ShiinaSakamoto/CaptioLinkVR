@@ -52,7 +52,7 @@ impl Default for RenderSettings {
             width: 1024,
             height: 256,
             max_texture_width: 4096,
-            max_texture_height: 2048,
+            max_texture_height: 4096,
             render_scale: 1.0,
             overlay_max_fps: 30,
             overlay_prepare_ms: 900,
@@ -119,7 +119,7 @@ mod tests {
         assert_eq!(settings.width, 1024);
         assert_eq!(settings.height, 256);
         assert_eq!(settings.max_texture_width, 4096);
-        assert_eq!(settings.max_texture_height, 2048);
+        assert_eq!(settings.max_texture_height, 4096);
         assert_eq!(settings.font_size, 53);
         assert_eq!(settings.font_size_percent, 100);
         assert_eq!(settings.text_opacity_percent, 100);

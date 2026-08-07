@@ -41,7 +41,7 @@ export const ui = {
   textSize: (percent) => `字幕サイズ（ ${percent}% ）`,
   subtitleQuality: (scale) => `字幕画質（ ${parseFloat(Number(scale).toFixed(2))}倍 ）`,
   subtitleQualityDescription:
-    "基準の描画倍率です。これを基準に、距離に応じて自動で解像度を加減し、見た目上の画質は保つようにしています。",
+    "基準の描画倍率です。距離に応じて解像度を自動加減し、遠いときは負荷を抑えつつ見た目の画質を保ちます。",
   overlayMaxFps: (fps) => `VR更新FPS（ ${fps} ）`,
   ruby: "ルビ",
   background: "背景",

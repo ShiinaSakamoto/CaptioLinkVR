@@ -312,17 +312,17 @@ export const VISUAL_QA_BLOCK_IDS = [
 
 export const filterVisualQaScenarioByBlock = (scenario, blockId) => {
   if (blockId === "all" || !blockId) return scenario;
-  
+
   // タブ全体（"settings" or "style"）
   if (blockId === "settings" || blockId === "style") {
     return scenario.filter((step) => step.tab === blockId);
   }
-  
+
   // カテゴリ単位（"settings.general", "style.text" など）
   const [tab, category] = blockId.split(".");
   if (tab && category) {
     return scenario.filter((step) => step.tab === tab && step.category === category);
   }
-  
+
   return scenario;
 };

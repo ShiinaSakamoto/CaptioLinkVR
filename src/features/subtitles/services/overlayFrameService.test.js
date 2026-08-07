@@ -20,7 +20,7 @@ const settings = {
   textOffsetY: 0,
   autoTextureSize: true,
   maxTextureWidth: 4096,
-  maxTextureHeight: 2048,
+  maxTextureHeight: 4096,
   renderScale: 1,
   positionX: 0,
   positionY: -0.35,

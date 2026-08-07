@@ -227,7 +227,7 @@ mod integration_tests {
             width: 1024,
             height: 256,
             max_texture_width: 4096,
-            max_texture_height: 2048,
+            max_texture_height: 4096,
             render_scale: 1.0,
             font_size: 96,
             font_size_percent: 100,
@@ -285,13 +285,14 @@ mod integration_tests {
 
     #[test]
     fn ruby_distance_controls_optical_gap() {
+        use crate::overlay_renderer::metrics::effective_render_scale;
         use crate::overlay_renderer::settings::RenderSettings;
 
         let base_settings = RenderSettings {
             width: 1024,
             height: 256,
             max_texture_width: 4096,
-            max_texture_height: 2048,
+            max_texture_height: 4096,
             render_scale: 1.0,
             font_size: 96,
             font_size_percent: 100,
@@ -331,14 +332,18 @@ mod integration_tests {
 
         let span0 = ink_span(0);
         let span20 = ink_span(20);
+        let scale = effective_render_scale(&base_settings);
         // 距離を広げると縦のインク範囲が増える（ルビが上に離れる）。
+        let lift_min = (12.0_f32 * scale).round() as i32;
         assert!(
-            span20 >= span0 + 12,
-            "distance 20 should lift ruby; span0={span0}, span20={span20}"
+            span20 >= span0 + lift_min,
+            "distance 20 should lift ruby; span0={span0}, span20={span20}, lift_min={lift_min}"
         );
 
         // 距離0はセル高さ足し合わせより明らかに短い（空きを詰めた証拠）。
-        let loose_span = (96.0_f32 * 0.42).round() as i32 + 96;
+        // 実フォントpxは画質×距離LOD後のスケールを反映する。
+        let font_px = (96.0_f32 * scale).round();
+        let loose_span = (font_px * 0.42).round() as i32 + font_px as i32;
         assert!(
             span0 < loose_span - 8,
             "distance 0 should be optically tight; span0={span0}, loose≈{loose_span}"
@@ -353,7 +358,7 @@ mod integration_tests {
             width: 1024,
             height: 512,
             max_texture_width: 4096,
-            max_texture_height: 2048,
+            max_texture_height: 4096,
             render_scale: 1.0,
             font_size: 96,
             font_size_percent: 100,

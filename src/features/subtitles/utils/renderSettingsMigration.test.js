@@ -77,7 +77,11 @@ describe("normalizeRenderSettings", () => {
     expect(normalizeRenderSettings({ maxTextureWidth: 3000 }, baseCurrent).maxTextureWidth).toBe(3000);
   });
 
-  it("旧デフォルトの1024高はそのまま新デフォルト2048へ引き上げる", () => {
-    expect(normalizeRenderSettings({ maxTextureHeight: 1024 }, baseCurrent).maxTextureHeight).toBe(2048);
+  it("旧デフォルトの1024高はそのまま新デフォルト4096へ引き上げる", () => {
+    expect(normalizeRenderSettings({ maxTextureHeight: 1024 }, baseCurrent).maxTextureHeight).toBe(4096);
+  });
+
+  it("旧デフォルトの2048高はそのまま新デフォルト4096へ引き上げる", () => {
+    expect(normalizeRenderSettings({ maxTextureHeight: 2048 }, baseCurrent).maxTextureHeight).toBe(4096);
   });
 });

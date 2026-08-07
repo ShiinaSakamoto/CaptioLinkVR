@@ -7,7 +7,7 @@ export const DEFAULT_RENDER_SETTINGS = {
   width: 1024,
   height: 256,
   maxTextureWidth: 4096,
-  maxTextureHeight: 2048,
+  maxTextureHeight: 4096,
   renderScale: 1,
   overlayMaxFps: 30,
   overlayPrepareMs: 900,
