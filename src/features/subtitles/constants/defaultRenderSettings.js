@@ -23,7 +23,7 @@ export const DEFAULT_RENDER_SETTINGS = {
   textOpacityPercent: 100,
   backgroundEnabled: true,
   backgroundColor: "#000000",
-  backgroundOpacityPercent: 62,
+  backgroundOpacityPercent: 90,
   backgroundPadding: 22,
   outlineEnabled: false,
   outlineColor: "#000000",

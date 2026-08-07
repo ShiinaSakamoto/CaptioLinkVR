@@ -68,7 +68,7 @@ impl Default for RenderSettings {
             text_opacity_percent: 100,
             background_enabled: true,
             background_color: "#000000".to_string(),
-            background_opacity_percent: 62,
+            background_opacity_percent: 90,
             background_padding: 22,
             outline_enabled: false,
             outline_color: "#000000".to_string(),
@@ -123,7 +123,7 @@ mod tests {
         assert_eq!(settings.font_size, 53);
         assert_eq!(settings.font_size_percent, 100);
         assert_eq!(settings.text_opacity_percent, 100);
-        assert_eq!(settings.background_opacity_percent, 62);
+        assert_eq!(settings.background_opacity_percent, 90);
         assert_eq!(settings.ruby_distance, 6);
         assert_eq!(settings.outline_enabled, false);
         assert_eq!(settings.shadow_enabled, false);

@@ -23,7 +23,7 @@ describe("renderSettingsAtom defaults", () => {
     const store = getDefaultStore();
     const settings = store.get(renderSettingsAtom);
     expect(settings.textOpacityPercent).toBe(100);
-    expect(settings.backgroundOpacityPercent).toBe(62);
+    expect(settings.backgroundOpacityPercent).toBe(90);
   });
 
   it("VR表示に関わる主要な既定値を持つ", () => {

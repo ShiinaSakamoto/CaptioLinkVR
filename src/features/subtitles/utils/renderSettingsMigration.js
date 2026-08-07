@@ -50,7 +50,7 @@ const migrateBackgroundOpacityPercent = (loaded) => {
   if (Number.isFinite(loaded.backgroundOpacity)) {
     return normalizeBackgroundOpacityPercent(loaded.backgroundOpacity * 100);
   }
-  return 62;
+  return DEFAULT_RENDER_SETTINGS.backgroundOpacityPercent;
 };
 
 const migrateMaxTextureWidth = (value) => {

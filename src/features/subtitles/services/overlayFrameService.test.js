@@ -29,7 +29,7 @@ const settings = {
   textOpacityPercent: 100,
   backgroundEnabled: true,
   backgroundColor: "#000000",
-  backgroundOpacityPercent: 62,
+  backgroundOpacityPercent: 90,
   backgroundPadding: 22,
   outlineEnabled: false,
   outlineColor: "#000000",
@@ -60,7 +60,7 @@ describe("overlayFrameService", () => {
     expect(frameSettings).toMatchObject({
       width: 1024,
       textColor: "#ffffff",
-      backgroundOpacityPercent: 62,
+      backgroundOpacityPercent: 90,
     });
   });
 

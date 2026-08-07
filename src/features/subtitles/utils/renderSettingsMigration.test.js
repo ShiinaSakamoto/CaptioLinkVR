@@ -65,8 +65,8 @@ describe("normalizeRenderSettings", () => {
     expect(normalizeRenderSettings({ backgroundOpacity: 0.3 }, baseCurrent).backgroundOpacityPercent).toBe(30);
   });
 
-  it("どちらも無ければデフォルト62", () => {
-    expect(normalizeRenderSettings({}, baseCurrent).backgroundOpacityPercent).toBe(62);
+  it("どちらも無ければデフォルト90", () => {
+    expect(normalizeRenderSettings({}, baseCurrent).backgroundOpacityPercent).toBe(90);
   });
 
   it("旧デフォルトの2048幅はそのまま新デフォルト4096へ引き上げる", () => {

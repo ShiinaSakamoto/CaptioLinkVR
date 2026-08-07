@@ -209,13 +209,13 @@ export const DEFAULT_VISUAL_QA_SCENARIO = [
     category: "background",
     dependsOnKey: "backgroundEnabled",
     settingKeys: ["backgroundOpacityPercent"],
-    baseValue: 62,
+    baseValue: 90,
     actions: buildNumericSweepActions({
       key: "backgroundOpacityPercent",
       min: OPACITY_PERCENT_MIN,
       max: OPACITY_PERCENT_MAX,
       step: 1,
-      base: 62,
+      base: 90,
     }),
   },
   {
