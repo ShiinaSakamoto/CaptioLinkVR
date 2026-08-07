@@ -1,0 +1,70 @@
+@use "../shared/styles/theme" as *;
+@use "./scrollbar";
+
+// VR 字幕と同梱の Noto Sans JP。プレビュー表示で共有する。
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("../../fonts/NotoSansJP-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family:
+    "Segoe UI",
+    "Hiragino Sans",
+    "Yu Gothic UI",
+    sans-serif;
+  color: $textDefault;
+  background: $surfaceApp;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+  line-height: 1.4;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+// destyle の cursor: default を、アプリの操作感に合わせて上書きする。
+button:not(:disabled),
+select:not(:disabled),
+input[type="color"]:not(:disabled),
+input[type="range"]:not(:disabled),
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+label[for] {
+  cursor: pointer;
+}
+
+input[type="text"]:not(:disabled),
+input[type="number"]:not(:disabled),
+textarea:not(:disabled) {
+  cursor: text;
+}
+
+button:disabled,
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+
+input[type="range"]:not(:disabled):active {
+  cursor: grabbing;
+}

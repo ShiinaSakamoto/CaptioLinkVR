@@ -1,0 +1,89 @@
+@use "./theme" as *;
+
+// スライダーツールチップの個別微調整。
+// RangeSlider / ValueSteppedControl の tooltipKey と対応する。
+//
+// 調整方法:
+//   --slider-tooltip-offset-x / --slider-tooltip-offset-y
+//   placement ごとの基本距離（gap 2.1rem 等）に加算される。
+//   右へ寄せたい → offset-x を増やす / 左下へ → offset-x を減らし offset-y を増やす
+//
+// 例:
+//   [data-tooltip-key="axis-y"] {
+//     --slider-tooltip-offset-x: -1rem;
+//   }
+
+// --- 軸操作（VR設定 > 位置 / 回転）---
+
+// Y軸（上下） / X軸の回転 — placement: right
+[data-tooltip-key="axis-y"] {
+  --slider-tooltip-offset-x: -1.8rem;
+  --slider-tooltip-offset-y: 2.4rem;
+}
+
+// X軸（左右） / Y軸の回転 — placement: top
+[data-tooltip-key="axis-x"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: -0.05rem;
+}
+
+// Z軸（前後）— 位置タブ — placement: top
+.isPositionConsole [data-tooltip-key="axis-z"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+// Z軸の回転 — 回転タブ — placement: bottom
+.isRotationConsole [data-tooltip-key="axis-z"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+// --- VR設定（ValueSteppedControl）---
+
+[data-tooltip-key="vr-font-size"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="vr-render-scale"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="vr-overlay-fps"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+// --- 字幕スタイル（ValueSteppedControl）---
+
+[data-tooltip-key="style-ruby-distance"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="style-text-opacity"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="style-background-opacity"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="style-background-padding"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="style-outline-width"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+[data-tooltip-key="style-shadow-blur"] {
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}

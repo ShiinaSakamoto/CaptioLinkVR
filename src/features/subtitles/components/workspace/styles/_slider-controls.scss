@@ -1,0 +1,202 @@
+@use "./theme" as *;
+
+// スライダー・増減・リセットの共通部品。軸操作と値表示スライダーで共有する。
+.resetIconButton {
+  display: grid;
+  width: 2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  color: $dark300;
+  background: $dark825;
+  padding: 0;
+  cursor: pointer;
+  &:hover:not(:disabled) {
+    color: #fff;
+    background: $dark800;
+  }
+
+  &:disabled {
+    color: $dark700;
+    background: $dark875;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 1.08rem;
+    height: 1.08rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.stepButtonGroup {
+  button {
+    display: grid;
+    min-width: 2.75rem;
+    min-height: 2.55rem;
+    place-items: center;
+    border: 0;
+    border-radius: 5px;
+    color: $dark300;
+    background: $dark825;
+    padding: 0;
+    cursor: pointer;
+    &:hover:not(:disabled) {
+      color: #fff;
+      background: $dark800;
+    }
+
+    &:disabled {
+      color: $dark700;
+      background: $dark875;
+      cursor: not-allowed;
+    }
+
+    svg {
+      width: 1.35rem;
+      height: 1.35rem;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+.stepButtonGroupHorizontal {
+  display: flex;
+  gap: 0.65rem;
+  width: fit-content;
+
+  .stepButtonPlus svg {
+    transform: rotate(90deg);
+  }
+
+  .stepButtonMinus svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.stepButtonGroupVertical {
+  display: grid;
+  grid-template-columns: 2.75rem;
+  grid-template-rows: repeat(2, 2.55rem);
+  gap: 0.95rem;
+
+  .stepButtonPlus svg {
+    transform: rotate(0deg);
+  }
+
+  .stepButtonMinus svg {
+    transform: rotate(180deg);
+  }
+}
+
+.rangeSliderWrap {
+  position: relative;
+  width: 100%;
+  min-height: 1.6rem;
+  --slider-tooltip-offset-x: 0rem;
+  --slider-tooltip-offset-y: 0rem;
+}
+
+.rangeSlider {
+  // destyle で appearance が消えるため、ネイティブスライダーを復元する。
+  width: 100%;
+  min-height: 1.6rem;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: auto;
+  appearance: auto;
+  background: initial;
+  accent-color: $primary;
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):active {
+    cursor: grabbing;
+  }
+}
+
+// スライダー上の現在値ポップアップ。
+// 基本距離は data-placement が --slider-tooltip-gap-x/y を設定。
+// 個別微調整は _slider-tooltips.scss の [data-tooltip-key="..."] で offset を上書き。
+.sliderValueTooltip {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  pointer-events: none;
+  border: 1px solid $borderDefault;
+  border-radius: 4px;
+  color: $textStrong;
+  background: $dark800;
+  padding: 0.18rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: $shadowPanel;
+  translate:
+    calc(-50% + var(--slider-tooltip-gap-x, 0rem) + var(--slider-tooltip-offset-x, 0rem))
+    calc(-50% + var(--slider-tooltip-gap-y, 0rem) + var(--slider-tooltip-offset-y, 0rem));
+
+  &[data-placement="top"] {
+    --slider-tooltip-gap-y: -2.1rem;
+  }
+
+  &[data-placement="bottom"] {
+    --slider-tooltip-gap-y: 2.1rem;
+  }
+
+  &[data-placement="right"] {
+    --slider-tooltip-gap-x: 2.1rem;
+  }
+
+  &[data-placement="left"] {
+    --slider-tooltip-gap-x: -2.1rem;
+  }
+
+  // 軸スライダーなど親の rotate を相殺し、文字を常に水平（読める向き）に保つ。
+  &[data-upright="true"] {
+    rotate: calc(-1 * var(--slider-angle, 0deg));
+  }
+}
+
+// 字幕サイズ・描画倍率など、ラベルに現在値を含める横並びスライダー。
+.valueSteppedControl {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.valueSteppedHeader {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.valueSteppedLabel {
+  color: $textEmphasis;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.valueSteppedDescription {
+  margin: 0;
+  color: $textFaint;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.valueSteppedRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+}

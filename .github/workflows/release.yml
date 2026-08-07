@@ -1,0 +1,136 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.release_check.outputs.should_release }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check whether release is required
+        id: release_check
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if node scripts/should-release.mjs; then
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  release:
+    needs: check
+    if: needs.check.outputs.should_release == 'true'
+    runs-on: windows-latest
+    env:
+      # bindgen/autocxx が参照する Clang を固定して、runner 更新の影響を受けにくくする
+      LLVM_VERSION: "20.1.8"
+      CARGO_NET_RETRY: "10"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install LLVM/Clang (pinned)
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: ${{ env.LLVM_VERSION }}
+
+      - name: Pin libclang path for bindgen
+        shell: pwsh
+        run: |
+          $libclang = Join-Path "${{ env.LLVM_PATH }}" "bin"
+          "LIBCLANG_PATH=$libclang" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "PATH=$libclang;$env:PATH" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Print toolchain diagnostics
+        shell: pwsh
+        run: |
+          Write-Host "LLVM_PATH=${{ env.LLVM_PATH }}"
+          Write-Host "LIBCLANG_PATH=$env:LIBCLANG_PATH"
+          where.exe clang
+          clang --version
+          rustc -Vv
+          cargo -V
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Read package version
+        id: version
+        shell: bash
+        run: echo "value=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Configure update metadata
+        shell: pwsh
+        run: |
+          $configPath = "update.config.json"
+          $config = Get-Content $configPath -Raw -Encoding UTF8 | ConvertFrom-Json
+          $repo = "${{ github.repository }}"
+          $owner, $name = $repo.Split("/", 2)
+          $config.githubOwner = $owner
+          $config.githubRepo = $name
+          $config | ConvertTo-Json | Set-Content $configPath -Encoding UTF8
+
+      - name: Build portable release
+        run: npm run tauri:build
+
+      - name: Regenerate manifest with release URL
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.value }}"
+          $layout = Get-Content scripts/portable-layout.json -Raw -Encoding UTF8 | ConvertFrom-Json
+          $zipName = [string]$layout.packageZip
+          if ([string]::IsNullOrWhiteSpace($zipName)) {
+            $productName = (Get-Content src-tauri/tauri.conf.json -Raw -Encoding UTF8 | ConvertFrom-Json).productName
+            $safeName = ($productName -replace '[\\/:*?"<>|]', '_')
+            $zipName = "$safeName.zip"
+          }
+          $zipPath = "src-tauri/target/release/portable/$zipName"
+          $downloadUrl = "https://github.com/${{ github.repository }}/releases/download/v$version/$zipName"
+          node scripts/generate-manifest.mjs $zipPath $version $downloadUrl "src-tauri/target/release/portable/manifest.json"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.value }}
+          name: CaptioLinkVR v${{ steps.version.outputs.value }}
+          body: CaptioLinkVR v${{ steps.version.outputs.value }} has been released.
+          generate_release_notes: false
+          files: |
+            src-tauri/target/release/portable/*.zip
+            src-tauri/target/release/portable/manifest.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

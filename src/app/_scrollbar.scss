@@ -1,0 +1,27 @@
+@use "../shared/styles/theme" as *;
+
+// 字幕一覧（.cueList）と同じスクロールバー。アプリ全体に適用する。
+* {
+  scrollbar-color: $dark700 $dark950;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: $dark950;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 0.2rem solid $dark950;
+  border-radius: 999px;
+  background: $dark700;
+  cursor: pointer;
+
+  &:hover {
+    background: $primaryDeep;
+  }
+}

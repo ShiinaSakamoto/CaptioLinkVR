@@ -1,0 +1,69 @@
+@use "../styles/theme" as *;
+
+// 左右に区切り線を置いたラベル型の開閉トグル。
+.dividerLabelToggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 0.74rem;
+  line-height: 1.2;
+  cursor: pointer;
+
+  &:hover .dividerLabelText {
+    color: $textMuted;
+  }
+
+  &:active .dividerLabelText {
+    color: $textSecondary;
+  }
+}
+
+.dividerLabelLine {
+  flex: 1;
+  min-width: 0;
+  height: 0;
+  border-top: 1px solid rgba($dark700, 0.6);
+}
+
+.dividerLabelText {
+  flex-shrink: 0;
+  color: $textFaint;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.fieldRow {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+
+  > span {
+    color: $textSecondary;
+    font-size: 0.82rem;
+  }
+}
+
+.fieldRowCompact {
+  gap: 0.2rem;
+
+  > span {
+    font-size: 0.76rem;
+    line-height: 1.2;
+  }
+}
+
+.fieldRowInline {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+
+  > span {
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "launcherExe": "CaptioLinkVR.exe",
+  "appExe": "captiolink-vr.exe",
+  "resourceDir": "resource",
+  "maintenanceDir": "updater",
+  "applyExe": "CaptiolinkVRApply.exe",
+  "applyPendingExe": "CaptiolinkVRApply.pending.exe",
+  "legacyApplyExe": "CaptiolinkVRUpdater.exe",
+  "rootMarkerFile": ".captiolinkvr-root",
+  "rootEnv": "CAPTIOLINKVR_ROOT",
+  "settingsFile": "settings.json",
+  "updateDir": "update",
+  "updateJobFile": "update-job.json",
+  "updateStagingDir": "update-staging",
+  "resourceBackupDir": "resource.bak",
+  "updateLogFile": "update.log",
+  "manifestFile": "manifest.json",
+  "packageDir": "CaptioLinkVR",
+  "packageZip": "CaptioLinkVR.zip"
+}

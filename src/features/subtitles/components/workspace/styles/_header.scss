@@ -1,0 +1,119 @@
+@use "./theme" as *;
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+
+  .appLogo {
+    display: block;
+    width: auto;
+    height: 2.35rem;
+  }
+
+  .appSubtitle {
+    margin: 0;
+    color: $textMuted;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+}
+
+.headerMain {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.headerBrandRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
+}
+
+// ロゴ幅を基準に、その下へサブタイトルとバージョンを載せる。
+.headerBrandBlock {
+  display: grid;
+  gap: 0.18rem;
+  width: max-content;
+  flex-shrink: 0;
+}
+
+.headerSubtitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.headerMeta {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+  min-width: 0;
+  padding-top: 0.2rem;
+}
+
+.versionLabel {
+  margin: 0;
+  color: $textFaint;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.updateCheckError {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  max-width: min(100%, 24rem);
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+.updateCheckErrorLabel {
+  color: $errorText;
+  font-weight: 700;
+}
+
+.updateCheckErrorDetail {
+  color: $errorTextDetail;
+  word-break: break-word;
+}
+
+.headerActions {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: end;
+  flex-shrink: 0;
+}
+
+.steamVrStatus {
+  display: inline-flex;
+  min-height: 1.35rem;
+  align-items: center;
+  border: 1px solid rgba($dark600, 0.35);
+  border-radius: 999px;
+  padding: 0 0.4rem;
+  color: $textStatusBorder;
+  background: transparent;
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.steamVrConnected {
+  border-color: $borderAccentMedium;
+  color: $textStatus;
+  background: $primarySubtle;
+}
+
+.steamVrOffline {
+  color: $textStatusOffline;
+}

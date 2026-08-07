@@ -1,0 +1,120 @@
+@use "./theme" as *;
+
+// 設定フォームで共通利用する見た目。
+// dividerLabel* / fieldRow* は src/shared/forms/SharedForms.module.scss。
+// スタイル機能リストは _style-features.scss。
+// 色プリセットは _color-setting.scss。
+
+.checkboxControl {
+  position: relative;
+  display: inline-grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  place-items: center;
+
+  input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &::before {
+    content: "";
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 1px solid rgba($dark600, 0.88);
+    border-radius: 3px;
+    background: rgba($dark950, 0.75);
+    box-shadow: 0 0 0 1px rgba($dark700, 0.45) inset;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 0.34rem;
+    height: 0.58rem;
+    border-right: 1.75px solid transparent;
+    border-bottom: 1.75px solid transparent;
+    transform: rotate(45deg);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:has(input:hover:not(:disabled))::before {
+    border-color: rgba($primary, 0.38);
+    background: rgba($primary, 0.07);
+  }
+
+  &:has(input:checked)::before {
+    border-color: $primaryDeep;
+    background: $primary;
+    box-shadow: none;
+  }
+
+  &:has(input:checked)::after {
+    border-color: $onPrimary;
+    opacity: 1;
+  }
+
+  &:has(input:checked:hover:not(:disabled))::before {
+    border-color: $primary;
+    background: $primaryHover;
+  }
+
+  &:has(input:disabled) {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    input {
+      cursor: not-allowed;
+    }
+  }
+}
+
+// チェック＋ラベルを小さな操作チップとして固める。
+.toggleSetting {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 0.38rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.32rem 0.7rem 0.32rem 0.38rem;
+  border: 1px solid rgba($dark700, 0.72);
+  border-radius: 5px;
+  background: rgba($dark900, 0.88);
+  cursor: pointer;
+
+  .valueSteppedLabel {
+    min-width: 0;
+    line-height: 1.2;
+  }
+
+  &:hover:not(:has(:disabled)) {
+    border-color: rgba($dark600, 0.85);
+    background: rgba($dark850, 0.95);
+  }
+
+  &:has(input:checked) {
+    border-color: rgba($primary, 0.4);
+    background: rgba($primary, 0.1);
+  }
+
+  &:has(input:checked):hover:not(:has(:disabled)) {
+    border-color: rgba($primary, 0.55);
+    background: rgba($primary, 0.14);
+  }
+
+  &:has(:disabled) {
+    cursor: not-allowed;
+  }
+}
+
+.settingControlDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

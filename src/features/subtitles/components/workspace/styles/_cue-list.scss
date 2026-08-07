@@ -1,0 +1,134 @@
+@use "./theme" as *;
+
+.cueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  p,
+  span {
+    margin: 0;
+  }
+
+  p {
+    color: $textStrong;
+    font-weight: 700;
+  }
+
+  span {
+    color: $textTertiary;
+    font-size: 0.84rem;
+  }
+
+}
+
+.cuePage {
+  display: grid;
+  gap: 0.75rem;
+  min-height: 14rem;
+}
+
+.cueList {
+  flex: 0 1 auto;
+  min-height: 8rem;
+  max-height: 30rem;
+  overflow: auto;
+  border: 1px solid rgba($dark800, 0.9);
+  border-radius: 4px;
+}
+
+.emptyList {
+  display: grid;
+  min-height: 9rem;
+  place-items: center;
+  color: $dark600;
+  background: $dark850;
+  font-size: 0.95rem;
+}
+
+.cueRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  width: 100%;
+  min-height: 3rem;
+  border-bottom: 1px solid rgba($dark800, 0.9);
+  color: $dark300;
+  background: $dark900;
+  padding: 0.75rem 1rem;
+  align-items: center;
+
+  &:nth-child(even) {
+    background: $dark875;
+  }
+
+  &:hover {
+    background: $dark825;
+  }
+}
+
+.cueRowContent {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 1rem;
+  min-width: 0;
+  color: inherit;
+  padding: 0;
+  text-align: left;
+
+  time {
+    color: $primary;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cueText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.95rem;
+
+    ruby {
+      ruby-position: over;
+    }
+
+    [data-ruby-line="over"] ruby,
+    ruby[data-ruby-line="over"] {
+      ruby-position: over;
+    }
+
+    [data-ruby-line="under"] ruby,
+    ruby[data-ruby-line="under"] {
+      ruby-position: under;
+    }
+
+    rt {
+      font-size: 0.62em;
+      line-height: 1;
+    }
+  }
+}
+
+.cuePlayButton {
+  flex-shrink: 0;
+  border: 1px solid rgba($primary, 0.45);
+  border-radius: 4px;
+  color: $textStrong;
+  background: rgba($primary, 0.12);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  &:hover {
+    color: $onPrimary;
+    background: $primary;
+  }
+}
+
+.cueRow.isSelected {
+  background: rgba($primary, 0.16);
+}
+
+.cueRow.isActive {
+  background: rgba($primary, 0.28);
+}

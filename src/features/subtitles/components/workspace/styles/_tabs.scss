@@ -1,0 +1,137 @@
+@use "./theme" as *;
+
+// 親タブ + 設定本体を一つの面としてつなぐ
+.settingsShell {
+  display: grid;
+  gap: 0;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid $borderSubtle;
+  border-radius: 12px;
+  background: $surfaceElevated;
+}
+
+.settingsShellBody {
+  min-width: 0;
+  padding: 0.9rem 1rem 1.05rem;
+  background: $surfaceElevated;
+}
+
+// 親階層: 設定シェル上端に張り付くタブバー（本体と同色の選択面で一体感）
+.pageTabs {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid $borderSubtle;
+  padding: 0;
+  // 選択面（$surfaceElevated）より一段暗い面
+  background: $dark900;
+
+  button {
+    display: flex;
+    min-width: 0;
+    min-height: 2.75rem;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 0.1rem 1.1rem 0;
+    color: $textSecondary;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.2;
+    white-space: nowrap;
+
+    &:not(.isSelected) {
+      cursor: pointer;
+    }
+
+    &:hover:not(.isSelected) {
+      color: $textStrong;
+      background: rgba($dark825, 0.35);
+    }
+
+    span {
+      min-width: 1.55rem;
+      border-radius: 999px;
+      padding: 0.1rem 0.45rem;
+      color: $dark300;
+      background: $dark825;
+      font-size: 0.75rem;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  .isSelected {
+    cursor: default;
+    color: $textStrong;
+    background: $surfaceElevated;
+    border-bottom-color: $primary;
+    font-weight: 700;
+    box-shadow: none;
+
+    span {
+      color: $textStrong;
+      background: rgba($primary, 0.22);
+      font-weight: 700;
+    }
+  }
+}
+
+// 子階層: 軸操作カードのヘッダーとして全幅セグメント（押しやすく・今のモードが分かる）
+.innerTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid $borderSubtle;
+  padding: 0;
+  background: $dark900;
+
+  button {
+    display: flex;
+    min-height: 2.7rem;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 0.1rem 1.25rem 0;
+    color: $textSecondary;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+
+    &:not(.isSelected) {
+      cursor: pointer;
+    }
+
+    &:hover:not(.isSelected) {
+      color: $textStrong;
+      background: rgba($dark825, 0.35);
+    }
+  }
+
+  .isSelected {
+    cursor: default;
+    color: $textStrong;
+    background: $surfaceElevated;
+    border-bottom-color: $primary;
+    font-weight: 700;
+  }
+}

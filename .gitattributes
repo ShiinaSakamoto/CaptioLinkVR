@@ -1,0 +1,4 @@
+# Node スクリプトが書き戻すファイルは LF 固定（autocrlf との空 diff を防ぐ）
+src-tauri/tauri.conf.json text eol=lf
+src-tauri/Cargo.toml text eol=lf
+captions/**/*.json text eol=lf

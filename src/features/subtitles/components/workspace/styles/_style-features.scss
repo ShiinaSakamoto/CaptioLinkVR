@@ -1,0 +1,155 @@
+@use "./theme" as *;
+
+// 字幕スタイルの機能リスト（ルビ / 背景など）とオンオフまわり。
+
+.styleSections {
+  display: grid;
+  gap: 2.4rem;
+}
+
+// 常時表示の単独項目（文字色など）。機能リストとは別レイヤとして扱う。
+.styleStandaloneField {
+  display: grid;
+  gap: 2rem;
+  padding: 0.15rem 0.1rem 0.25rem;
+}
+
+// ルビ/背景などの機能一覧。パネルより一段暗い台で区切る（極端な黒は避ける）。
+.styleFeatureList {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba($dark600, 0.42);
+  border-radius: 8px;
+  background: $dark950;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.styleFeatureRow {
+  display: grid;
+  gap: 0;
+  min-width: 0;
+  border: 0;
+  border-bottom: 2px dashed rgba($dark700, 0.8);
+  background: transparent;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.styleFeatureRowOff {
+  background: rgba($dark900, 0.7);
+
+  .featureEnableLabel {
+    color: $textMuted;
+    font-weight: 600;
+  }
+}
+
+.styleFeatureRowOn {
+  padding-bottom: 1.8rem;
+  background: rgba($dark825, 0.5);
+
+  .featureEnableLabel {
+    color: $textEmphasis;
+    font-weight: 700;
+  }
+
+  &:last-child {
+    padding-bottom: 0.55rem;
+  }
+}
+
+.featureEnableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.92rem 1.05rem;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover .featureEnableLabel {
+    color: $textStrong;
+  }
+}
+
+.featureEnableLabel {
+  font-size: 0.95rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.featureSwitch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.featureSwitchTrack {
+  position: relative;
+  display: block;
+  width: 2.45rem;
+  height: 1.32rem;
+  border: 1px solid rgba($dark600, 0.85);
+  border-radius: 999px;
+  background: $surfaceWellDeep;
+  box-shadow: inset 0 0 0 1px rgba($dark700, 0.45);
+}
+
+.featureSwitchThumb {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.15rem;
+  width: 0.92rem;
+  height: 0.92rem;
+  border-radius: 50%;
+  background: $textMuted;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.featureSwitch[data-on="true"] .featureSwitchTrack {
+  border-color: rgba($primary, 0.62);
+  background: rgba($primary, 0.3);
+  box-shadow: inset 0 0 0 1px rgba($primary, 0.2);
+}
+
+.featureSwitch[data-on="true"] .featureSwitchThumb {
+  left: auto;
+  right: 0.15rem;
+  background: $primaryHover;
+}
+
+.featureSwitchCaption {
+  min-width: 2rem;
+  color: $textFaint;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.featureSwitch[data-on="true"] .featureSwitchCaption {
+  color: $textAccent;
+}
+
+// オン時だけ現れる詳細。
+.featureEnableBody {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0 0.85rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba($dark600, 0.35);
+  border-radius: 6px;
+  // background: $dark900;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
+}

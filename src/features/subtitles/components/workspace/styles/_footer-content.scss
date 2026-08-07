@@ -1,0 +1,332 @@
+@use "./theme" as *;
+
+// 背景は全幅。中身だけ container と同じ最大幅で中央揃え。
+// Message は左・上基準。Primary は右・縦中央。License は最下部・左寄せ。
+// [ Message ] [ Primary ]
+// [ License             ]
+.footerContent {
+  // 中央からの左右すき間（左＝Message / 右＝Primary）
+  --footer-center-gap-left: 7.4rem;
+  --footer-center-gap-right: 1.5rem;
+  --footer-message-top: 4rem;
+  --footer-message-stack-gap: 0.85rem;
+  --footer-license-bottom: -0.6rem;
+  // Primary 内 SNS / 制作者は中央（50%）+ gap-right + inset
+  --footer-social-left-inset: -5.4rem;
+  --footer-social-right-inset: 0.8rem;
+  // 制作者の左位置（広いとき）。スタック直前だけ下の @container で左へ寄せる
+  --footer-primary-credit-left: 8.2rem;
+  // ロゴは右端起点。幅は max まで。制作者と被る幅になったら @container で縦積み。
+  --footer-primary-logo-right: 2rem;
+  --footer-primary-logo-max-width: 15rem;
+  // 縦積み時のロゴ〜制作者 gap（スタック後は固定）
+  --footer-brand-stack-gap: 1.6rem;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  // container と同じ最大幅基準を、幾何と同じ --footer-center-offset-x だけ右へずらす
+  left: calc(
+    max(
+      var(--workspace-inline-pad, 1.6rem),
+      calc(50% - var(--workspace-container-max, 82rem) / 2)
+    ) + var(--footer-center-offset-x, 0rem)
+  );
+  right: calc(
+    max(
+      var(--workspace-inline-pad, 1.6rem),
+      calc(50% - var(--workspace-container-max, 82rem) / 2)
+    ) - var(--footer-center-offset-x, 0rem)
+  );
+  z-index: 2;
+  box-sizing: border-box;
+  pointer-events: none;
+  container-type: inline-size;
+  container-name: footer-content;
+}
+
+.footerPrimary {
+  position: absolute;
+  // 子は footerContent 中央（50%）基準。領域自体は全幅の位置決め枠。
+  inset: 0;
+  pointer-events: none;
+}
+
+// 広いとき: ラッパーは箱を作らず、ロゴ / クレジット各自の absolute 配置を使う
+.footerBrand {
+  display: contents;
+}
+
+// display: contents でボックスごと透明化し、レイアウトへは一切影響させない
+// （中の .footerLogo がそのまま絶対配置/フレックス項目として扱われる）。
+// 隠しQA機能の入口だが、見た目・配置は素のロゴ画像と完全に同じにする。
+.footerLogoButton {
+  display: contents;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+}
+
+.footerLogo {
+  position: absolute;
+  top: 50%;
+  right: var(--footer-primary-logo-right);
+  left: auto;
+  display: block;
+  width: auto;
+  height: 3.75rem;
+  max-width: var(--footer-primary-logo-max-width);
+  object-fit: contain;
+  object-position: right center;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  cursor: default;
+}
+
+.footerCredit {
+  position: absolute;
+  top: 50%;
+  left: calc(
+    50% + var(--footer-center-gap-right) + var(--footer-primary-credit-left)
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+.footerCreator {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.footerAffiliation {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerCreditLabel {
+  color: $textFaint;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+
+.footerCreditName {
+  color: $textStrong;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.footerAffiliationMark {
+  display: block;
+  width: 6.8rem;
+  height: auto;
+  margin-left: -0.12rem;
+  object-fit: contain;
+  object-position: left center;
+  opacity: 0.9;
+}
+
+.footerSocial {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  transform: translateY(-50%);
+  pointer-events: auto;
+}
+
+.footerSocialLeft {
+  left: calc(
+    50% + var(--footer-center-gap-right) + var(--footer-social-left-inset)
+  );
+}
+
+.footerSocialRight {
+  left: calc(
+    50% + var(--footer-center-gap-right) + var(--footer-social-right-inset)
+  );
+}
+
+.footerSocialButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 2px solid rgba($dark600, 0.5);
+  border-radius: 16px;
+  padding: 0.55rem;
+  color: $textSecondary;
+  background: rgba($dark950, 0.22);
+  line-height: 1;
+  cursor: pointer;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  &:hover {
+    color: $textStrong;
+    border-color: rgba($primary, 0.5);
+    background: rgba($primary, 0.1);
+  }
+}
+
+.footerSocialTextLink {
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid rgba($dark600, 0.55);
+  border-radius: 0;
+  padding: 0.1rem 0 0.2rem;
+  color: $textSecondary;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    color: $textStrong;
+    border-bottom-color: rgba($primary, 0.7);
+  }
+}
+
+.footerMessage {
+  position: absolute;
+  top: var(--footer-message-top);
+  left: 0;
+  right: calc(50% + var(--footer-center-gap-left));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--footer-message-stack-gap);
+  pointer-events: auto;
+}
+
+.footerNoteBody {
+  margin: 0;
+  color: $textSecondary;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
+.footerNoteCta {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid rgba($primary, 0.55);
+  border-radius: 0;
+  padding: 0.2rem 0 0.28rem;
+  color: $textAccent;
+  background: transparent;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    color: $textStrong;
+    border-bottom-color: rgba($primaryHover, 0.9);
+
+    .footerNoteCtaArrow {
+      transform: translateX(0.2rem);
+    }
+  }
+}
+
+.footerNoteCtaArrow {
+  display: inline-block;
+  color: $primary;
+  transition: transform 140ms ease;
+}
+
+.footerLicense {
+  position: absolute;
+  bottom: var(--footer-license-bottom);
+  left: 0;
+  pointer-events: auto;
+}
+
+.licenseButton {
+  margin: 0;
+  border: 1px solid rgba($dark600, 0.5);
+  border-radius: 3px;
+  padding: 0.48rem 0.85rem 0.36rem;
+  color: $textSecondary;
+  background: rgba($dark950, 0.22);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    color: $textStrong;
+    border-color: rgba($primary, 0.5);
+    background: rgba($primary, 0.1);
+  }
+}
+
+// 制作者とロゴが横に並びきらない幅で縦積み（SNS はそのまま）
+@container footer-content (max-width: 72rem) {
+  .footerBrand {
+    position: absolute;
+    top: 50%;
+    left: calc(
+      48% + var(--footer-center-gap-right) + var(--footer-primary-credit-left)
+    );
+    right: var(--footer-primary-logo-right);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--footer-brand-stack-gap);
+    box-sizing: border-box;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+
+  .footerLogo {
+    position: static;
+    top: auto;
+    right: auto;
+    left: auto;
+    width: auto;
+    height: auto;
+    max-width: min(100%, var(--footer-primary-logo-max-width));
+    max-height: 4.8rem;
+    object-position: left center;
+    transform: none;
+  }
+
+  .footerCredit {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.4rem;
+  }
+}

@@ -1,0 +1,189 @@
+@use "./theme" as *;
+
+.axisConsole {
+  display: grid;
+  justify-items: center;
+  padding: 1.2rem 0 0.5rem;
+}
+
+.axisBoard {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  height: 33rem;
+}
+
+.axisBoardInner {
+  position: absolute;
+  inset: 0;
+  // まとめて調整用オフセット
+  translate: var(--axis-board-offset-x, 1.2rem) var(--axis-board-offset-y, 1rem);
+}
+
+.directionalAxis {
+  position: absolute;
+  width: 0;
+  height: 0;
+  color: $textStrong;
+}
+
+.axisLabel,
+.axisSliderWrap,
+.axisStepButtons {
+  position: absolute;
+}
+
+.axisLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  translate: var(--label-anchor, -100% 50%);
+  transform-origin: 100% 50%;
+  font-size: 0.92rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.axisSliderWrap {
+  width: var(--axis-length, 10rem);
+  height: 1.6rem;
+  translate: var(--slider-anchor, -50% 50%);
+  rotate: var(--slider-angle, 0deg);
+  transform-origin: var(--slider-origin, center);
+  --slider-angle: 0deg;
+
+  .rangeSliderWrap,
+  .rangeSlider {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.axisStepButtons {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(2, 2.75rem);
+  gap: 0.95rem;
+}
+
+.yAxisControl {
+  left: 16%;
+  bottom: 33%;
+
+  .axisLabel {
+    left: -2.6rem;
+    bottom: 18rem;
+  }
+
+  .axisSliderWrap {
+    left: 0;
+    bottom: 0;
+    --axis-length: 20rem;
+    --slider-anchor: 0 50%;
+    --slider-origin: 0 50%;
+    --slider-angle: -90deg;
+  }
+
+  .axisStepButtons {
+    left: -5rem;
+    bottom: 1.4rem;
+    grid-template-columns: 2.75rem;
+    grid-template-rows: repeat(2, 2.55rem);
+  }
+
+  .stepButtonPlus svg {
+    transform: rotate(0deg);
+  }
+
+  .stepButtonMinus svg {
+    transform: rotate(180deg);
+  }
+}
+
+.xAxisControl {
+  left: 26%;
+  bottom: 24%;
+
+  .axisLabel {
+    left: 20rem;
+    bottom: -3rem;
+  }
+
+  .axisSliderWrap {
+    left: 0;
+    bottom: 0;
+    --axis-length: 20rem;
+    --slider-anchor: 0 50%;
+    --slider-angle: 0deg;
+  }
+
+  .axisStepButtons {
+    left: 0;
+    bottom: -4.2rem;
+  }
+
+  .stepButtonPlus svg {
+    transform: rotate(90deg);
+  }
+
+  .stepButtonMinus svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.zAxisControl {
+  left: 41%;
+  bottom: 62%;
+
+  .axisLabel {
+    left: 18rem;
+    bottom: 2.1rem;
+  }
+
+  .axisSliderWrap {
+    left: 5.3rem;
+    bottom: 0;
+    --axis-length: 16rem;
+    --slider-anchor: -50% 50%;
+    --slider-angle: -48deg;
+  }
+
+  .axisStepButtons {
+    left: 2.8rem;
+    bottom: -6rem;
+    transform: rotate(-48deg);
+    transform-origin: var(--slider-origin, center);
+  }
+
+  .stepButtonPlus svg {
+    transform: rotate(90deg);
+  }
+
+  .stepButtonMinus svg {
+    transform: rotate(-90deg);
+  }
+}
+
+.isRotationConsole {
+  .zAxisControl {
+    left: 44%;
+    bottom: 60%;
+
+    .axisLabel {
+      left: 12rem;
+      bottom: 7.8rem;
+    }
+
+    .axisSliderWrap {
+      left: 5.3rem;
+      bottom: 0;
+      --slider-angle: 48deg;
+    }
+
+    .axisStepButtons {
+      left: 8rem;
+      bottom: -3rem;
+      transform: rotate(48deg);
+      transform-origin: var(--slider-origin, center);
+    }
+  }
+}

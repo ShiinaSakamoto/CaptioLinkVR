@@ -1,0 +1,274 @@
+@use "../../../shared/styles/theme" as *;
+
+.subtitleSourceSection {
+  display: grid;
+  gap: 0.5rem;
+}
+
+// プリセット選択と情報パネルを1つの操作単位として見せる。
+.presetSourceCombo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.5rem 0.75rem 0.55rem;
+  border: 1px solid $borderDefault;
+  border-radius: 6px;
+  background: rgba($dark850, 0.55);
+  overflow: visible;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+
+  &:has(.presetInfoPanelMerged) {
+    border-color: rgba($primary, 0.38);
+    box-shadow: 0 0 0 1px rgba($primary, 0.12);
+    padding-bottom: 0;
+  }
+}
+
+// コンボ枠内。ラベルは1行目、ドロップダウンは2行目。右列は両行分の高さで下端揃え。
+.presetComboLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0.8rem;
+  row-gap: 0.2rem;
+  align-items: stretch;
+}
+
+.presetComboLabel {
+  grid-column: 1;
+  grid-row: 1;
+  color: $textSecondary;
+  font-size: 0.76rem;
+  line-height: 1.2;
+  padding-left: 0.25rem;
+}
+
+.presetComboPicker {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.presetComboSide {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  min-width: 0;
+}
+
+// 開閉ボタンを下に張り付け、クレジットはその直上を gap で離す。
+.presetComboSideContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  width: 100%;
+  min-width: 0;
+}
+
+// 説明を閉じているときのクレジット。リストと同じ typography を流用する。
+.presetComboSideCredits {
+  min-width: 0;
+  padding: 0 0.1rem;
+  text-align: center;
+
+  .presetPickerCardSubtitle {
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .presetPickerCreditSupervisor,
+  .presetPickerCreditEditor {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .presetPickerCreditDivider {
+    flex-shrink: 0;
+  }
+}
+
+// コンボ枠内の左列。ラベルとトリガーに左余白を確保し、枠線へ張り付かないようにする。
+.presetComboField {
+  gap: 0.2rem;
+  padding-left: 0.1rem;
+
+  > span {
+    padding-left: 0.15rem;
+  }
+}
+
+.presetCustomPanel {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-self: end;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding: 0 0.35rem 0.05rem 0;
+}
+
+.presetInfoStatusMerged {
+  display: grid;
+  align-content: center;
+  gap: 0.2rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0 0.1rem;
+  text-align: center;
+}
+
+// コンボ枠内の説明開閉は DividerLabelToggle（.dividerLabelToggle）を共用する。
+
+.fileLabel {
+  flex-shrink: 0;
+  border: 1px solid $borderStrong;
+  border-radius: 4px;
+  padding: 0.75rem 0.95rem;
+  color: $textInput;
+  font-size: 0.95rem;
+  cursor: pointer;
+  input {
+    display: none;
+  }
+
+  &:hover {
+    background: $dark825;
+  }
+
+  &:active {
+    background: $dark950;
+  }
+}
+
+.clearButton {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 4px;
+  color: $dark300;
+  background: $dark800;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  &:hover:not(.presetSourceLocked) {
+    background: $error;
+    color: #fff;
+  }
+}
+
+// 再生中ロック（プリセット・ファイル操作共通）
+.presetSourceLocked {
+  opacity: 0.68;
+  color: $textMuted;
+  cursor: not-allowed;
+
+  &:hover {
+    background: inherit;
+  }
+}
+
+.fileLabel.presetSourceLocked:hover {
+  background: transparent;
+}
+
+.clearButton.presetSourceLocked {
+  color: $dark600;
+  background: $dark850;
+}
+
+.presetListError {
+  margin: 0;
+  color: $errorText;
+  font-size: 0.78rem;
+}
+
+.presetInfoPanel {
+  display: grid;
+  gap: 0.55rem;
+  border-top: 1px solid rgba($dark700, 0.55);
+  padding: 0.85rem 1rem 0.95rem;
+}
+
+.presetInfoPanelMerged {
+  background: rgba($dark950, 0.28);
+  padding: 0.7rem 0.1rem 0.85rem;
+  margin: 0.35rem -0.1rem 0;
+  border-radius: 0 0 5px 5px;
+}
+
+.presetInfoLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.15rem;
+}
+
+.externalLinkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  border: 1px solid $primaryBorder;
+  border-radius: 4px;
+  color: $textAccent;
+  background: $primaryMuted;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  svg {
+    width: 0.92rem;
+    height: 0.92rem;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    color: $textStrong;
+    border-color: $primaryBorderStrong;
+    background: $primarySurfaceStrong;
+  }
+
+  &:active {
+    background: rgba($primary, 0.22);
+  }
+}
+
+.presetInfoRow {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  color: $textBody;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.presetInfoLabel {
+  color: $textLabel;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.presetInfoError {
+  margin: 0;
+  color: $errorText;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.presetInfoDetail {
+  margin: 0;
+  color: $errorTextDetail;
+  font-size: 0.78rem;
+  word-break: break-word;
+}

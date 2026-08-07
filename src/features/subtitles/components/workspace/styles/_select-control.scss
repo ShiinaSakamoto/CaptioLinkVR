@@ -1,0 +1,89 @@
+@use "./theme" as *;
+@use "../../../../../shared/styles/dropdown-trigger" as dropdown;
+
+// SelectControl。トリガー見た目の共通部は shared mixin を使う。
+
+.selectControl {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.selectTrigger {
+  @include dropdown.dropdown-trigger-base;
+  min-height: 2.3rem;
+  padding: 0.08rem 0.55rem 0 0.65rem;
+  font-size: inherit;
+  line-height: 1.2;
+
+  &[aria-expanded="true"]:not(:disabled) {
+    .selectTriggerChevron {
+      color: $primary;
+    }
+  }
+}
+
+.selectTriggerLabel {
+  @include dropdown.dropdown-trigger-label;
+}
+
+.selectTriggerChevron {
+  @include dropdown.dropdown-trigger-chevron;
+}
+
+.selectTriggerChevronOpen {
+  transform: rotate(180deg);
+}
+
+.selectTriggerPlaceholder {
+  color: $textFaint;
+}
+
+.selectList {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  max-height: 24rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0 0.35rem 0 0;
+  list-style: none;
+  border: 1px solid $borderDefault;
+  border-radius: 4px;
+  background: $dark950;
+  box-shadow: $shadowDialog;
+}
+
+.selectOption {
+  padding: 0.55rem 0.75rem;
+  color: $textStrong;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  border-bottom: 1px solid rgba($dark800, 0.45);
+
+  &:not(.selectOptionSelected) {
+    cursor: pointer;
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    background: $dark825;
+    color: $textEmphasis;
+  }
+}
+
+.selectOptionSelected {
+  cursor: default;
+  background: $primaryMuted;
+  color: $textStrong;
+
+  &:hover {
+    background: $primarySurface;
+    color: $textEmphasis;
+  }
+}

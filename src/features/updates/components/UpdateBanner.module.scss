@@ -1,0 +1,121 @@
+@use "../../../shared/styles/theme" as *;
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  border: 1px solid $primaryBorder;
+  border-radius: 6px;
+  background: $primaryMuted;
+  color: $textAccent;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+
+  button {
+    min-height: 1.9rem;
+    border: 0;
+    border-radius: 4px;
+    color: $onPrimary;
+    background: $primary;
+    padding: 0 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    &:hover:not(:disabled) {
+      background: $primaryHover;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: $overlayScrim;
+  padding: 1.25rem;
+}
+
+.dialog {
+  width: min(100%, 28rem);
+  border: 1px solid $borderAccent;
+  border-radius: 8px;
+  background: $surfacePanel;
+  box-shadow: $shadowDialog;
+  padding: 1rem 1.1rem;
+
+  h2 {
+    margin: 0 0 0.65rem;
+    color: $textStrong;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    color: $textSecondary;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+}
+
+.errorBox {
+  margin-top: 0.85rem;
+  border: 1px solid $errorBorder;
+  border-radius: 6px;
+  background: $errorBg;
+  padding: 0.65rem 0.75rem;
+}
+
+.errorTitle {
+  margin: 0 0 0.35rem !important;
+  color: $errorText !important;
+  font-size: 0.84rem !important;
+  font-weight: 700;
+}
+
+.errorDetail {
+  margin: 0 !important;
+  color: $errorTextSoft !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5 !important;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  margin-top: 1rem;
+
+  button {
+    min-height: 2.1rem;
+    border: 0;
+    border-radius: 4px;
+    padding: 0 0.85rem;
+    font-size: 0.82rem;
+    cursor: pointer;
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  button:first-child {
+    color: $textSecondary;
+    background: $surfaceControlHover;
+  }
+
+  button:last-child {
+    color: $onPrimary;
+    background: $primary;
+    font-weight: 700;
+  }
+}

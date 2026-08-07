@@ -1,0 +1,2 @@
+// 実体は shared。workspace 配下の @use "./theme" 互換のためフォワードする。
+@forward "../../../../../shared/styles/theme";

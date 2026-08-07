@@ -1,0 +1,68 @@
+@use "./theme" as *;
+
+.noticeOverlay {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: $overlayScrim;
+  padding: 1.25rem;
+}
+
+.noticeDialog {
+  display: grid;
+  width: min(100%, 58rem);
+  max-height: min(82vh, 48rem);
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid $borderAccentDialog;
+  border-radius: 8px;
+  background: $dark900;
+  box-shadow: $shadowDialog;
+
+  pre {
+    min-height: 0;
+    margin: 0;
+    overflow: auto;
+    color: $textEmphasis;
+    background: $dark950;
+    padding: 1rem 1.15rem;
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+}
+
+.noticeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba($dark800, 0.95);
+  padding: 0.85rem 1rem;
+
+  h2 {
+    margin: 0;
+    color: $textStrong;
+    font-size: 1rem;
+  }
+
+  button {
+    min-height: 2.1rem;
+    border: 0;
+    border-radius: 4px;
+    color: $dark300;
+    background: $dark800;
+    padding: 0 0.85rem;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+      background: $dark700;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@use "../../../shared/styles/theme" as *;
+
+// SubtitleSourceControls の2列レイアウト（workspace 側と同型）。
+.workspaceControlSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: end;
+  min-width: 0;
+}

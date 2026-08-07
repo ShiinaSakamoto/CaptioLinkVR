@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "CaptioLinkVR",
+  "version": "0.1.7",
+  "identifier": "dev.captiolinkvr.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "CaptioLinkVR - 字幕表示ツール",
+        "width": 1020,
+        "height": 860,
+        "minWidth": 920,
+        "minHeight": 640,
+        "devtools": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [],
+    "resources": {
+      "../THIRD_PARTY_NOTICES.md": "_up_/THIRD_PARTY_NOTICES.md",
+      "../licenses/": "licenses/",
+      "../vendor/ovr_overlay_sys/openvr/bin/win64/openvr_api.dll": "openvr_api.dll",
+      "../captions/": "captions/",
+      "../fonts/": "fonts/"
+    },
+    "icon": [
+      "icons/icon.ico"
+    ]
+  }
+}

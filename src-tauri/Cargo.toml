@@ -1,0 +1,44 @@
+[package]
+name = "captiolink-vr"
+version = "0.1.7"
+description = "CaptioLinkVR - VR subtitle display tool with SteamVR overlay"
+authors = ["Shiina Sakamoto"]
+license = "MIT"
+edition = "2021"
+rust-version = "1.77"
+default-run = "captiolink-vr"
+
+[lib]
+name = "captiolink_vr_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "portable-launcher"
+path = "src/bin/portable_launcher.rs"
+
+[[bin]]
+name = "captiolink-vr-apply"
+path = "src/bin/captiolink_vr_apply.rs"
+
+[build-dependencies]
+embed-manifest = "=1.4.0"
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.150"
+tauri-build = { version = "=2.6.2", features = [] }
+
+[features]
+default = ["steamvr-overlay"]
+steamvr-overlay = ["dep:ovr_overlay"]
+
+[dependencies]
+ovr_overlay = { version = "=0.0.0", optional = true }
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.150"
+sha2 = "=0.10.9"
+tauri = { version = "=2.11.2", features = ["devtools"] }
+ureq = { version = "=2.12.1", features = ["json"] }
+zip = { version = "=2.4.2", default-features = false, features = ["deflate"] }
+
+[patch.crates-io]
+ovr_overlay = { path = "../vendor/ovr_overlay" }
+ovr_overlay_sys = { path = "../vendor/ovr_overlay_sys" }

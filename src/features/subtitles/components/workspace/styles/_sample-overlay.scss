@@ -1,0 +1,198 @@
+@use "./theme" as *;
+
+// レイアウト高さを持たない。container 基準の sticky 範囲だけを作る。
+.sampleOverlayRail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: var(--sample-overlay-bottom-gap, 1.5rem);
+  z-index: 40;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+}
+
+// 開閉で変わるのは幅だけ。高さ・sticky 位置は常に同じ。
+.sampleOverlayFab {
+  --sample-overlay-stick-inset: 5.5rem;
+  // アイコン時の幅 = container 左 padding（.workspace の --workspace-container-pad-inline）
+  --sample-fab-collapsed-width: var(--workspace-container-pad-inline, 2.4rem);
+  --sample-fab-expanded-width: 10.4rem;
+  --sample-fab-height: 3.4rem;
+  --sample-fab-icon: 1.35rem;
+  // 収納時もアイコンが中央になるよう左右パディングを算出（開閉で左は変えない）
+  --sample-fab-pad-left: calc((var(--sample-fab-collapsed-width) - var(--sample-fab-icon)) / 2);
+  --sample-fab-pad-right-expanded: 0.95rem;
+  --sample-fab-motion-ms: 220ms;
+  --sample-fab-ease: cubic-bezier(0.33, 0, 0.2, 1);
+
+  position: sticky;
+  top: calc(100dvh - var(--sample-overlay-stick-inset));
+  left: 0;
+  width: fit-content;
+  height: var(--sample-fab-height);
+  margin: 0;
+  pointer-events: none;
+}
+
+.sampleOverlayHint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 0.4rem);
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  color: #f6dfa2;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  transition:
+    opacity 140ms var(--sample-fab-ease),
+    visibility 140ms var(--sample-fab-ease);
+}
+
+.sampleOverlayButton {
+  pointer-events: auto;
+  display: flex;
+  box-sizing: border-box;
+  width: var(--sample-fab-collapsed-width);
+  height: var(--sample-fab-height);
+  min-height: var(--sample-fab-height);
+  align-items: center;
+  // 常に左基準。収納時も左パディングでアイコン位置を揃え、開閉でアイコンが跳ねないようにする。
+  justify-content: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0 var(--sample-fab-pad-left) 0 var(--sample-fab-pad-left);
+  overflow: hidden;
+  border: 1px solid rgba($primary, 0.45);
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+  color: $onPrimary;
+  background: $primary;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: left;
+  box-shadow: 0 0.3rem 0.9rem rgba(0, 0, 0, 0.26);
+  // width のみ。auto/min-width を混ぜると補間できずポヨンと跳ねる。
+  transition:
+    width var(--sample-fab-motion-ms) var(--sample-fab-ease),
+    padding-right var(--sample-fab-motion-ms) var(--sample-fab-ease),
+    background-color 120ms ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background: $primaryHover;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: $dark600;
+    border-color: rgba($dark700, 0.5);
+    background: $dark850;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($primaryHover, 0.9);
+    outline-offset: 2px;
+  }
+}
+
+.sampleOverlayIcon {
+  display: grid;
+  flex: 0 0 auto;
+  width: var(--sample-fab-icon);
+  height: var(--sample-fab-icon);
+  place-items: center;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.sampleOverlayLabel {
+  display: block;
+  flex: 0 0 auto;
+  margin: 0;
+  opacity: 0;
+  white-space: nowrap;
+  line-height: 1.2;
+  // 幅はボタンの overflow で見せる。max-width アニメは不要。
+  transition: opacity 140ms var(--sample-fab-ease);
+}
+
+@keyframes sampleOverlayExpandWidth {
+  from {
+    width: var(--sample-fab-collapsed-width);
+    padding-right: var(--sample-fab-pad-left);
+  }
+
+  to {
+    width: var(--sample-fab-expanded-width);
+    padding-right: var(--sample-fab-pad-right-expanded);
+  }
+}
+
+@keyframes sampleOverlayExpandLabel {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// 起動イントロ: transition に頼らず from→to で必ず伸ばす（同じイーズ）
+.sampleOverlayFab.isIntroExpand {
+  .sampleOverlayHint {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sampleOverlayButton {
+    transition: background-color 120ms ease;
+    animation: sampleOverlayExpandWidth var(--sample-fab-motion-ms) var(--sample-fab-ease) forwards;
+  }
+
+  .sampleOverlayLabel {
+    transition: none;
+    animation: sampleOverlayExpandLabel 140ms var(--sample-fab-ease) forwards;
+  }
+}
+
+// 起動直後の保持 / ホバー / フォーカス：同じ展開。横に伸びるだけ。
+// イントロ再生中はキーフレーム側に任せる（:not で二重指定を避ける）
+.sampleOverlayFab.isExpanded:not(.isIntroExpand),
+.sampleOverlayFab:hover,
+.sampleOverlayFab:focus-within {
+  .sampleOverlayHint {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sampleOverlayButton {
+    width: var(--sample-fab-expanded-width);
+    padding-right: var(--sample-fab-pad-right-expanded);
+  }
+
+  .sampleOverlayLabel {
+    opacity: 1;
+  }
+}

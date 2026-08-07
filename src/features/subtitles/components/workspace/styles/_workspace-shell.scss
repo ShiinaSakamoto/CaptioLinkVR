@@ -1,0 +1,85 @@
+@use "./theme" as *;
+
+.workspace {
+  --workspace-inline-pad: 1.6rem;
+  --workspace-block-pad-top: 1.6rem;
+  // container / footer 共通の最大幅と内余白
+  --workspace-container-max: 82rem;
+  --workspace-container-pad-inline: 2.4rem;
+  // フッタ上下余白（塗り伸ばしは下余白と揃えてはみ出しを防ぐ）
+  --footer-pad-top: 4rem;
+  --footer-pad-bottom: 1.6rem;
+  --footer-stage-height: 14rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--workspace-block-pad-top) var(--workspace-inline-pad) 0;
+  // overflow-x: hidden は使わない。
+  // CSS仕様で overflow-y が auto に変わり、body と二重スクロールになるため。
+  background: $surfaceApp;
+  color: $textDefault;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  width: min(100%, var(--workspace-container-max));
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+  padding: 1.2rem var(--workspace-container-pad-inline) 2rem;
+  overflow: visible;
+  border: 1px solid $borderAccent;
+  border-radius: 8px;
+  background: $surfacePanel;
+  box-shadow: $shadowPanel;
+  --sample-overlay-bottom-gap: 1.5rem;
+
+  // // 字幕プレビュー表示時だけ main との間を空ける
+  // &:has(.hasSubtitlePreview) {
+  //   gap: 4rem;
+  // }
+}
+
+.workspaceTop,
+.workspaceMain {
+  min-width: 0;
+}
+
+.workspaceTop {
+  display: grid;
+  gap: 1.6rem;
+  padding-bottom: 1.6rem;
+
+  &.hasSubtitlePreview {
+    padding-bottom: 2rem;
+  }
+}
+
+.workspaceMain {
+  display: grid;
+  gap: 1.1rem;
+  flex: 1;
+  min-height: 0;
+}
+
+// container の外。背景は全幅、中身の幅上限は footer 側で container に合わせる。
+.workspaceFooter {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  margin-inline: calc(-1 * var(--workspace-inline-pad));
+  padding-block: var(--footer-pad-top) var(--footer-pad-bottom);
+  // 塗り伸ばしを下余白内に収める（親へはみ出さない）
+  --footer-fill-extend-bottom: var(--footer-pad-bottom);
+  // 横はみ出しでページ全体が横スクロールしないようにする
+  overflow-x: clip;
+}

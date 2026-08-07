@@ -1,0 +1,46 @@
+@use "./theme" as *;
+
+.settingsPanel {
+  display: grid;
+  gap: 0.8rem;
+  min-height: 0;
+  padding-top: 1.6rem;
+  padding-right: 0;
+}
+
+.controlSurface {
+  display: grid;
+  gap: 1.75rem;
+  padding: 0.15rem 0 0.15rem;
+}
+
+.controlPrimary {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.controlAxisBlock {
+  display: grid;
+  gap: 0;
+  margin-top: 1rem;
+  overflow: hidden;
+  border: 1px solid $borderSubtle;
+  border-radius: 10px;
+  background: $surfaceWell;
+}
+
+.controlAxisBody {
+  padding: 1rem 0.9rem 1.15rem;
+  background: $surfaceElevated;
+}
+
+.advancedSettings {
+  display: grid;
+  gap: 1.55rem;
+}
+
+.advancedSettingsBody {
+  display: grid;
+  gap: 1.7rem;
+  padding: 0.15rem 0 0.25rem;
+}

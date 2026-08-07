@@ -1,0 +1,178 @@
+@use "./theme" as *;
+
+// 塗りなし。中央幾何＋左右線。workspace 直下で全幅。
+.footer {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  // 下への塗り伸ばしは親の padding 内へ出すだけなので、ここは見える必要あり
+  // clip は overflow-y を auto に変えない（横はみ出しだけ抑える）
+  overflow-x: clip;
+  overflow-y: visible;
+  color: $textDefault;
+}
+
+.footerStage {
+  // 中央起点の共通ものさし（背景幾何と同じ中央）
+  --footer-stage-height: 14rem;
+  --footer-motif-width: calc(var(--footer-stage-height) * 317 / 359);
+  --footer-motif-half: calc(var(--footer-motif-width) / 2);
+  // フッター全体（中央幾何＋コンテンツ）の水平中心。正の値で右へ。
+  --footer-center-offset-x: 1.5rem;
+  // 中央幾何の端からコンテンツまでの隙間（中央からの距離の調整はここ）
+  --footer-content-inset: 4.5rem;
+  // 線より下の塗り色（ここを変える）
+  --footer-fill-bg: #{$surfacePanel};
+  // ラインより上のグラデ終端色（Fill に少し寄せる／明るすぎない）
+  --footer-fade-end: color-mix(in srgb, #{$surfacePanel} 30%, #{$surfaceApp});
+  // 右ライン高さ＝上側領域の下端目安
+  --footer-fade-stop: calc(320.5 / 359 * 100%);
+
+  position: relative;
+  flex: 1 1 auto;
+  min-height: var(--footer-stage-height);
+  overflow: visible;
+  // ラインより上だけ見える（下は .footerFill が不透明で覆う）
+  background: linear-gradient(
+    to bottom,
+    #{$surfaceApp} 0%,
+    var(--footer-fade-end) var(--footer-fade-stop)
+  );
+}
+
+// 境界線より下を塗る（左右は水平線の高さに合わせる）
+.footerFill {
+  --footer-rule-y-left: calc(40.5 / 359 * 100%);
+  --footer-rule-y-right: calc(320.5 / 359 * 100%);
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  // 左翼幅を明示して中央モチーフを 50% + offset に置く（左右 1fr 対称だと中心固定になる）
+  grid-template-columns:
+    minmax(0, calc(50% - var(--footer-motif-half) + var(--footer-center-offset-x)))
+    auto
+    minmax(0, 1fr);
+  align-items: stretch;
+  color: var(--footer-fill-bg);
+  pointer-events: none;
+}
+
+// 幾何の下端から下方向だけ塗りを伸ばす（形状は崩さない）
+.footerFillTail {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  // 親 .workspaceFooter の --footer-fill-extend-bottom（＝下padding）内に収める
+  height: var(--footer-fill-extend-bottom, 0px);
+  z-index: 0;
+  background: var(--footer-fill-bg);
+  pointer-events: none;
+}
+
+.footerFillWing {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: var(--footer-fill-top, 0);
+    background: currentColor;
+  }
+}
+
+.footerFillWingLeft {
+  --footer-fill-top: var(--footer-rule-y-left);
+}
+
+.footerFillWingRight {
+  --footer-fill-top: var(--footer-rule-y-right);
+}
+
+.footerFillCenter {
+  box-sizing: border-box;
+  height: 100%;
+  width: var(--footer-motif-width);
+  max-width: 100%;
+  aspect-ratio: 317 / 359;
+  justify-self: center;
+
+  :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+// 左右は水平線だけ伸ばし、中央幾何は縦横比を保つ。
+// 線幅はすべて 2px に統一（SVG は non-scaling-stroke、左右は CSS）。
+.footerRule {
+  --footer-rule-stroke: 2px;
+  --footer-rule-y-left: calc(40.5 / 359 * 100%);
+  --footer-rule-y-right: calc(320.5 / 359 * 100%);
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns:
+    minmax(0, calc(50% - var(--footer-motif-half) + var(--footer-center-offset-x)))
+    auto
+    minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden;
+  // 線の色を透明にする
+  color: rgba($dark600, 0);
+  pointer-events: none;
+}
+
+.footerRuleWing {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--footer-rule-stroke);
+    background: currentColor;
+    transform: translateY(-50%);
+  }
+}
+
+.footerRuleWingLeft::after {
+  top: var(--footer-rule-y-left);
+}
+
+.footerRuleWingRight::after {
+  top: var(--footer-rule-y-right);
+}
+
+.footerRuleCenter {
+  box-sizing: border-box;
+  height: 100%;
+  width: var(--footer-motif-width);
+  max-width: 100%;
+  aspect-ratio: 317 / 359;
+  justify-self: center;
+
+  :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}

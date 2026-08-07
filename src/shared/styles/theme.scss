@@ -1,0 +1,78 @@
+// CaptioLinkVR の色設計。
+// シードカラー #9ca6e6（hue 約 234°）を軸に、低彩度のサーフェスとアクセントを同じ色相で揃える。
+// Material Theme Builder の自動生成ではないが、同じ考え方（seed → surface / on-surface / primary）で運用する。
+
+// --- Primary ---
+$primary: #9ca6e6;
+$primaryHover: #b7bff0;
+$primaryDeep: #7e89d4;
+$onPrimary: #11131b;
+
+// --- Dark surfaces（hue 234°・低彩度）---
+$dark950: #15161c;
+$dark900: #1c1e27;
+$dark875: #222531;
+$dark850: #292c38;
+$dark825: #303442;
+$dark800: #383c4b;
+$dark700: #555b70;
+$dark600: #747b92;
+$dark300: #d9deef;
+// スタイル機能リストなど、パネルより一段深い面
+$dark980: #101118;
+$dark990: #0a0b10;
+
+// --- Text on dark surfaces ---
+$textStrong: #f4f6ff;
+$textEmphasis: #e8ecff;
+$textInput: #eef1ff;
+$textDefault: $dark300;
+$textAccent: #dce2f8;
+$textSecondary: #b9bfd4;
+$textTertiary: #aeb5ce;
+$textMuted: #8b92a8;
+$textFaint: #6d7389;
+$textLabel: #8f97b0;
+$textBody: #d5daf0;
+$textStatus: #9aa8c4;
+$textStatusOffline: #7d8399;
+$textStatusBorder: #8a90a8;
+
+// --- Semantic surfaces ---
+$surfaceApp: $dark950;
+$surfacePanel: $dark900;
+$surfaceInset: $dark950;
+$surfaceControl: $dark850;
+$surfaceControlHover: $dark825;
+$surfaceControlActive: $dark800;
+$surfaceElevated: $dark875;
+$surfaceWell: $dark980;
+$surfaceWellDeep: $dark990;
+
+// --- Borders & primary tints ---
+$borderDefault: rgba($dark600, 0.65);
+$borderStrong: rgba($dark600, 0.9);
+$borderSubtle: rgba($dark800, 0.8);
+$borderPanel: rgba($dark700, 0.95);
+$borderAccent: rgba($primary, 0.18);
+$borderAccentMedium: rgba($primary, 0.22);
+$borderAccentStrong: rgba($primary, 0.35);
+$borderAccentEmphasis: rgba($primary, 0.45);
+$primarySubtle: rgba($primary, 0.06);
+$primaryMuted: rgba($primary, 0.08);
+$primarySurface: rgba($primary, 0.12);
+$primarySurfaceStrong: rgba($primary, 0.16);
+$primaryBorder: rgba($primary, 0.28);
+$primaryBorderStrong: rgba($primary, 0.5);
+$borderAccentDialog: rgba($primary, 0.24);
+$overlayScrim: rgba(0, 0, 0, 0.68);
+$shadowPanel: 0 1.2rem 4rem rgba(0, 0, 0, 0.26);
+$shadowDialog: 0 1rem 3rem rgba(0, 0, 0, 0.38);
+
+// --- Feedback ---
+$error: #c86f78;
+$errorText: #ffb4b4;
+$errorTextSoft: #ffd0d0;
+$errorTextDetail: #d9a0a0;
+$errorBg: rgba($error, 0.08);
+$errorBorder: rgba($error, 0.35);

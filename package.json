@@ -1,0 +1,32 @@
+{
+  "name": "captiolink-vr",
+  "version": "0.1.7",
+  "private": true,
+  "license": "MIT",
+  "author": "Shiina Sakamoto",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/generate-caption-catalog.mjs && vite --host 127.0.0.1",
+    "build": "node scripts/generate-caption-catalog.mjs && vite build",
+    "sync-version": "node scripts/sync-version.mjs",
+    "tauri": "node scripts/tauri-wrapper.mjs",
+    "tauri:dev": "node scripts/tauri-wrapper.mjs dev",
+    "tauri:build": "node scripts/tauri-wrapper.mjs build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "2.11.0",
+    "jotai": "2.20.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.2",
+    "@vitejs/plugin-react": "6.0.1",
+    "jsdom": "29.1.1",
+    "sass": "1.100.0",
+    "vite": "8.0.16",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,46 @@
+ring
+
+License: Apache-2.0 AND ISC (both apply).
+
+The following files are copied from the upstream ring repository.
+
+----- LICENSE (upstream index) -----
+
+*ring* uses an "ISC" license, like BoringSSL used to use, for new code
+files. See LICENSE-other-bits for the text of that license.
+
+See LICENSE-BoringSSL for code that was sourced from BoringSSL under the
+Apache 2.0 license. Some code that was sourced from BoringSSL under the ISC
+license. In each case, the license info is at the top of the file.
+
+See src/polyfill/once_cell/LICENSE-APACHE and src/polyfill/once_cell/LICENSE-MIT
+for the license to code that was sourced from the once_cell project.
+
+----- LICENSE-other-bits (ISC-style text for ring's own new code) -----
+
+Copyright 2015-2025 Brian Smith.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+----- Apache-2.0 portions -----
+
+BoringSSL-derived code is under the Apache License 2.0.
+The full Apache License 2.0 text is included in THIRD_PARTY_NOTICES.md
+(License Texts / Apache License 2.0).
+
+Upstream:
+
+  https://github.com/briansmith/ring
+  https://github.com/briansmith/ring/blob/main/LICENSE
+  https://github.com/briansmith/ring/blob/main/LICENSE-other-bits
+  https://github.com/briansmith/ring/blob/main/LICENSE-BoringSSL

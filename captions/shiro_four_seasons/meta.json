@@ -1,0 +1,24 @@
+{
+  "displayName": "白無垢世界、剣舞四季 SHIRO:FOUR SEASONS",
+  "worldName": "白無垢世界、剣舞四季_SHIRO˸FOUR_SEASONS",
+  "worldUrl": "https://vrchat.com/home/world/wrld_1f69dd56-04c8-4e9d-8227-fc8c7c4d4401/info",
+  "credits": {
+    "supervisor": [
+      "yoikami (カソウ舞踏団)"
+    ],
+    "editor": [
+      "Shiina Sakamoto"
+    ]
+  },
+  "usage": {
+    "summary": "進んだ先にある刀をUseすると、公演が始まります。",
+    "startTiming": "カウントダウンの「00:00 スタート！」と同時に刀をUseしてください。"
+  },
+  "recommendedPlayback": {
+    "mode": "countdown"
+  },
+  "verifiedAt": "2026-07-06",
+  "links": {
+    "demoVideo": "https://github.com/user-attachments/assets/5fd2e258-0dfd-4671-8a1f-d327e1cc5b40"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "displayName": "よるとうげ -Yorutouge-",
+  "worldName": "よるとうげ -Yorutouge-",
+  "worldUrl": "https://vrchat.com/home/world/wrld_8bbb6f61-61cf-4243-a58e-2000f2740e2b/info",
+  "credits": {
+    "supervisor": [
+      "Kikuo"
+    ],
+    "editor": [
+      "Shiina Sakamoto"
+    ]
+  },
+  "usage": {
+    "summary": "進んだ先にある白い光の玉をUseすると、演出が始まります。",
+    "startTiming": "カウントダウンの「00:00 スタート！」と同時に白い光の玉をUseしてください。"
+  },
+  "recommendedPlayback": {
+    "mode": "countdown"
+  },
+  "verifiedAt": "2026-07-13",
+  "links": {
+  }
+}

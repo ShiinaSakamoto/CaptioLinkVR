@@ -1,0 +1,55 @@
+@use "../styles/theme" as *;
+
+// SelectControl / CaptionPresetPicker のトリガー見た目を寄せるための共通 mixin。
+@mixin dropdown-trigger-base {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid $borderDefault;
+  border-radius: 4px;
+  color: $textStrong;
+  background: $dark950;
+  text-align: left;
+  cursor: pointer;
+  color-scheme: dark;
+
+  &:hover:not(:disabled) {
+    border-color: rgba($dark600, 0.85);
+    background: $dark825;
+  }
+
+  &[aria-expanded="true"]:not(:disabled) {
+    border-color: rgba($primary, 0.35);
+    background: $dark825;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+@mixin dropdown-trigger-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin dropdown-trigger-chevron {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: $dark300;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
