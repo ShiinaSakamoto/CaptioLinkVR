@@ -10,6 +10,8 @@ $onPrimary: #11131b;
 // --- Dark surfaces（奥 → 手前）---
 $dark990: #08090d;
 $dark980: #0c0d12;
+$dark970: #0e0f15;
+$dark960: #0f1118;
 $dark950: #11131a;
 $dark900: #161922;
 $dark875: #1a1d28;
@@ -44,7 +46,7 @@ $statusOfflineDot: #fbbf24;
 $statusConnectedDot: $primary;
 
 // --- Semantic surfaces ---
-$surfaceApp: $dark980;
+$surfaceApp: $dark970;
 $surfacePanel: #12151d;
 $surfaceInset: $dark950;
 $surfaceControl: $dark850;
