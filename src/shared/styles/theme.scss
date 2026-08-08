@@ -13,6 +13,7 @@ $dark980: #0c0d12;
 $dark970: #0e0f15;
 $dark960: #0f1118;
 $dark950: #11131a;
+$dark925: #13161e;
 $dark900: #161922;
 $dark875: #1a1d28;
 $dark850: #1e2130;
@@ -20,6 +21,8 @@ $dark825: #252a3a;
 $dark800: #30354a;
 $dark700: #555b70;
 $dark600: #747b92;
+$dark500: #9ea3b3;
+$dark400: #c9ccd5;
 $dark300: #f3f4f6;
 
 // --- Text ---
@@ -47,12 +50,12 @@ $statusConnectedDot: $primary;
 
 // --- Semantic surfaces ---
 $surfaceApp: $dark970;
-$surfacePanel: #12151d;
+$surfacePanel: $dark900;
 $surfaceInset: $dark950;
 $surfaceControl: $dark850;
 $surfaceControlHover: $dark825;
 $surfaceControlActive: $dark800;
-$surfaceElevated: $dark875;
+$surfaceElevated: $dark925;
 $surfaceWell: $surfaceApp;
 $surfaceWellDeep: $dark990;
 

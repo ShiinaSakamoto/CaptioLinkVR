@@ -15,7 +15,7 @@
   padding: 0.5rem var(--preset-combo-pad-inline) 0.55rem;
   border: 1px solid $borderDefault;
   border-radius: 6px;
-  background: $dark875;
+  background: $dark950;
   overflow: visible;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 
@@ -196,7 +196,7 @@
 }
 
 .presetInfoPanelMerged {
-  border-top: 1px solid $borderDefault;
+  border-top: 1px dashed $dark800;
   margin: 0.5rem calc(-1 * var(--preset-combo-pad-inline)) 0;
   padding: 0.75rem var(--preset-combo-pad-inline) 0.85rem;
   border-radius: 0 0 5px 5px;

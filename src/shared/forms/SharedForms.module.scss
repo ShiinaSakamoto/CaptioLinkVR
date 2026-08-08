@@ -15,9 +15,15 @@
   line-height: 1.2;
   cursor: pointer;
 
-  &:hover .dividerLabelText,
-  &:active .dividerLabelText {
-    color: $textStrong;
+  &:hover,
+  &:active {
+    .dividerLabelText {
+      color: $textStrong;
+    }
+
+    .dividerLabelLine {
+      border-top-color: rgba($textStrong, 0.45);
+    }
   }
 }
 
@@ -26,6 +32,7 @@
   min-width: 0;
   height: 0;
   border-top: 1px solid rgba($dark700, 0.6);
+  transition: border-top-color 0.12s ease;
 }
 
 .dividerLabelText {
@@ -33,6 +40,7 @@
   color: $textSecondary;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  transition: color 0.12s ease;
 }
 
 .fieldRow {

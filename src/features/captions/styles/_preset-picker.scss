@@ -39,13 +39,6 @@
   }
 }
 
-.presetPickerMerged {
-  .presetPickerTrigger {
-    border: 0;
-    border-radius: 0;
-  }
-}
-
 .presetPickerTriggerLabel {
   @include dropdown.dropdown-trigger-label;
 }
@@ -172,7 +165,7 @@
 }
 
 .presetPickerCreditSupervisor {
-  color: $textSecondary;
+  color: $dark400;
 }
 
 .presetPickerCreditEditor {
