@@ -1,5 +1,5 @@
 // CaptioLinkVR の色設計。
-// シードカラー #9ca6e6（hue 約 234°）を軸に、奥ほど暗く手前ほど明るいサーフェス階層で視認性を確保する。
+// シード #9ca6e6 を軸に、奥ほど暗く手前ほど明るいサーフェス階層で視認性を確保する。
 
 // --- Primary ---
 $primary: #9ca6e6;
@@ -7,7 +7,7 @@ $primaryHover: #b7bff0;
 $primaryDeep: #7e89d4;
 $onPrimary: #11131b;
 
-// --- Dark surfaces（階層: 奥→手前。明るい面を抑え、文字・Primary との差を確保）---
+// --- Dark surfaces（奥 → 手前）---
 $dark990: #08090d;
 $dark980: #0c0d12;
 $dark950: #11131a;
@@ -20,23 +20,24 @@ $dark700: #555b70;
 $dark600: #747b92;
 $dark300: #f3f4f6;
 
-// --- Text on dark surfaces ---
-$textStrong: #f3f4f6;
+// --- Text ---
+$textStrong: $dark300;
 $textEmphasis: #e8ecff;
 $textInput: #eef1ff;
 $textDefault: $dark300;
 $textAccent: #dce2f8;
+$textBody: #e5e7eb;
 $textSecondary: #9ca3af;
 $textTertiary: #aeb5ce;
-$textMuted: #9ca3af;
-$textFaint: #9ca3af;
-$textLabel: #9ca3af;
-$textBody: #e5e7eb;
+// 補助テキストは secondary に寄せる（用途別エイリアス）
+$textMuted: $textSecondary;
+$textFaint: $textSecondary;
+$textLabel: $textSecondary;
 $textStatus: #c5ccef;
 $textStatusOffline: #fde68a;
-$textStatusBorder: #9ca3af;
+$textStatusBorder: $textSecondary;
 
-// --- Status badge（SteamVR 未接続など）---
+// --- Status badge ---
 $statusOfflineBg: rgba(180, 120, 40, 0.28);
 $statusOfflineBorder: rgba(251, 191, 36, 0.45);
 $statusOfflineDot: #fbbf24;
@@ -50,14 +51,13 @@ $surfaceControl: $dark850;
 $surfaceControlHover: $dark825;
 $surfaceControlActive: $dark800;
 $surfaceElevated: $dark875;
-$surfaceWell: $dark980;
+$surfaceWell: $surfaceApp;
 $surfaceWellDeep: $dark990;
 
 // --- Borders & primary tints ---
-// 枠線は面より一段明るく、選択UIの輪郭をはっきりさせる
 $borderDefault: #454c66;
 $borderStrong: rgba($dark600, 0.95);
-$borderSubtle: rgba(#454c66, 0.95);
+$borderSubtle: $borderDefault;
 $borderPanel: rgba($dark700, 0.95);
 $borderAccent: rgba($primary, 0.22);
 $borderAccentMedium: rgba($primary, 0.28);

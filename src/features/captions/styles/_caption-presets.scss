@@ -7,10 +7,12 @@
 
 // プリセット選択と情報パネルを1つの操作単位として見せる。
 .presetSourceCombo {
+  --preset-combo-pad-inline: 0.75rem;
+
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 0.5rem 0.75rem 0.55rem;
+  padding: 0.5rem var(--preset-combo-pad-inline) 0.55rem;
   border: 1px solid $borderDefault;
   border-radius: 6px;
   background: $dark875;
@@ -194,10 +196,9 @@
 }
 
 .presetInfoPanelMerged {
-  // コンボ横パディングを打ち消して枠線を端まで伸ばし、上に余白を確保する
   border-top: 1px solid $borderDefault;
-  margin: 0.5rem -0.75rem 0;
-  padding: 0.75rem 0.75rem 0.85rem;
+  margin: 0.5rem calc(-1 * var(--preset-combo-pad-inline)) 0;
+  padding: 0.75rem var(--preset-combo-pad-inline) 0.85rem;
   border-radius: 0 0 5px 5px;
 }
 

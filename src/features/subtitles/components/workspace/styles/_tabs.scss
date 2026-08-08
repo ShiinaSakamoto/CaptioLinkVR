@@ -1,6 +1,5 @@
 @use "./theme" as *;
 
-// 親タブ + 設定本体を一つの面としてつなぐ
 .settingsShell {
   display: grid;
   gap: 0;
@@ -17,7 +16,39 @@
   background: $surfaceElevated;
 }
 
-// 親階層: 設定シェル上端に張り付くタブバー（本体と同色の選択面で一体感）
+@mixin settings-tab-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  color: $textBody;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+
+  &:not(.isSelected) {
+    cursor: pointer;
+  }
+
+  &:hover:not(.isSelected) {
+    color: $textStrong;
+    background: rgba($dark825, 0.55);
+  }
+}
+
+@mixin settings-tab-selected {
+  cursor: default;
+  color: $textStrong;
+  background: $surfaceElevated;
+  border-bottom-color: $primary;
+  font-weight: 700;
+}
+
 .pageTabs {
   display: flex;
   width: 100%;
@@ -29,37 +60,15 @@
   border: 0;
   border-bottom: 1px solid $borderDefault;
   padding: 0;
-  // 未選択タブ帯は本体より一段深い面
   background: $surfaceWellDeep;
 
   button {
-    display: flex;
+    @include settings-tab-button;
     min-width: 0;
     min-height: 2.75rem;
     flex: 1 1 0;
-    align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    border: 0;
-    border-bottom: 3px solid transparent;
-    border-radius: 0;
     padding: 0.1rem 1.1rem 0;
-    color: $textBody;
-    background: transparent;
-    font-size: 0.95rem;
-    font-weight: 400;
-    line-height: 1.2;
-    white-space: nowrap;
-    transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
-
-    &:not(.isSelected) {
-      cursor: pointer;
-    }
-
-    &:hover:not(.isSelected) {
-      color: $textStrong;
-      background: rgba($dark825, 0.55);
-    }
 
     span {
       min-width: 1.55rem;
@@ -74,11 +83,7 @@
   }
 
   .isSelected {
-    cursor: default;
-    color: $textStrong;
-    background: $surfaceElevated;
-    border-bottom-color: $primary;
-    font-weight: 700;
+    @include settings-tab-selected;
     box-shadow: none;
 
     span {
@@ -89,7 +94,6 @@
   }
 }
 
-// 子階層: 軸操作カードのヘッダーとして全幅セグメント（押しやすく・今のモードが分かる）
 .innerTabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -102,38 +106,13 @@
   background: $surfaceWellDeep;
 
   button {
-    display: flex;
+    @include settings-tab-button;
     min-height: 2.7rem;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    border-bottom: 3px solid transparent;
-    border-radius: 0;
     padding: 0.1rem 1.25rem 0;
-    color: $textBody;
-    background: transparent;
-    font-size: 0.95rem;
-    font-weight: 400;
-    line-height: 1.2;
     letter-spacing: 0.02em;
-    white-space: nowrap;
-    transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
-
-    &:not(.isSelected) {
-      cursor: pointer;
-    }
-
-    &:hover:not(.isSelected) {
-      color: $textStrong;
-      background: rgba($dark825, 0.55);
-    }
   }
 
   .isSelected {
-    cursor: default;
-    color: $textStrong;
-    background: $surfaceElevated;
-    border-bottom-color: $primary;
-    font-weight: 700;
+    @include settings-tab-selected;
   }
 }

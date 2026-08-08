@@ -15,12 +15,9 @@
   line-height: 1.2;
   cursor: pointer;
 
-  &:hover .dividerLabelText {
-    color: $textMuted;
-  }
-
+  &:hover .dividerLabelText,
   &:active .dividerLabelText {
-    color: $textSecondary;
+    color: $textStrong;
   }
 }
 
@@ -33,7 +30,7 @@
 
 .dividerLabelText {
   flex-shrink: 0;
-  color: $textFaint;
+  color: $textSecondary;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }

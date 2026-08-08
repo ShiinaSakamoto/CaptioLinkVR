@@ -47,7 +47,7 @@
 @mixin dropdown-trigger-chevron {
   display: inline-flex;
   flex-shrink: 0;
-  color: $dark300;
+  color: $textStrong;
 
   svg {
     width: 1.2rem;
