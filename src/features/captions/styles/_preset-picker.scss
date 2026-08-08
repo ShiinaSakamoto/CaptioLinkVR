@@ -35,7 +35,7 @@
 
   &:hover {
     border-color: $borderDefault;
-    background: $dark950;
+    background: $surfaceInset;
   }
 }
 
@@ -59,7 +59,7 @@
 }
 
 .presetPickerTriggerPlaceholder {
-  color: $textFaint;
+  color: $textMuted;
 }
 
 .presetPickerPopover {

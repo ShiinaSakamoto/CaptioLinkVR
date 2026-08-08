@@ -1,6 +1,5 @@
 // CaptioLinkVR の色設計。
-// シードカラー #9ca6e6（hue 約 234°）を軸に、低彩度のサーフェスとアクセントを同じ色相で揃える。
-// Material Theme Builder の自動生成ではないが、同じ考え方（seed → surface / on-surface / primary）で運用する。
+// シードカラー #9ca6e6（hue 約 234°）を軸に、奥ほど暗く手前ほど明るいサーフェス階層で視認性を確保する。
 
 // --- Primary ---
 $primary: #9ca6e6;
@@ -8,38 +7,43 @@ $primaryHover: #b7bff0;
 $primaryDeep: #7e89d4;
 $onPrimary: #11131b;
 
-// --- Dark surfaces（hue 234°・低彩度）---
-$dark950: #15161c;
-$dark900: #1c1e27;
-$dark875: #222531;
-$dark850: #292c38;
-$dark825: #303442;
-$dark800: #383c4b;
+// --- Dark surfaces（階層: 奥→手前）---
+$dark990: #0a0b10;
+$dark980: #10121a;
+$dark950: #151822;
+$dark900: #1b1e2b;
+$dark875: #222636;
+$dark850: #24283a;
+$dark825: #2d3346;
+$dark800: #363b52;
 $dark700: #555b70;
 $dark600: #747b92;
-$dark300: #d9deef;
-// スタイル機能リストなど、パネルより一段深い面
-$dark980: #101118;
-$dark990: #0a0b10;
+$dark300: #f3f4f6;
 
 // --- Text on dark surfaces ---
-$textStrong: #f4f6ff;
+$textStrong: #f3f4f6;
 $textEmphasis: #e8ecff;
 $textInput: #eef1ff;
 $textDefault: $dark300;
 $textAccent: #dce2f8;
-$textSecondary: #b9bfd4;
+$textSecondary: #9ca3af;
 $textTertiary: #aeb5ce;
-$textMuted: #8b92a8;
-$textFaint: #6d7389;
-$textLabel: #8f97b0;
-$textBody: #d5daf0;
-$textStatus: #9aa8c4;
-$textStatusOffline: #7d8399;
-$textStatusBorder: #8a90a8;
+$textMuted: #9ca3af;
+$textFaint: #9ca3af;
+$textLabel: #9ca3af;
+$textBody: #e5e7eb;
+$textStatus: #c5ccef;
+$textStatusOffline: #fde68a;
+$textStatusBorder: #9ca3af;
+
+// --- Status badge（SteamVR 未接続など）---
+$statusOfflineBg: rgba(180, 120, 40, 0.28);
+$statusOfflineBorder: rgba(251, 191, 36, 0.45);
+$statusOfflineDot: #fbbf24;
+$statusConnectedDot: $primary;
 
 // --- Semantic surfaces ---
-$surfaceApp: $dark950;
+$surfaceApp: $dark980;
 $surfacePanel: $dark900;
 $surfaceInset: $dark950;
 $surfaceControl: $dark850;
@@ -50,24 +54,24 @@ $surfaceWell: $dark980;
 $surfaceWellDeep: $dark990;
 
 // --- Borders & primary tints ---
-$borderDefault: rgba($dark600, 0.65);
+$borderDefault: $dark800;
 $borderStrong: rgba($dark600, 0.9);
-$borderSubtle: rgba($dark800, 0.8);
+$borderSubtle: rgba($dark800, 0.9);
 $borderPanel: rgba($dark700, 0.95);
-$borderAccent: rgba($primary, 0.18);
-$borderAccentMedium: rgba($primary, 0.22);
-$borderAccentStrong: rgba($primary, 0.35);
-$borderAccentEmphasis: rgba($primary, 0.45);
-$primarySubtle: rgba($primary, 0.06);
-$primaryMuted: rgba($primary, 0.08);
-$primarySurface: rgba($primary, 0.12);
-$primarySurfaceStrong: rgba($primary, 0.16);
-$primaryBorder: rgba($primary, 0.28);
-$primaryBorderStrong: rgba($primary, 0.5);
-$borderAccentDialog: rgba($primary, 0.24);
+$borderAccent: rgba($primary, 0.22);
+$borderAccentMedium: rgba($primary, 0.28);
+$borderAccentStrong: rgba($primary, 0.4);
+$borderAccentEmphasis: rgba($primary, 0.5);
+$primarySubtle: rgba($primary, 0.08);
+$primaryMuted: rgba($primary, 0.1);
+$primarySurface: rgba($primary, 0.14);
+$primarySurfaceStrong: rgba($primary, 0.2);
+$primaryBorder: rgba($primary, 0.35);
+$primaryBorderStrong: rgba($primary, 0.55);
+$borderAccentDialog: rgba($primary, 0.28);
 $overlayScrim: rgba(0, 0, 0, 0.68);
-$shadowPanel: 0 1.2rem 4rem rgba(0, 0, 0, 0.26);
-$shadowDialog: 0 1rem 3rem rgba(0, 0, 0, 0.38);
+$shadowPanel: 0 1.2rem 4rem rgba(0, 0, 0, 0.32);
+$shadowDialog: 0 1rem 3rem rgba(0, 0, 0, 0.4);
 
 // --- Feedback ---
 $error: #c86f78;

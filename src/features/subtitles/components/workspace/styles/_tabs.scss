@@ -6,7 +6,7 @@
   gap: 0;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid $borderSubtle;
+  border: 1px solid $borderDefault;
   border-radius: 12px;
   background: $surfaceElevated;
 }
@@ -27,7 +27,7 @@
   gap: 0;
   margin: 0;
   border: 0;
-  border-bottom: 1px solid $borderSubtle;
+  border-bottom: 1px solid $borderDefault;
   padding: 0;
   // 選択面（$surfaceElevated）より一段暗い面
   background: $dark900;
@@ -41,15 +41,16 @@
     justify-content: center;
     gap: 0.5rem;
     border: 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 3px solid transparent;
     border-radius: 0;
     padding: 0.1rem 1.1rem 0;
     color: $textSecondary;
     background: transparent;
     font-size: 0.95rem;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.2;
     white-space: nowrap;
+    transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
 
     &:not(.isSelected) {
       cursor: pointer;
@@ -57,17 +58,17 @@
 
     &:hover:not(.isSelected) {
       color: $textStrong;
-      background: rgba($dark825, 0.35);
+      background: rgba($dark825, 0.55);
     }
 
     span {
       min-width: 1.55rem;
       border-radius: 999px;
       padding: 0.1rem 0.45rem;
-      color: $dark300;
+      color: $textStrong;
       background: $dark825;
       font-size: 0.75rem;
-      font-weight: 400;
+      font-weight: 500;
       text-align: center;
     }
   }
@@ -82,7 +83,7 @@
 
     span {
       color: $textStrong;
-      background: rgba($primary, 0.22);
+      background: rgba($primary, 0.28);
       font-weight: 700;
     }
   }
@@ -96,7 +97,7 @@
   width: 100%;
   margin: 0;
   border: 0;
-  border-bottom: 1px solid $borderSubtle;
+  border-bottom: 1px solid $borderDefault;
   padding: 0;
   background: $dark900;
 
@@ -106,16 +107,17 @@
     align-items: center;
     justify-content: center;
     border: 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 3px solid transparent;
     border-radius: 0;
     padding: 0.1rem 1.25rem 0;
     color: $textSecondary;
     background: transparent;
     font-size: 0.95rem;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.2;
     letter-spacing: 0.02em;
     white-space: nowrap;
+    transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
 
     &:not(.isSelected) {
       cursor: pointer;
@@ -123,7 +125,7 @@
 
     &:hover:not(.isSelected) {
       color: $textStrong;
-      background: rgba($dark825, 0.35);
+      background: rgba($dark825, 0.55);
     }
   }
 

@@ -36,7 +36,7 @@
 }
 
 .selectTriggerPlaceholder {
-  color: $textFaint;
+  color: $textMuted;
 }
 
 .selectList {
@@ -52,7 +52,7 @@
   list-style: none;
   border: 1px solid $borderDefault;
   border-radius: 4px;
-  background: $dark950;
+  background: $surfaceInset;
   box-shadow: $shadowDialog;
 }
 

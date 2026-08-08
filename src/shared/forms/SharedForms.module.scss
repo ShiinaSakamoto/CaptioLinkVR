@@ -1,39 +1,65 @@
 @use "../styles/theme" as *;
 
-// 左右に区切り線を置いたラベル型の開閉トグル。
+// 中央揃えのピル型開閉トグル（高度な設定など）。
 .dividerLabelToggle {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  width: 100%;
-  min-width: 0;
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-size: 0.74rem;
+  justify-content: center;
+  gap: 0.45rem;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 2.1rem;
+  margin: 0.15rem auto 0;
+  padding: 0.35rem 1rem;
+  border: 1px solid $borderDefault;
+  border-radius: 999px;
+  background: $surfaceControl;
+  color: $textSecondary;
+  font-size: 0.8125rem;
+  font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
+  transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
 
-  &:hover .dividerLabelText {
-    color: $textMuted;
+  &::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-0.1rem) rotate(45deg);
   }
 
-  &:active .dividerLabelText {
-    color: $textSecondary;
+  &[aria-expanded="true"]::before {
+    transform: translateY(0.12rem) rotate(-135deg);
+  }
+
+  &:hover {
+    color: $textStrong;
+    border-color: $dark600;
+    background: $surfaceControlHover;
+  }
+
+  &:active {
+    color: $textStrong;
+    border-color: $primary;
+    background: $primarySubtle;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
   }
 }
 
 .dividerLabelLine {
-  flex: 1;
-  min-width: 0;
-  height: 0;
-  border-top: 1px solid rgba($dark700, 0.6);
+  display: none;
 }
 
 .dividerLabelText {
   flex-shrink: 0;
-  color: $textFaint;
+  color: inherit;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
@@ -45,7 +71,7 @@
 
   > span {
     color: $textSecondary;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -53,7 +79,7 @@
   gap: 0.2rem;
 
   > span {
-    font-size: 0.76rem;
+    font-size: 0.8125rem;
     line-height: 1.2;
   }
 }
