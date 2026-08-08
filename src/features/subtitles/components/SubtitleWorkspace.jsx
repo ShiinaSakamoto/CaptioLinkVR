@@ -53,20 +53,23 @@ export const SubtitleWorkspace = () => {
       <main className={styles.workspace}>
         <OverlayFrameBridge />
         <VrChatChatboxBridge />
-        <section className={styles.container}>
+
+        <div className={styles.workspaceBody}>
           <SampleOverlayFab onToggle={toggleSampleText} />
 
-          <WorkspaceTopSection
-            updateInfo={updateInfo}
-            updateCheckError={updateCheckError}
-            appVersion={appVersion}
-            start={start}
-            stop={stop}
-            adjustCountdown={adjustCountdown}
-          />
+          <section className={styles.container}>
+            <WorkspaceTopSection
+              updateInfo={updateInfo}
+              updateCheckError={updateCheckError}
+              appVersion={appVersion}
+              start={start}
+              stop={stop}
+              adjustCountdown={adjustCountdown}
+            />
 
-          <WorkspaceMainSection jumpToCue={jumpToCue} />
-        </section>
+            <WorkspaceMainSection jumpToCue={jumpToCue} />
+          </section>
+        </div>
 
         <section className={styles.workspaceFooter} aria-label="フッター">
           <WorkspaceFooter onLicenseClick={openLicenseDialog} />

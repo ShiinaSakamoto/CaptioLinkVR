@@ -7,15 +7,15 @@ $primaryHover: #b7bff0;
 $primaryDeep: #7e89d4;
 $onPrimary: #11131b;
 
-// --- Dark surfaces（階層: 奥→手前）---
-$dark990: #0a0b10;
-$dark980: #10121a;
-$dark950: #151822;
-$dark900: #1b1e2b;
-$dark875: #222636;
-$dark850: #24283a;
-$dark825: #2d3346;
-$dark800: #363b52;
+// --- Dark surfaces（階層: 奥→手前。明るい面を抑え、文字・Primary との差を確保）---
+$dark990: #08090d;
+$dark980: #0c0d12;
+$dark950: #11131a;
+$dark900: #161922;
+$dark875: #1a1d28;
+$dark850: #1e2130;
+$dark825: #252a3a;
+$dark800: #30354a;
 $dark700: #555b70;
 $dark600: #747b92;
 $dark300: #f3f4f6;
@@ -44,7 +44,7 @@ $statusConnectedDot: $primary;
 
 // --- Semantic surfaces ---
 $surfaceApp: $dark980;
-$surfacePanel: $dark900;
+$surfacePanel: #12151d;
 $surfaceInset: $dark950;
 $surfaceControl: $dark850;
 $surfaceControlHover: $dark825;
@@ -54,9 +54,10 @@ $surfaceWell: $dark980;
 $surfaceWellDeep: $dark990;
 
 // --- Borders & primary tints ---
-$borderDefault: $dark800;
-$borderStrong: rgba($dark600, 0.9);
-$borderSubtle: rgba($dark800, 0.9);
+// 枠線は面より一段明るく、選択UIの輪郭をはっきりさせる
+$borderDefault: #454c66;
+$borderStrong: rgba($dark600, 0.95);
+$borderSubtle: rgba(#454c66, 0.95);
 $borderPanel: rgba($dark700, 0.95);
 $borderAccent: rgba($primary, 0.22);
 $borderAccentMedium: rgba($primary, 0.28);

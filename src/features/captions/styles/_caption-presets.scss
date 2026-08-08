@@ -13,7 +13,7 @@
   padding: 0.5rem 0.75rem 0.55rem;
   border: 1px solid $borderDefault;
   border-radius: 6px;
-  background: rgba($dark850, 0.55);
+  background: $dark875;
   overflow: visible;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 
@@ -190,14 +190,14 @@
 .presetInfoPanel {
   display: grid;
   gap: 0.55rem;
-  border-top: 1px solid rgba($dark700, 0.55);
   padding: 0.85rem 1rem 0.95rem;
 }
 
 .presetInfoPanelMerged {
-  background: rgba($dark950, 0.28);
-  padding: 0.7rem 0.1rem 0.85rem;
-  margin: 0.35rem -0.1rem 0;
+  // コンボ横パディングを打ち消して枠線を端まで伸ばし、上に余白を確保する
+  border-top: 1px solid $borderDefault;
+  margin: 0.5rem -0.75rem 0;
+  padding: 0.75rem 0.75rem 0.85rem;
   border-radius: 0 0 5px 5px;
 }
 

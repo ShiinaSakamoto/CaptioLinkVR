@@ -29,8 +29,8 @@
   border: 0;
   border-bottom: 1px solid $borderDefault;
   padding: 0;
-  // 選択面（$surfaceElevated）より一段暗い面
-  background: $dark900;
+  // 未選択タブ帯は本体より一段深い面
+  background: $surfaceWellDeep;
 
   button {
     display: flex;
@@ -44,10 +44,10 @@
     border-bottom: 3px solid transparent;
     border-radius: 0;
     padding: 0.1rem 1.1rem 0;
-    color: $textSecondary;
+    color: $textBody;
     background: transparent;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.2;
     white-space: nowrap;
     transition: color 0.12s ease, background 0.12s ease, border-color 0.12s ease;
@@ -65,10 +65,10 @@
       min-width: 1.55rem;
       border-radius: 999px;
       padding: 0.1rem 0.45rem;
-      color: $textStrong;
+      color: $textBody;
       background: $dark825;
       font-size: 0.75rem;
-      font-weight: 500;
+      font-weight: 400;
       text-align: center;
     }
   }
@@ -99,7 +99,7 @@
   border: 0;
   border-bottom: 1px solid $borderDefault;
   padding: 0;
-  background: $dark900;
+  background: $surfaceWellDeep;
 
   button {
     display: flex;
@@ -110,10 +110,10 @@
     border-bottom: 3px solid transparent;
     border-radius: 0;
     padding: 0.1rem 1.25rem 0;
-    color: $textSecondary;
+    color: $textBody;
     background: transparent;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.2;
     letter-spacing: 0.02em;
     white-space: nowrap;

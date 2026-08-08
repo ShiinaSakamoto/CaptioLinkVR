@@ -1,6 +1,7 @@
 @use "./theme" as *;
 
-// レイアウト高さを持たない。container 基準の sticky 範囲だけを作る。
+// レイアウト高さを持たない。workspaceBody 基準の sticky 範囲だけを作る。
+// 左はウィンドウ端に張り付け、下端はフッター直前で終わる。
 .sampleOverlayRail {
   position: absolute;
   top: 0;
@@ -17,8 +18,7 @@
 // 開閉で変わるのは幅だけ。高さ・sticky 位置は常に同じ。
 .sampleOverlayFab {
   --sample-overlay-stick-inset: 5.5rem;
-  // アイコン時の幅 = container 左 padding（.workspace の --workspace-container-pad-inline）
-  --sample-fab-collapsed-width: var(--workspace-container-pad-inline, 2.4rem);
+  --sample-fab-collapsed-width: 2.4rem;
   --sample-fab-expanded-width: 10.4rem;
   --sample-fab-height: 3.4rem;
   --sample-fab-icon: 1.35rem;

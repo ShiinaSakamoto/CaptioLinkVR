@@ -28,13 +28,13 @@
   // container と同じ最大幅基準を、幾何と同じ --footer-center-offset-x だけ右へずらす
   left: calc(
     max(
-      var(--workspace-inline-pad, 1.6rem),
+      var(--workspace-container-pad-inline, 1.6rem),
       calc(50% - var(--workspace-container-max, 82rem) / 2)
     ) + var(--footer-center-offset-x, 0rem)
   );
   right: calc(
     max(
-      var(--workspace-inline-pad, 1.6rem),
+      var(--workspace-container-pad-inline, 1.6rem),
       calc(50% - var(--workspace-container-max, 82rem) / 2)
     ) - var(--footer-center-offset-x, 0rem)
   );
