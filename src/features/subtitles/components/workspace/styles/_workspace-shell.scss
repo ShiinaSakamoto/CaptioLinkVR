@@ -36,6 +36,7 @@
   flex-direction: column;
   align-items: center;
   min-width: 0;
+  // 余白はここに吸収し、フッターを最下部へ押し下げる
   flex: 1 1 auto;
   padding-inline: var(--workspace-inline-pad);
 }
@@ -43,11 +44,9 @@
 .container {
   display: flex;
   width: min(100%, var(--workspace-container-max));
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   flex-direction: column;
   gap: 0;
-  flex-shrink: 0;
   padding: 0 var(--workspace-container-pad-inline) 2rem;
   overflow: visible;
 }
@@ -70,17 +69,15 @@
 .workspaceMain {
   display: grid;
   gap: 1.1rem;
-  flex: 1;
   min-height: 0;
 }
 
 .workspaceFooter {
   @include workspace-full-bleed-x;
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   flex-direction: column;
   min-width: 0;
-  min-height: 0;
   padding-block: var(--footer-pad-top) var(--footer-pad-bottom);
   --footer-fill-extend-bottom: var(--footer-pad-bottom);
   overflow-x: clip;

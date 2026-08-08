@@ -4,10 +4,9 @@
 .footer {
   position: relative;
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   flex-direction: column;
   width: 100%;
-  min-height: 0;
   // 下への塗り伸ばしは親の padding 内へ出すだけなので、ここは見える必要あり
   // clip は overflow-y を auto に変えない（横はみ出しだけ抑える）
   overflow-x: clip;
@@ -32,7 +31,8 @@
   --footer-fade-stop: calc(320.5 / 359 * 100%);
 
   position: relative;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
+  height: var(--footer-stage-height);
   min-height: var(--footer-stage-height);
   overflow: visible;
   // ラインより上だけ見える（下は .footerFill が不透明で覆う）
