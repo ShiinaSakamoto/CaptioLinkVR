@@ -21,6 +21,8 @@ export const ui = {
   openBooth: "Boothを開く",
   advancedOpen: "高度な設定を開く",
   advancedClose: "高度な設定を閉じる",
+  resetVrSettings: "VR設定を初期化",
+  resetStyleSettings: "字幕スタイルを初期化",
   countdownMode: "カウントダウンモード",
   manualCount: "指定カウント",
   targetTime: "指定時刻",
