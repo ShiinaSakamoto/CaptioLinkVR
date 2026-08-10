@@ -9,19 +9,25 @@
   border: 1px solid $borderDefault;
   border-radius: 4px;
   color: $textStrong;
-  background: $dark950;
+  background: $surfaceWellDeep;
   text-align: left;
   cursor: pointer;
   color-scheme: dark;
+  transition: border-color 0.12s ease, background 0.12s ease;
 
   &:hover:not(:disabled) {
-    border-color: rgba($dark600, 0.85);
-    background: $dark825;
+    border-color: $dark600;
+    background: $surfaceControl;
   }
 
   &[aria-expanded="true"]:not(:disabled) {
-    border-color: rgba($primary, 0.35);
-    background: $dark825;
+    border-color: $primary;
+    background: $surfaceControl;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 1px;
   }
 
   &:disabled {
@@ -41,7 +47,7 @@
 @mixin dropdown-trigger-chevron {
   display: inline-flex;
   flex-shrink: 0;
-  color: $dark300;
+  color: $textStrong;
 
   svg {
     width: 1.2rem;

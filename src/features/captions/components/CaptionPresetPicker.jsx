@@ -28,7 +28,6 @@ export const CaptionPresetPicker = memo(
     locked = false,
     lockedTitle = "",
     onLockedAttempt,
-    merged = false,
     placeholder = "",
     customLabel = ui.customPreset,
     triggerLabel: triggerLabelProp,
@@ -156,7 +155,7 @@ export const CaptionPresetPicker = memo(
     return (
       <div
         ref={rootRef}
-        className={[styles.presetPicker, merged ? styles.presetPickerMerged : ""].filter(Boolean).join(" ")}
+        className={styles.presetPicker}
       >
         <button
           type="button"

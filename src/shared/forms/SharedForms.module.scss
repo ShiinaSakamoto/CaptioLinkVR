@@ -15,12 +15,15 @@
   line-height: 1.2;
   cursor: pointer;
 
-  &:hover .dividerLabelText {
-    color: $textMuted;
-  }
+  &:hover,
+  &:active {
+    .dividerLabelText {
+      color: $textStrong;
+    }
 
-  &:active .dividerLabelText {
-    color: $textSecondary;
+    .dividerLabelLine {
+      border-top-color: rgba($textStrong, 0.45);
+    }
   }
 }
 
@@ -29,13 +32,15 @@
   min-width: 0;
   height: 0;
   border-top: 1px solid rgba($dark700, 0.6);
+  transition: border-top-color 0.12s ease;
 }
 
 .dividerLabelText {
   flex-shrink: 0;
-  color: $textFaint;
+  color: $textSecondary;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  transition: color 0.12s ease;
 }
 
 .fieldRow {
@@ -45,7 +50,7 @@
 
   > span {
     color: $textSecondary;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -53,7 +58,7 @@
   gap: 0.2rem;
 
   > span {
-    font-size: 0.76rem;
+    font-size: 0.8125rem;
     line-height: 1.2;
   }
 }
