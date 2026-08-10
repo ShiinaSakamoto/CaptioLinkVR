@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "CaptioLinkVR - 字幕表示ツール",
+        "label": "main",
         "width": 1020,
         "height": 860,
         "minWidth": 920,

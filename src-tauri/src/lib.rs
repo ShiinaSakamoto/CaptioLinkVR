@@ -6,6 +6,7 @@ pub mod settings;
 pub mod steamvr_overlay;
 pub mod update;
 pub mod vrchat_osc;
+pub mod window_layout;
 
 use overlay_renderer::{
     metrics::frame_width_meters, render_subtitle_frame, settings::RenderSettings,
@@ -158,11 +159,13 @@ fn send_vrchat_chatbox_message(text: String, host: String, port: u16) -> Result<
 
 pub fn run() {
     tauri::Builder::default()
-        .setup(|_app| {
+        .setup(|app| {
             #[cfg(target_os = "windows")]
             if let Ok(root) = paths::portable_root() {
                 motw::unblock_portable_executables(&root);
             }
+            // テキストサイズに合わせて窓サイズ／min を広げる（Tauri 標準外）。
+            window_layout::bootstrap(app);
             Ok(())
         })
         .manage(Mutex::new(OverlayRuntime::default()))
