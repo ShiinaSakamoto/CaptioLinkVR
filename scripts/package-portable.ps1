@@ -102,6 +102,15 @@ if (Test-Path -LiteralPath $captionsSource) {
   Copy-Item -LiteralPath $captionsSource -Destination $captionsTarget -Recurse -Force
 }
 
+# Bundled subtitle font. Missing this breaks overlay prewarm / frame submit.
+$fontsSource = Join-Path ([string]$root) "fonts"
+$fontsTarget = Join-Path ([string]$packageRoot) "$([string]$layout.resourceDir)\fonts"
+$requiredFont = Join-Path $fontsSource "NotoSansJP-Regular.ttf"
+if (-not (Test-Path -LiteralPath $requiredFont)) {
+  throw "Required subtitle font was not found: $requiredFont"
+}
+Copy-Item -LiteralPath $fontsSource -Destination $fontsTarget -Recurse -Force
+
 $now = Get-Date
 Get-Item -LiteralPath $packageRoot | ForEach-Object { $_.LastWriteTime = $now }
 Get-ChildItem -LiteralPath $packageRoot -Recurse -Force | ForEach-Object { $_.LastWriteTime = $now }
