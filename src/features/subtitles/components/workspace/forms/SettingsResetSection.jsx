@@ -2,29 +2,35 @@ import { useSetAtom } from "jotai";
 import { memo, useCallback } from "react";
 import { renderSettingsAtom } from "../../../../../stores/subtitleStore.js";
 import { DEFAULT_RENDER_SETTINGS } from "../../../constants/defaultRenderSettings.js";
-import { ui } from "../../../../../shared/uiText.js";
 import styles from "../../SubtitleWorkspace.module.scss";
 
 /**
- * VR設定パネル下部の「設定をすべて初期化」。
- * 高度な設定とは別セクションとして常に表示する。
- * 対象は描画設定（VR設定＋字幕スタイル）のみ。
+ * 設定パネル下部の初期化ボタン。
+ * 渡された keys だけを DEFAULT_RENDER_SETTINGS に戻す。
  */
-export const SettingsResetSection = memo(() => {
+export const SettingsResetSection = memo(({ label, keys }) => {
   const setRenderSettings = useSetAtom(renderSettingsAtom);
 
-  const handleResetAll = useCallback(() => {
-    setRenderSettings({ ...DEFAULT_RENDER_SETTINGS });
-  }, [setRenderSettings]);
+  const handleReset = useCallback(() => {
+    setRenderSettings((current) => {
+      const next = { ...current };
+      for (const key of keys) {
+        if (Object.hasOwn(DEFAULT_RENDER_SETTINGS, key)) {
+          next[key] = DEFAULT_RENDER_SETTINGS[key];
+        }
+      }
+      return next;
+    });
+  }, [keys, setRenderSettings]);
 
   return (
-    <section className={styles.settingsResetSection} aria-label={ui.resetAllSettings}>
+    <section className={styles.settingsResetSection} aria-label={label}>
       <button
         type="button"
         className={styles.settingsResetButton}
-        onClick={handleResetAll}
+        onClick={handleReset}
       >
-        {ui.resetAllSettings}
+        {label}
       </button>
     </section>
   );

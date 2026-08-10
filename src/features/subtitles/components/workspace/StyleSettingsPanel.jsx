@@ -3,10 +3,12 @@ import { memo } from "react";
 import { renderSettingsAtom } from "../../../../stores/subtitleStore.js";
 import { TEXT_COLOR_PRESETS } from "../../constants/styleColorPresets.js";
 import { DEFAULT_RENDER_SETTINGS } from "../../constants/defaultRenderSettings.js";
+import { STYLE_SETTINGS_RESET_KEYS } from "../../constants/settingsResetKeys.js";
 import { useUpdateRenderSetting } from "../../hooks/useUpdateRenderSetting.js";
 import { OPACITY_PERCENT_MAX, OPACITY_PERCENT_MIN } from "../../utils/subtitleOpacity.js";
 import { ColorSetting } from "./forms/ColorSetting.jsx";
 import { SettingSection } from "./forms/SettingControls.jsx";
+import { SettingsResetSection } from "./forms/SettingsResetSection.jsx";
 import { ValueSteppedControl } from "./forms/ValueSteppedControl.jsx";
 import { STYLE_FEATURES } from "./styleFeatures.js";
 import { ui } from "../../../../shared/uiText.js";
@@ -96,6 +98,8 @@ export const StyleSettingsPanel = memo(() => {
           ))}
         </div>
       </div>
+
+      <SettingsResetSection label={ui.resetStyleSettings} keys={STYLE_SETTINGS_RESET_KEYS} />
     </div>
   );
 });

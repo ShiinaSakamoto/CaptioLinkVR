@@ -8,6 +8,7 @@ import {
   vrAdjustPageAtom,
 } from "../../../../stores/subtitleStore.js";
 import { DEFAULT_RENDER_SETTINGS } from "../../constants/defaultRenderSettings.js";
+import { VR_SETTINGS_RESET_KEYS } from "../../constants/settingsResetKeys.js";
 import { useUpdateRenderSetting } from "../../hooks/useUpdateRenderSetting.js";
 import { AxisControls } from "./axis/AxisControls.jsx";
 import { AdvancedSettingsSection } from "./forms/AdvancedSettingsSection.jsx";
@@ -174,7 +175,7 @@ export const BasicSettingsPanel = memo(() => {
         </AdvancedSettingsSection>
       </section>
 
-      <SettingsResetSection />
+      <SettingsResetSection label={ui.resetVrSettings} keys={VR_SETTINGS_RESET_KEYS} />
     </div>
   );
 });
