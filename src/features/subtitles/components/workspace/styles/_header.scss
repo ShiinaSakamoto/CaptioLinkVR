@@ -15,7 +15,7 @@
   .appSubtitle {
     margin: 0;
     color: $textMuted;
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.2;
   }
@@ -36,7 +36,7 @@
   min-width: 0;
 }
 
-// ロゴ幅を基準に、その下へサブタイトルとバージョンを載せる。
+// ロゴ幅基準でサブタイトルとバージョンを載せる
 .headerBrandBlock {
   display: grid;
   gap: 0.18rem;
@@ -62,8 +62,8 @@
 
 .versionLabel {
   margin: 0;
-  color: $textFaint;
-  font-size: 0.68rem;
+  color: $textMuted;
+  font-size: 0.75rem;
   line-height: 1.2;
   letter-spacing: 0.02em;
   white-space: nowrap;
@@ -74,7 +74,7 @@
   gap: 0.15rem;
   margin: 0;
   max-width: min(100%, 24rem);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 
@@ -97,23 +97,45 @@
 
 .steamVrStatus {
   display: inline-flex;
-  min-height: 1.35rem;
+  min-height: 1.55rem;
   align-items: center;
-  border: 1px solid rgba($dark600, 0.35);
+  gap: 0.4rem;
+  border: 1px solid $borderDefault;
   border-radius: 999px;
-  padding: 0 0.4rem;
+  padding: 0.15rem 0.65rem 0.15rem 0.5rem;
   color: $textStatusBorder;
-  background: transparent;
-  font-size: 0.64rem;
+  background: $surfaceControl;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
   white-space: nowrap;
+
+  &::before {
+    content: "";
+    flex-shrink: 0;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: $textStatusBorder;
+  }
 }
 
 .steamVrConnected {
   border-color: $borderAccentMedium;
   color: $textStatus;
   background: $primarySubtle;
+
+  &::before {
+    background: $statusConnectedDot;
+  }
 }
 
 .steamVrOffline {
+  border-color: $statusOfflineBorder;
   color: $textStatusOffline;
+  background: $statusOfflineBg;
+
+  &::before {
+    background: $statusOfflineDot;
+  }
 }

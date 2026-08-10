@@ -15,8 +15,8 @@
 }
 
 .colorPresetCaption {
-  color: $textFaint;
-  font-size: 0.72rem;
+  color: $textMuted;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   line-height: 1.2;
@@ -87,8 +87,8 @@
   border-radius: 4px;
   padding: 0 0.55rem 0 0.3rem;
   color: $textSecondary;
-  background: rgba($dark950, 0.55);
-  font-size: 0.72rem;
+  background: $surfaceInset;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.2;

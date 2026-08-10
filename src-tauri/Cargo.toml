@@ -1,6 +1,6 @@
 [package]
 name = "captiolink-vr"
-version = "0.1.8"
+version = "0.2.0"
 description = "CaptioLinkVR - VR subtitle display tool with SteamVR overlay"
 authors = ["Shiina Sakamoto"]
 license = "MIT"
@@ -45,6 +45,7 @@ windows = { version = "=0.61.3", features = [
   "Win32_Graphics_Direct3D",
   "Win32_Graphics_Direct3D11",
   "Win32_Graphics_Dxgi_Common",
+  "Win32_System_Registry",
 ] }
 
 [patch.crates-io]

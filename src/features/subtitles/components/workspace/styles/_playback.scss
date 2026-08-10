@@ -124,7 +124,7 @@
   padding: 0.22rem;
   border: 1px solid $borderDefault;
   border-radius: 6px;
-  background: $dark950;
+  background: $surfaceWellDeep;
 }
 
 .playbackModeSwitchIndicator {
@@ -152,10 +152,10 @@
   border: 0;
   margin: 0;
   padding: 0.52rem 0.45rem;
-  color: $textFaint;
+  color: $textBody;
   background: transparent;
   font-size: 0.84rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.2;
 
   &:not(.playbackModeSwitchOptionActive) {
@@ -163,7 +163,7 @@
   }
 
   &:hover:not(.playbackModeSwitchOptionActive) {
-    color: $textMuted;
+    color: $textStrong;
   }
 }
 

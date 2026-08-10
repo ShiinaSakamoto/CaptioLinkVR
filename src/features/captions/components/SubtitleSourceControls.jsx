@@ -64,7 +64,6 @@ export const SubtitleSourceControls = memo(() => {
       locked={isLocked}
       lockedTitle={ui.presetLockedWhilePlaying}
       onLockedAttempt={notifyLockedAttempt}
-      merged={useMergedSelect}
       placeholder={ui.presetPlaceholder}
       customLabel={customOptionLabel}
     />
