@@ -11,6 +11,7 @@ import { DEFAULT_RENDER_SETTINGS } from "../../constants/defaultRenderSettings.j
 import { useUpdateRenderSetting } from "../../hooks/useUpdateRenderSetting.js";
 import { AxisControls } from "./axis/AxisControls.jsx";
 import { AdvancedSettingsSection } from "./forms/AdvancedSettingsSection.jsx";
+import { SettingsResetSection } from "./forms/SettingsResetSection.jsx";
 import { ToggleSetting } from "./forms/SettingControls.jsx";
 import { ValueSteppedControl } from "./forms/ValueSteppedControl.jsx";
 import { ui } from "../../../../shared/uiText.js";
@@ -172,6 +173,8 @@ export const BasicSettingsPanel = memo(() => {
           />
         </AdvancedSettingsSection>
       </section>
+
+      <SettingsResetSection />
     </div>
   );
 });
