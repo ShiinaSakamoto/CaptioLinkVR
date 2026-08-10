@@ -6,7 +6,7 @@ pub mod settings;
 pub mod steamvr_overlay;
 pub mod update;
 pub mod vrchat_osc;
-pub mod window_guard;
+pub mod window_layout;
 
 use overlay_renderer::{
     metrics::frame_width_meters, render_subtitle_frame, settings::RenderSettings,
@@ -159,16 +159,13 @@ fn send_vrchat_chatbox_message(text: String, host: String, port: u16) -> Result<
 
 pub fn run() {
     tauri::Builder::default()
-        .on_window_event(|window, event| {
-            window_guard::on_main_window_event(window, event);
-        })
         .setup(|app| {
             #[cfg(target_os = "windows")]
             if let Ok(root) = paths::portable_root() {
                 motw::unblock_portable_executables(&root);
             }
-            // conf のサイズ/min が環境によって効かない場合の押し戻し。
-            window_guard::bootstrap_main_window(app);
+            // テキストサイズに合わせて窓サイズ／min を広げる（Tauri 標準外）。
+            window_layout::bootstrap(app);
             Ok(())
         })
         .manage(Mutex::new(OverlayRuntime::default()))
