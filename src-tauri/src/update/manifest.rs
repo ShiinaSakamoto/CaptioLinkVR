@@ -30,9 +30,9 @@ struct GithubRelease {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-#[serde(rename_all = "camelCase")]
 struct GithubAsset {
     name: String,
+    // GitHub REST API は snake_case（browser_download_url）。camelCase 変換しない。
     browser_download_url: String,
 }
 
@@ -217,5 +217,27 @@ mod tests {
         assert!(is_newer_version("0.1.7", "v0.2.0"));
         assert!(!is_newer_version("0.1.7", "0.1.7"));
         assert!(!is_newer_version("0.2.0", "0.1.9"));
+    }
+
+    #[test]
+    fn parses_github_release_asset_snake_case_fields() {
+        let release: GithubRelease = serde_json::from_str(
+            r#"{
+              "tag_name": "v0.2.2",
+              "assets": [
+                {
+                  "name": "manifest.json",
+                  "browser_download_url": "https://github.com/owner/repo/releases/download/v0.2.2/manifest.json"
+                }
+              ]
+            }"#,
+        )
+        .expect("GitHub release JSON should deserialize");
+
+        assert_eq!(release.tag_name, "v0.2.2");
+        assert_eq!(release.assets[0].name, "manifest.json");
+        assert!(release.assets[0]
+            .browser_download_url
+            .ends_with("/manifest.json"));
     }
 }
