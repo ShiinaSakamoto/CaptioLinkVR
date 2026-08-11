@@ -1,8 +1,11 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { ui } from "../../../../shared/uiText.js";
+import { renderSimpleMarkdown } from "../../utils/simpleMarkdown.jsx";
 import styles from "../SubtitleWorkspace.module.scss";
 
 export const LicenseDialog = memo(({ notices, onClose }) => {
+  const markdownNodes = useMemo(() => renderSimpleMarkdown(notices), [notices]);
+
   const handleOverlayMouseDown = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -31,7 +34,7 @@ export const LicenseDialog = memo(({ notices, onClose }) => {
             <p className={styles.licenseSummary}>{ui.licenseSummaryBody}</p>
             <h3 className={styles.licenseSectionTitle}>{ui.licenseThirdPartyTitle}</h3>
           </section>
-          <pre className={styles.noticePre}>{notices}</pre>
+          <div className={styles.noticeMarkdown}>{markdownNodes}</div>
         </div>
       </div>
     </div>
