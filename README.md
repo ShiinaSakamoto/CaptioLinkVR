@@ -55,9 +55,8 @@ VRChat ワールドなどで使える字幕プリセットを選び、HMD 上に
 #### 📬 連絡先 - しいな です。今のところ僕が色々やっています。
 - X（DMはたまに閉じています）: `@Shiina_12siy`
 - Discord: `shiina_12siy`
-- Email: `shiina12siyvr@gmail.com`
 
-（Discordやメールアドレスが今のところ助かります。）
+（Discord が今のところ助かります。）
 
 <br>
 
@@ -72,7 +71,15 @@ VRChat ワールドなどで使える字幕プリセットを選び、HMD 上に
 <br>
 
 ## 📄 ライセンス
+本リポジトリは複合ライセンスです。
 - **ソースコード**: [MIT License](LICENSE)（Copyright (c) 2026 Shiina Sakamoto）
 - **ロゴ・ブランド画像**: All Rights Reserved（Copyright (c) 2026 Shiina Sakamoto）
-- **同梱字幕プリセット (`captions/`)**: 各原著作権者に帰属。無断転載・改変・商用利用は不可。[`captions/LICENSE.md`](captions/LICENSE.md) を参照
+- **同梱字幕プリセット (`captions/`)**: 各原著作権者に帰属。無断転載・改変・翻案・商用利用は不可。[`captions/LICENSE.md`](captions/LICENSE.md) を参照（**日本語を正文**、英語は参考訳）
 - **第三者コンポーネント**: [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) および [`licenses/`](licenses/)
+
+ソースコード（MIT）の利用条件は [LICENSE](LICENSE) に従います。一方、`captions/` およびロゴ・ブランド資産は MIT の対象外であり、リポジトリのクローンや閲覧をもって再配布・ミラー・別配布の権利が付与されるものではありません。
+
+<br>
+
+## 免責
+CaptioLinkVR は Valve Corporation / SteamVR、および VRChat Inc. とは無関係の個人制作の非公式ツールです。各社の公式製品・公式サポートではありません。

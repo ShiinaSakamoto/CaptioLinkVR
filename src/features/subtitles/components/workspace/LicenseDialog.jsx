@@ -14,17 +14,25 @@ export const LicenseDialog = memo(({ notices, onClose }) => {
       className={styles.noticeOverlay}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="third-party-notices-title"
+      aria-labelledby="license-dialog-title"
       onMouseDown={handleOverlayMouseDown}
     >
       <div className={styles.noticeDialog}>
         <div className={styles.noticeHeader}>
-          <h2 id="third-party-notices-title">{ui.license}</h2>
+          <h2 id="license-dialog-title">{ui.license}</h2>
           <button type="button" onClick={onClose}>
             {ui.close}
           </button>
         </div>
-        <pre>{notices}</pre>
+        <div className={styles.noticeBody}>
+          <section className={styles.licenseIntro} aria-label={ui.licenseSummaryTitle}>
+            <p className={styles.licenseDisclaimer}>{ui.licenseDisclaimer}</p>
+            <h3 className={styles.licenseSectionTitle}>{ui.licenseSummaryTitle}</h3>
+            <p className={styles.licenseSummary}>{ui.licenseSummaryBody}</p>
+            <h3 className={styles.licenseSectionTitle}>{ui.licenseThirdPartyTitle}</h3>
+          </section>
+          <pre className={styles.noticePre}>{notices}</pre>
+        </div>
       </div>
     </div>
   );

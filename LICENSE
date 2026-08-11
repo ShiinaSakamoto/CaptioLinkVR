@@ -35,7 +35,16 @@ The following are explicitly EXCLUDED from this license:
 
 - Bundled subtitle preset data (captions/):
   Each subtitle preset is owned by its respective copyright holder.
-  See captions/LICENSE.md for details.
+  See captions/LICENSE.md for details. The Japanese text in
+  captions/LICENSE.md is authoritative; the English text is a translation.
 
 Third-party components included in this software are governed by their own
 licenses as described in THIRD_PARTY_NOTICES.md.
+
+CLONING AND VIEWING THIS REPOSITORY
+-----------------------------------
+MIT-licensed source code may be used and redistributed under the MIT terms
+above. Cloning or viewing this repository does not, by itself, grant
+redistribution, mirroring, or separate distribution rights for materials
+excluded from this license (captions/ and brand assets). See
+captions/LICENSE.md for subtitle preset terms.
