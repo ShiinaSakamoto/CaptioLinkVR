@@ -38,11 +38,9 @@ fn embed_build_metadata() {
         PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is set"));
     let package_json_path = manifest_dir.join("../package.json");
     let update_config_path = manifest_dir.join("../update.config.json");
-    let update_config_local_path = manifest_dir.join("../update.config.local.json");
 
     println!("cargo:rerun-if-changed={}", package_json_path.display());
     println!("cargo:rerun-if-changed={}", update_config_path.display());
-    println!("cargo:rerun-if-changed={}", update_config_local_path.display());
 
     let captions_dir = manifest_dir.join("../captions");
     println!("cargo:rerun-if-changed={}", captions_dir.display());
@@ -60,17 +58,6 @@ fn embed_build_metadata() {
     let mut config: UpdateConfig = serde_json::from_str(&update_config).unwrap_or_default();
     if config.github_repo.trim().is_empty() {
         config.github_repo = "CaptioLinkVR".to_string();
-    }
-
-    if let Ok(local_config) = fs::read_to_string(&update_config_local_path) {
-        if let Ok(local) = serde_json::from_str::<UpdateConfig>(&local_config) {
-            if !local.github_owner.trim().is_empty() {
-                config.github_owner = local.github_owner;
-            }
-            if !local.github_repo.trim().is_empty() {
-                config.github_repo = local.github_repo;
-            }
-        }
     }
 
     println!("cargo:rustc-env=GITHUB_OWNER={}", config.github_owner);

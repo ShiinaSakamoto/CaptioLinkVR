@@ -24,7 +24,6 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
-update.config.local.json
 
 # Editor / OS files
 .vscode/

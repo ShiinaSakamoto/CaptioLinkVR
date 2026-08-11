@@ -1,6 +1,6 @@
 [package]
 name = "captiolink-vr"
-version = "0.2.1"
+version = "0.2.2"
 description = "CaptioLinkVR - VR subtitle display tool with SteamVR overlay"
 authors = ["Shiina Sakamoto"]
 license = "MIT"

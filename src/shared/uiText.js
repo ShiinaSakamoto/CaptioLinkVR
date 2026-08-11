@@ -4,6 +4,12 @@ export const ui = {
   appName: "CaptioLinkVR",
   appSubtitle: "字幕表示ツール",
   license: "ライセンス",
+  licenseDisclaimer:
+    "CaptioLinkVR は Valve Corporation / SteamVR、および VRChat Inc. とは無関係の個人制作の非公式ツールです。各社の公式製品・公式サポートではありません。",
+  licenseSummaryTitle: "本アプリのライセンス概要",
+  licenseSummaryBody:
+    "ソースコードは MIT License です（MIT の範囲での利用・再配布が可能です）。ロゴ・ブランド画像は著作者の著作物であり、無断での利用・転載はできません。同梱字幕プリセット（captions/）は各原著作権者に帰属し、無断転載・再配布・改変・翻案・商用利用はできません（条件の正文は captions/LICENSE.md の日本語です）。captions/ およびブランド資産について、リポジトリのクローンや閲覧をもって再配布・ミラー・別配布の権利が付与されるものではありません。",
+  licenseThirdPartyTitle: "第三者ライセンス",
   close: "閉じる",
   footerLabel: "フッター",
   createdBy: "Produced by",
