@@ -21,8 +21,9 @@ import {
   setOverlayFullRestartAllowed,
 } from "../services/overlayRestartService.js";
 import { buildCueText } from "../utils/cueText.js";
-import { findActiveCueAt, getSecondsUntilNextCue, scheduleFutureCueTimelineEvents } from "../utils/cueScheduler.js";
+import { findActiveCueAt, getSecondsUntilNextCue, scheduleFutureCueTimelineEvents, toTimelineMs } from "../utils/cueScheduler.js";
 import { buildCountdownText, calculateDelaySeconds, getCountdownDisplaySeconds } from "../utils/playbackTimeline.js";
+import { disarmSampleTimer } from "../utils/sampleOverlayTimer.js";
 import { clearTimerId, clearTimerIds } from "../utils/timerUtils.js";
 
 const ZERO_COUNTDOWN_HOLD_MS = 1000;
@@ -161,14 +162,18 @@ export const useSubtitlePlayback = () => {
   const clearTimers = () => {
     clearCueTimers({ syncState: false });
     clearCountdownTimers();
-    if (timers.countdownTimerId) clearTimerId(timers.countdownTimerId);
-    if (timers.sampleTimerId) window.clearInterval(timers.sampleTimerId);
+    // sample の interval 実体は atom より module ref を正とする（stale closure で zombie 化しない）。
+    disarmSampleTimer();
 
-    setTimers({
-      cueTimerIds: [],
-      countdownTimerId: null,
-      frameTimerId: timers.frameTimerId,
-      sampleTimerId: null,
+    // countdown / frame は最新 atom を読んで消す（メモ化で古い timers を掴んだままでも安全）。
+    setTimers((current) => {
+      if (current.countdownTimerId) clearTimerId(current.countdownTimerId);
+      return {
+        cueTimerIds: [],
+        countdownTimerId: null,
+        frameTimerId: current.frameTimerId,
+        sampleTimerId: null,
+      };
     });
   };
 
@@ -220,6 +225,7 @@ export const useSubtitlePlayback = () => {
     const subtitleSeconds = (Date.now() - baseStartAtMs) / 1000;
 
     const syncCueToNow = () => {
+      // Date.now 差分のミリ秒整数を秒へ戻して判定し、境界の float ずれを避ける。
       const currentSubtitleSeconds = (Date.now() - baseStartAtMs) / 1000;
       const activeNow = findActiveCueAt(cuesRef.current, currentSubtitleSeconds);
       if (activeNow) {
@@ -246,6 +252,7 @@ export const useSubtitlePlayback = () => {
     });
 
     cueTimersRef.current = timerIds;
+    disarmSampleTimer();
     setTimers((current) => ({
       ...current,
       cueTimerIds: timerIds,
@@ -369,6 +376,7 @@ export const useSubtitlePlayback = () => {
 
     tickCountdown();
     countdownStartTimerRef.current = window.setTimeout(startCueSchedule, safeCountdownSeconds * 1000);
+    disarmSampleTimer();
     setTimers((current) => ({
       ...current,
       countdownTimerId: countdownTimerRef.current,
@@ -442,7 +450,7 @@ export const useSubtitlePlayback = () => {
     // 直後に同じ行を再表示するので、空フレームを挟まない（消えて見えるのを防ぐ）。
     stop({ clearOverlay: false });
     const now = Date.now();
-    const scheduledStartAtMs = now - cue.startTime * 1000;
+    const scheduledStartAtMs = now - toTimelineMs(cue.startTime);
     const overlayReady = overlayStatus.connected;
     scheduledStartAtMsRef.current = scheduledStartAtMs;
     overlayReadyRef.current = overlayReady;
