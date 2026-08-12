@@ -22,6 +22,27 @@ describe("findActiveCueAt", () => {
   it("どのキューにも該当しなければnull", () => {
     expect(findActiveCueAt(cues, 100)).toBeNull();
   });
+
+  it("ASSセンチ秒由来の float でも開始境界で欠落しない", () => {
+    // 旧実装: Number 直和の 102.52000000000001 と timer 側 102.52 の比較で欠落した。
+    const startTime = 102.52000000000001;
+    const endTime = 105.23;
+    const cuesWithFloat = [{ id: "summer", startTime, endTime }];
+    const measuredAtStart = Math.round(startTime * 1000) / 1000;
+
+    expect(startTime <= measuredAtStart).toBe(false);
+    expect(findActiveCueAt(cuesWithFloat, measuredAtStart)?.id).toBe("summer");
+  });
+
+  it("ASSセンチ秒由来の float でも終了境界で残り続けない", () => {
+    const startTime = 216.3;
+    const endTime = 219.17000000000002;
+    const cuesWithFloat = [{ id: "hah", startTime, endTime }];
+    const measuredAtEnd = Math.round(endTime * 1000) / 1000;
+
+    expect(endTime > measuredAtEnd).toBe(true);
+    expect(findActiveCueAt(cuesWithFloat, measuredAtEnd)).toBeNull();
+  });
 });
 
 describe("getSecondsUntilNextCue", () => {
@@ -117,5 +138,31 @@ describe("scheduleFutureCueTimelineEvents", () => {
     expect(timerIds).toHaveLength(1);
     vi.advanceTimersByTime(3000);
     expect(syncCueToNow).toHaveBeenCalledTimes(1);
+  });
+
+  it("開始境界の float 誤差があっても開始タイマーで active になる", () => {
+    const baseStartAtMs = Date.now();
+    const cue = {
+      id: "summer",
+      startTime: 102.52000000000001,
+      endTime: 105.23,
+    };
+    let active = null;
+
+    scheduleFutureCueTimelineEvents({
+      cues: [cue],
+      baseStartAtMs,
+      subtitleSeconds: 0,
+      syncCueToNow: () => {
+        const currentSubtitleSeconds = (Date.now() - baseStartAtMs) / 1000;
+        active = findActiveCueAt([cue], currentSubtitleSeconds);
+      },
+    });
+
+    vi.advanceTimersByTime(102520);
+    expect(active?.id).toBe("summer");
+
+    vi.advanceTimersByTime(105230 - 102520);
+    expect(active).toBeNull();
   });
 });

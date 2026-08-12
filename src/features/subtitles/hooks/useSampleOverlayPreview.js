@@ -10,6 +10,11 @@ import {
 } from "../../../stores/subtitleStore.js";
 import { ui } from "../../../shared/uiText.js";
 import { requestOverlayRestart } from "../services/overlayRestartService.js";
+import {
+  armSampleTimer,
+  disarmSampleTimer,
+  getActiveSampleTimerId,
+} from "../utils/sampleOverlayTimer.js";
 
 /** 1文あたりの表示時間（ms） */
 const SAMPLE_TEXT_INTERVAL_MS = 3000;
@@ -29,6 +34,8 @@ export const useSampleOverlayPreview = () => {
 
   settingsRef.current = settings;
   overlayConnectedRef.current = overlayStatus.connected;
+
+  const isSampleRunning = Boolean(timers.sampleTimerId) || getActiveSampleTimerId() != null;
 
   const clearMessageDismissTimer = useCallback(() => {
     if (messageDismissTimerRef.current != null) {
@@ -64,10 +71,8 @@ export const useSampleOverlayPreview = () => {
   const stopSampleText = useCallback(() => {
     clearMessageDismissTimer();
     sampleIndexRef.current = 0;
-    setTimers((current) => {
-      if (current.sampleTimerId) window.clearInterval(current.sampleTimerId);
-      return { ...current, sampleTimerId: null };
-    });
+    disarmSampleTimer();
+    setTimers((current) => ({ ...current, sampleTimerId: null }));
     setActiveCueText("");
     if (overlayConnectedRef.current) {
       requestOverlayRestart({
@@ -83,7 +88,7 @@ export const useSampleOverlayPreview = () => {
 
   const toggleSampleText = useCallback(() => {
     if (playback.isPlaying) return;
-    if (timers.sampleTimerId) {
+    if (isSampleRunning) {
       stopSampleText();
       return;
     }
@@ -93,11 +98,19 @@ export const useSampleOverlayPreview = () => {
     const sampleTimerId = window.setInterval(() => {
       showOverlayMessage(nextSampleText());
     }, SAMPLE_TEXT_INTERVAL_MS);
+    armSampleTimer(sampleTimerId);
     setTimers((current) => ({ ...current, sampleTimerId }));
-  }, [nextSampleText, playback.isPlaying, setTimers, showOverlayMessage, stopSampleText, timers.sampleTimerId]);
+  }, [
+    isSampleRunning,
+    nextSampleText,
+    playback.isPlaying,
+    setTimers,
+    showOverlayMessage,
+    stopSampleText,
+  ]);
 
   useEffect(() => {
-    if (playback.isPlaying && timers.sampleTimerId) {
+    if (playback.isPlaying && (timers.sampleTimerId || getActiveSampleTimerId() != null)) {
       stopSampleText();
     }
   }, [playback.isPlaying, stopSampleText, timers.sampleTimerId]);

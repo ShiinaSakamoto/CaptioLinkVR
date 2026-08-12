@@ -22,6 +22,13 @@ describe("parseAssTime", () => {
   it("H:MM:SS を秒へ変換する", () => {
     expect(parseAssTime("1:02:03")).toBe(3723);
   });
+
+  it("センチ秒付き時刻を境界判定可能な値へ変換する", () => {
+    // Number("42.52") 直和だと 102.52000000000001 になり、開始境界で欠落しうる。
+    expect(Math.round(parseAssTime("0:01:42.52") * 1000)).toBe(102520);
+    expect(Math.round(parseAssTime("0:03:32.92") * 1000)).toBe(212920);
+    expect(Math.round(parseAssTime("0:03:39.17") * 1000)).toBe(219170);
+  });
 });
 
 describe("parseSrt", () => {
