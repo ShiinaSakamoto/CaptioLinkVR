@@ -14,6 +14,7 @@ export const DEFAULT_RENDER_SETTINGS = {
   overlayWidthMeters: 1.45,
   fontSize: 53,
   fontSizePercent: 100,
+  wrapWidthPercent: 55,
   rubyEnabled: true,
   rubyDistance: 6,
   vrchatChatboxEnabled: false,

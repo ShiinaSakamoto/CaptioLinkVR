@@ -34,6 +34,10 @@ export const SubtitlePreview = ({ activeText, settings, placeholder = ui.preview
   );
   const previewStyle = useMemo(() => {
     const textOpacityFactor = calcTextOpacityFactor(settings.textOpacityPercent);
+    const wrapPercent = Math.min(
+      100,
+      Math.max(30, Number(settings.wrapWidthPercent ?? DEFAULT_RENDER_SETTINGS.wrapWidthPercent) || 55),
+    );
     return {
     color: hexToRgba(settings.textColor, textOpacityFactor),
     WebkitTextStroke: settings.outlineEnabled
@@ -53,6 +57,9 @@ export const SubtitlePreview = ({ activeText, settings, placeholder = ui.preview
     padding: settings.backgroundEnabled ? `${settings.backgroundPadding / 4}px ${settings.backgroundPadding / 2}px` : 0,
     transform: `translate(${settings.textOffsetX / 4}px, ${settings.textOffsetY / 4}px)`,
     "--ruby-distance": `${rubyDistancePx}px`,
+    // VRの wrapWidthPercent に近づけたプレビュー幅（禁則位置までは一致しない）。
+    width: `min(max-content, ${wrapPercent}%)`,
+    maxWidth: `${wrapPercent}%`,
     };
   }, [
     rubyDistancePx,
@@ -70,6 +77,7 @@ export const SubtitlePreview = ({ activeText, settings, placeholder = ui.preview
     settings.textColor,
     settings.textOffsetX,
     settings.textOffsetY,
+    settings.wrapWidthPercent,
   ]);
 
   return (

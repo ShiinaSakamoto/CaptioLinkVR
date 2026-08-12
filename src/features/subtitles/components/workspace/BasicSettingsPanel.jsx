@@ -104,6 +104,18 @@ export const BasicSettingsPanel = memo(() => {
             onReset={() => updateSetting("fontSizePercent", DEFAULT_RENDER_SETTINGS.fontSizePercent)}
             tooltipKey="vr-font-size"
           />
+          <ValueSteppedControl
+            settingKey="wrapWidthPercent"
+            label={ui.wrapWidth(settings.wrapWidthPercent)}
+            description={ui.wrapWidthDescription}
+            value={settings.wrapWidthPercent}
+            min="30"
+            max="100"
+            step="5"
+            onChange={(value) => updateSetting("wrapWidthPercent", value)}
+            onReset={() => updateSetting("wrapWidthPercent", DEFAULT_RENDER_SETTINGS.wrapWidthPercent)}
+            tooltipKey="vr-wrap-width"
+          />
           <div className={styles.controlAxisBlock}>
             <div className={styles.innerTabs} role="tablist" aria-label="位置と回転">
               <button

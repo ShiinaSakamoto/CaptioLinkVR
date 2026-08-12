@@ -8,7 +8,9 @@ mod geometry;
 mod layout;
 mod mask;
 mod scale;
+mod text_line;
 mod types;
+mod wrap;
 
 use blend::composite_mask_shifted;
 use color::{parse_hex_rgb, scale_text_alpha};

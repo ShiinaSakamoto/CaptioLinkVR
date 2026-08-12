@@ -14,6 +14,7 @@ const settings = {
   overlayWidthMeters: 1.45,
   fontSize: 96,
   fontSizePercent: 100,
+  wrapWidthPercent: 55,
   rubyEnabled: true,
   rubyDistance: 10,
   textOffsetX: 0,
