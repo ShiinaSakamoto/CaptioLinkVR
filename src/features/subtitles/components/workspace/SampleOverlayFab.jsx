@@ -7,6 +7,7 @@ import {
 } from "../../../../stores/subtitleStore.js";
 import { SubtitleTestIcon, SubtitleTestStopIcon } from "../../../../shared/icons/index.jsx";
 import { ui } from "../../../../shared/uiText.js";
+import { getActiveSampleTimerId } from "../../utils/sampleOverlayTimer.js";
 import styles from "../SubtitleWorkspace.module.scss";
 
 /** 閉じた状態を見せてから展開するまでの待ち（1フレーム潰し防止） */
@@ -53,7 +54,7 @@ export const SampleOverlayFab = memo(({ onToggle }) => {
 
   if (!visible) return null;
 
-  const running = Boolean(timers.sampleTimerId);
+  const running = Boolean(timers.sampleTimerId) || getActiveSampleTimerId() != null;
   const steamVrWaiting = !overlayStatus.connected;
   const label = running ? ui.stopSample : ui.sendSample;
   // 送信中はホバー解除と同様に縮めない

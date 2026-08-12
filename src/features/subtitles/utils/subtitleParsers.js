@@ -16,10 +16,21 @@ export const parseSrtTime = (timeString) => {
   return hours * 3600 + minutes * 60 + seconds + Number(ms.padEnd(3, "0")) / 1000;
 };
 
-// ASS形式の時刻（0:00:00.00）を秒へ変換する。
+// ASS形式の時刻（H:MM:SS.cc）を秒へ変換する。
+// 浮動小数の丸め誤差で境界判定がずれないよう、センチ秒整数経由で求める。
 export const parseAssTime = (timeString) => {
-  const [hours = 0, minutes = 0, seconds = 0] = timeString.trim().split(":").map(Number);
-  return hours * 3600 + minutes * 60 + seconds;
+  const match = /^(\d+):(\d+):(\d+)(?:\.(\d{1,2}))?$/.exec(timeString.trim());
+  if (!match) {
+    const [hours = 0, minutes = 0, seconds = 0] = timeString.trim().split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const seconds = Number(match[3]);
+  const centiseconds = Number((match[4] ?? "0").padEnd(2, "0").slice(0, 2));
+  const totalCentiseconds = ((hours * 60 + minutes) * 60 + seconds) * 100 + centiseconds;
+  return totalCentiseconds / 100;
 };
 
 // SRTファイルをキュー配列へ変換する。壊れたブロックは読み飛ばす。
