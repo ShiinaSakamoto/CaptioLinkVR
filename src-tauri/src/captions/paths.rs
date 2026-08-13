@@ -7,12 +7,12 @@ use crate::portable::paths;
 use super::layout;
 
 /// 同梱字幕プリセットのルートディレクトリを解決する。
+///
+/// debug ではワークスペースの `captions/` を優先する。
+/// Tauri の resource コピーは削除ファイルを残すことがあり、
+/// 無いはずの画像が target 側に残って誤表示されるのを防ぐ。
 pub fn captions_root(app: &AppHandle) -> Result<PathBuf, String> {
-    let candidates = [
-        resolve_resource_captions_dir(),
-        resolve_tauri_resource_captions_dir(app),
-        resolve_workspace_captions_dir(),
-    ];
+    let candidates = caption_root_candidates(app);
 
     for candidate in candidates.into_iter().flatten() {
         if candidate.join(layout::CATALOG_FILE).is_file() {
@@ -21,6 +21,22 @@ pub fn captions_root(app: &AppHandle) -> Result<PathBuf, String> {
     }
 
     Err("caption presets directory was not found".to_string())
+}
+
+fn caption_root_candidates(app: &AppHandle) -> [Option<PathBuf>; 3] {
+    if cfg!(debug_assertions) {
+        [
+            resolve_workspace_captions_dir(),
+            resolve_resource_captions_dir(),
+            resolve_tauri_resource_captions_dir(app),
+        ]
+    } else {
+        [
+            resolve_resource_captions_dir(),
+            resolve_tauri_resource_captions_dir(app),
+            resolve_workspace_captions_dir(),
+        ]
+    }
 }
 
 pub fn preset_dir(root: &Path, preset_id: &str) -> Result<PathBuf, String> {

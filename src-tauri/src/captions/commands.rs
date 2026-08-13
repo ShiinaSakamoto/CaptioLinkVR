@@ -1,7 +1,9 @@
 use tauri::AppHandle;
 
 use super::catalog;
-use super::types::{CaptionPresetMeta, CaptionPresetSubtitle, CaptionPresetSummary};
+use super::types::{
+    CaptionPresetMeta, CaptionPresetStartTrigger, CaptionPresetSubtitle, CaptionPresetSummary,
+};
 
 #[tauri::command]
 pub fn list_caption_presets(app: AppHandle) -> Result<Vec<CaptionPresetSummary>, String> {
@@ -19,4 +21,12 @@ pub fn read_caption_preset_subtitle(
     preset_id: String,
 ) -> Result<CaptionPresetSubtitle, String> {
     catalog::read_preset_subtitle(&app, &preset_id)
+}
+
+#[tauri::command]
+pub fn read_caption_preset_start_trigger(
+    app: AppHandle,
+    preset_id: String,
+) -> Result<Option<CaptionPresetStartTrigger>, String> {
+    catalog::read_preset_start_trigger(&app, &preset_id)
 }
