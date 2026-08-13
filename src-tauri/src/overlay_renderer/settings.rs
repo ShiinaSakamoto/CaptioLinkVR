@@ -61,7 +61,7 @@ impl Default for RenderSettings {
             overlay_width_meters: 1.45,
             font_size: 53,
             font_size_percent: 100,
-            wrap_width_percent: 55,
+            wrap_width_percent: 80,
             ruby_enabled: true,
             ruby_distance: 6,
             vrchat_chatbox_enabled: false,
@@ -125,7 +125,7 @@ mod tests {
         assert_eq!(settings.max_texture_height, 4096);
         assert_eq!(settings.font_size, 53);
         assert_eq!(settings.font_size_percent, 100);
-        assert_eq!(settings.wrap_width_percent, 55);
+        assert_eq!(settings.wrap_width_percent, 80);
         assert_eq!(settings.text_opacity_percent, 100);
         assert_eq!(settings.background_opacity_percent, 90);
         assert_eq!(settings.ruby_distance, 6);

@@ -36,7 +36,7 @@ export const SubtitlePreview = ({ activeText, settings, placeholder = ui.preview
     const textOpacityFactor = calcTextOpacityFactor(settings.textOpacityPercent);
     const wrapPercent = Math.min(
       100,
-      Math.max(30, Number(settings.wrapWidthPercent ?? DEFAULT_RENDER_SETTINGS.wrapWidthPercent) || 55),
+      Math.max(30, Number(settings.wrapWidthPercent ?? DEFAULT_RENDER_SETTINGS.wrapWidthPercent) || 80),
     );
     return {
     color: hexToRgba(settings.textColor, textOpacityFactor),
