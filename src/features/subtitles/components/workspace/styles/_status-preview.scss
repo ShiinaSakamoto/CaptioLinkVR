@@ -123,8 +123,8 @@
   position: relative;
   display: grid;
   width: 100%;
+  height: 9rem;
   min-width: 0;
-  min-height: 9rem;
   place-items: center;
   overflow: hidden;
   border: 1px solid rgba($primary, 0.16);
@@ -177,18 +177,20 @@
 .captionText,
 .captionPlaceholder {
   box-sizing: border-box;
-  width: min(max-content, 90%);
-  max-width: 90%;
+  width: min(max-content, 80%);
+  max-width: 80%;
   min-width: 0;
   margin: 0;
   font-family: "Noto Sans JP", sans-serif;
   text-align: center;
+  // 折返し位置は previewTextWrap（VR禁則）が \n で入れる。CSSの任意折返しはしない。
   white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: keep-all;
 }
 
 .captionText {
-  font-size: 2.4rem;
+  font-size: 1.6rem;
   font-weight: 400;
   line-height: 1.2;
   border-radius: 4px;

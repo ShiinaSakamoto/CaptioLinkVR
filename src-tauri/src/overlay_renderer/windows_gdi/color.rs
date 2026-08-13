@@ -30,7 +30,10 @@ pub(super) fn parse_hex_rgb(value: &str) -> Option<[u8; 3]> {
 mod tests {
     use super::*;
 
-    fn settings_with_opacity(text_opacity_percent: u32, background_opacity_percent: u32) -> RenderSettings {
+    fn settings_with_opacity(
+        text_opacity_percent: u32,
+        background_opacity_percent: u32,
+    ) -> RenderSettings {
         RenderSettings {
             text_opacity_percent,
             background_opacity_percent,

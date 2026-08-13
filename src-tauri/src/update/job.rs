@@ -27,12 +27,8 @@ pub fn write_update_job(root: &Path, manifest: UpdateManifest) -> Result<PathBuf
     };
     let job_json = serde_json::to_string_pretty(&job)
         .map_err(|error| format!("failed to serialize update job: {error}"))?;
-    fs::write(&job_path, job_json).map_err(|error| {
-        format!(
-            "failed to write update job {}: {error}",
-            job_path.display()
-        )
-    })?;
+    fs::write(&job_path, job_json)
+        .map_err(|error| format!("failed to write update job {}: {error}", job_path.display()))?;
 
     Ok(job_path)
 }

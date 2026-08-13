@@ -12,6 +12,7 @@ pub struct UpdateInfo {
     url: String,
     sha256: String,
     size: Option<u64>,
+    notes: Option<String>,
 }
 
 /// ビルド時に package.json から埋め込んだ現在バージョンを返す。
@@ -32,20 +33,21 @@ pub fn check_for_updates() -> Result<Option<UpdateInfo>, String> {
     }
 
     // リリースが未公開ならエラーにせず「更新なし」として扱う。
-    let Some(manifest) = fetch_latest_manifest(owner, repo)? else {
+    let Some(latest) = fetch_latest_manifest(owner, repo)? else {
         return Ok(None);
     };
 
-    if !is_newer_version(&current_version, &manifest.version) {
+    if !is_newer_version(&current_version, &latest.manifest.version) {
         return Ok(None);
     }
 
     Ok(Some(UpdateInfo {
-        version: manifest.version,
+        version: latest.manifest.version,
         current_version,
-        url: manifest.url,
-        sha256: manifest.sha256,
-        size: manifest.size,
+        url: latest.manifest.url,
+        sha256: latest.manifest.sha256,
+        size: latest.manifest.size,
+        notes: latest.notes,
     }))
 }
 

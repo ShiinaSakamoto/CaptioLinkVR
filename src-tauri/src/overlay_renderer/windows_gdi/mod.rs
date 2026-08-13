@@ -8,7 +8,9 @@ mod geometry;
 mod layout;
 mod mask;
 mod scale;
+mod text_line;
 mod types;
+mod wrap;
 
 use blend::composite_mask_shifted;
 use color::{parse_hex_rgb, scale_text_alpha};
@@ -81,14 +83,7 @@ pub fn render_subtitle_frame(
         .unwrap_or(text_rect);
 
     if settings.background_enabled {
-        draw_text_background(
-            &mut pixels,
-            width,
-            height,
-            ink_bounds,
-            settings,
-            scale,
-        );
+        draw_text_background(&mut pixels, width, height, ink_bounds, settings, scale);
     }
 
     let text_color = parse_hex_rgb(&settings.text_color).unwrap_or([255, 255, 255]);
@@ -373,11 +368,9 @@ mod integration_tests {
         };
 
         // 2行目の下ルビがテクスチャ下端で欠けないこと。
-        let frame = super::render_subtitle_frame(
-            "{位置|いち}を確認\n{文字|もじ}も下ルビ",
-            &settings,
-        )
-        .expect("render");
+        let frame =
+            super::render_subtitle_frame("{位置|いち}を確認\n{文字|もじ}も下ルビ", &settings)
+                .expect("render");
 
         let stride = frame.width as usize * 4;
         let mut min_y = frame.height as i32;

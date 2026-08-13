@@ -11,3 +11,7 @@ export const getCaptionPresetMeta = async (presetId) => {
 export const readCaptionPresetSubtitle = async (presetId) => {
   return invoke("read_caption_preset_subtitle", { presetId });
 };
+
+export const readCaptionPresetStartTrigger = async (presetId) => {
+  return invoke("read_caption_preset_start_trigger", { presetId });
+};

@@ -12,12 +12,12 @@
   },
   "usage": {
     "summary": "進んだ先にある白い光の玉をUseすると、演出が始まります。",
-    "startTiming": "カウントダウンの「00:00 スタート！」と同時に白い光の玉をUseしてください。"
+    "startTiming": "字幕カウントダウンの「00:00 スタート！」と同時に白い光の玉をUseしてください。"
   },
   "recommendedPlayback": {
     "mode": "countdown"
   },
-  "verifiedAt": "2026-07-13",
+  "verifiedAt": "2026-08-12",
   "links": {
   }
 }

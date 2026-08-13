@@ -1,5 +1,5 @@
-pub mod frame;
 mod font_path;
+pub mod frame;
 pub mod metrics;
 mod ruby;
 pub mod settings;

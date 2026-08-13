@@ -1,13 +1,13 @@
+use super::super::ruby::parse_text_lines;
+use super::super::settings::RenderSettings;
 use super::gdi::{GdiFont, TextMeasurer};
 use super::scale::{
     calc_body_line_height, calc_ruby_font_size, effective_font_size, max_texture_dimension,
     scale_i32, scale_u32,
 };
-use super::super::ruby::{parse_text_lines, ParsedLine, ParsedSegment};
-use super::super::settings::RenderSettings;
+use super::wrap::{content_wrap_width, wrap_parsed_line};
 
-/// ルビ自然幅を本文幅へ寄せる割合（1.0で完全一致。完全には広げない）。
-const RUBY_WIDTH_BLEND_TOWARD_BASE: f32 = 0.75;
+pub(super) use super::text_line::{TextLine, TextSegment};
 
 pub(super) struct TextLayout {
     pub(super) font_size: u32,
@@ -26,28 +26,11 @@ pub(super) struct TextLayout {
     pub(super) block_height: u32,
 }
 
-pub(super) struct TextLine {
-    pub(super) segments: Vec<TextSegment>,
-    pub(super) width: i32,
-}
-
-pub(super) enum TextSegment {
-    Plain {
-        text: String,
-        width: i32,
-    },
-    Ruby {
-        base: String,
-        ruby: String,
-        base_width: i32,
-        ruby_width: i32,
-        /// 描画時にルビを広げる目標幅（自然幅〜本文幅の間）。
-        ruby_draw_width: i32,
-        width: i32,
-    },
-}
-
-pub(super) fn calculate_texture_width(settings: &RenderSettings, scale: f32, layout: &TextLayout) -> u32 {
+pub(super) fn calculate_texture_width(
+    settings: &RenderSettings,
+    scale: f32,
+    layout: &TextLayout,
+) -> u32 {
     let min_width = scale_u32(settings.width, scale);
     let max_width = max_texture_dimension(settings.max_texture_width);
     let max_line_width = layout.widths.iter().copied().max().unwrap_or(0).max(0) as u32;
@@ -108,6 +91,7 @@ pub(super) fn texture_height_for_block(
         .saturating_add(vertical_margin.saturating_mul(2))
         .saturating_add(offset_margin)
 }
+
 pub(super) fn horizontal_effect_margin(settings: &RenderSettings, scale: f32) -> u32 {
     let mut margin = 8_u32;
     if settings.background_enabled {
@@ -139,7 +123,7 @@ pub(super) fn calculate_text_layout(
     scale: f32,
 ) -> Result<TextLayout, String> {
     // フォントサイズは設定値のみ。テクスチャ上限に合わせて縮小しない。
-    // 長い行は最大テクスチャ幅まで広げ、それでも足りなければ折り返す。
+    // 長い行は wrapWidthPercent で決まる幅まで広げ、それでも足りなければ禁則付きで折り返す。
     // VR 見かけの文字サイズは frame_width_meters がテクスチャ幅に比例して保つ。
     let font_size = effective_font_size(settings, scale);
     let parsed_lines = parse_text_lines(text, settings.ruby_enabled);
@@ -163,8 +147,8 @@ pub(super) fn calculate_text_layout(
     let body_line_height = calc_body_line_height(font_size);
     let padding_x = 96_u32.max((font_size as f32 * 1.8).round() as u32);
     let padding_y = 72_u32.max((font_size as f32 * 1.4).round() as u32);
-    let wrap_width = available_content_width(settings, scale, padding_x)
-        .max(font_size.max(1)) as i32;
+    let hard_content_width = available_content_width(settings, scale, padding_x);
+    let wrap_width = content_wrap_width(hard_content_width, settings.wrap_width_percent, font_size);
 
     let mut lines = Vec::new();
     for parsed in &parsed_lines {
@@ -219,22 +203,22 @@ pub(super) fn optical_ruby_extra_below(base: &GdiFont, ruby: &GdiFont, ruby_dist
 }
 
 /// base_top から見て、ルビセル上端をどれだけ上に置くか（正の値）。
-pub(super) fn optical_ruby_gap_above_base(base: &GdiFont, ruby: &GdiFont, ruby_distance: u32) -> i32 {
-    // ルビ実インク下端 = ruby_top + (ruby.height - ruby.bottom_bearing)
-    // 本文実インク上端 = base_top + base.top_bearing
-    // 距離0なら両者が接する:
-    // ruby_top = base_top + base.top_bearing - (ruby.height - ruby.bottom_bearing)
+pub(super) fn optical_ruby_gap_above_base(
+    base: &GdiFont,
+    ruby: &GdiFont,
+    ruby_distance: u32,
+) -> i32 {
     let ruby_to_ink_bottom = ruby.height - ruby.bottom_bearing;
     let gap = ruby_to_ink_bottom - base.top_bearing + ruby_distance as i32;
     gap.max(ruby.ink_height().max(1) / 2)
 }
 
 /// base_top から見て、下ルビのセル上端をどれだけ下に置くか（正の値）。
-pub(super) fn optical_ruby_gap_below_base(base: &GdiFont, ruby: &GdiFont, ruby_distance: u32) -> i32 {
-    // 本文実インク下端 = base_top + (base.height - base.bottom_bearing)
-    // ルビ実インク上端 = ruby_top + ruby.top_bearing
-    // 距離0なら両者が接する:
-    // ruby_top = base_top + (base.height - base.bottom_bearing) - ruby.top_bearing
+pub(super) fn optical_ruby_gap_below_base(
+    base: &GdiFont,
+    ruby: &GdiFont,
+    ruby_distance: u32,
+) -> i32 {
     let base_to_ink_bottom = base.height - base.bottom_bearing;
     let gap = base_to_ink_bottom - ruby.top_bearing + ruby_distance as i32;
     gap.max(ruby.ink_height().max(1) / 2)
@@ -277,7 +261,6 @@ pub(super) fn base_top_for_line(
     let line_count = line_count.max(1);
     for index in 1..=line_index {
         y += body_line_height as i32;
-        // この行が上ルビなら、本文の手前に上ルビ帯を足す。
         if !line_uses_ruby_below(index, line_count) {
             y += ruby_above_extra as i32;
         }
@@ -285,20 +268,12 @@ pub(super) fn base_top_for_line(
     y
 }
 
-/// ルビの描画幅。自然幅が本文より短いとき、本文幅へある程度寄せる。
-pub(super) fn expanded_ruby_draw_width(ruby_width: i32, base_width: i32) -> i32 {
-    if ruby_width <= 0 {
-        return 0;
-    }
-    if ruby_width >= base_width {
-        return ruby_width;
-    }
-    let delta = base_width - ruby_width;
-    ruby_width + ((delta as f32) * RUBY_WIDTH_BLEND_TOWARD_BASE).round() as i32
-}
-
-/// テクスチャ最大幅から余白を除いた、1行に載せられる本文幅。
-pub(super) fn available_content_width(settings: &RenderSettings, scale: f32, padding_x: u32) -> u32 {
+/// テクスチャ最大幅から余白を除いた、1行に載せられる本文幅（ハード上限）。
+pub(super) fn available_content_width(
+    settings: &RenderSettings,
+    scale: f32,
+    padding_x: u32,
+) -> u32 {
     let max_width = max_texture_dimension(settings.max_texture_width);
     let side_margin = padding_x.saturating_add(horizontal_effect_margin(settings, scale));
     let offset_margin = scale_i32(settings.text_offset_x, scale)
@@ -310,111 +285,15 @@ pub(super) fn available_content_width(settings: &RenderSettings, scale: f32, pad
         .max(1)
 }
 
-/// 明示改行後の1行を、wrap_width を超えないよう必要なら複数行へ分割する。
-/// ルビセグメントは分割せず、平文は文字単位で折り返す。
-pub(super) fn wrap_parsed_line(
-    line: &ParsedLine,
-    wrap_width: i32,
-    measurer: &mut TextMeasurer,
-    ruby_measurer: &mut TextMeasurer,
-) -> Result<Vec<TextLine>, String> {
-    let wrap_width = wrap_width.max(1);
-    let mut lines = Vec::new();
-    let mut current_segments = Vec::new();
-    let mut current_width = 0_i32;
-
-    let flush_line = |segments: &mut Vec<TextSegment>,
-                      width: &mut i32,
-                      lines: &mut Vec<TextLine>| {
-        if segments.is_empty() {
-            return;
-        }
-        lines.push(TextLine {
-            segments: std::mem::take(segments),
-            width: *width,
-        });
-        *width = 0;
-    };
-
-    for segment in &line.segments {
-        match segment {
-            ParsedSegment::Plain(text) => {
-                for ch in text.chars() {
-                    let piece = ch.to_string();
-                    let piece_width = measurer.measure_width(&piece)?;
-                    if current_width > 0 && current_width + piece_width > wrap_width {
-                        flush_line(&mut current_segments, &mut current_width, &mut lines);
-                    }
-                    match current_segments.last_mut() {
-                        Some(TextSegment::Plain {
-                            text: plain,
-                            width,
-                        }) => {
-                            plain.push(ch);
-                            *width += piece_width;
-                        }
-                        _ => {
-                            current_segments.push(TextSegment::Plain {
-                                text: piece,
-                                width: piece_width,
-                            });
-                        }
-                    }
-                    current_width += piece_width;
-                }
-            }
-            ParsedSegment::Ruby { base, ruby } => {
-                let base_width = measurer.measure_width(base)?;
-                let ruby_width = ruby_measurer.measure_width(ruby)?;
-                let ruby_draw_width = expanded_ruby_draw_width(ruby_width, base_width);
-                let width = base_width.max(ruby_draw_width);
-                if current_width > 0 && current_width + width > wrap_width {
-                    flush_line(&mut current_segments, &mut current_width, &mut lines);
-                }
-                current_segments.push(TextSegment::Ruby {
-                    base: base.clone(),
-                    ruby: ruby.clone(),
-                    base_width,
-                    ruby_width,
-                    ruby_draw_width,
-                    width,
-                });
-                current_width += width;
-            }
-        }
-    }
-
-    flush_line(&mut current_segments, &mut current_width, &mut lines);
-
-    // 空行（ASS の連続改行など）は行高さを残す。
-    if lines.is_empty() {
-        lines.push(TextLine {
-            segments: Vec::new(),
-            width: 0,
-        });
-    }
-
-    Ok(lines)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn expanded_ruby_draw_width_blends_toward_base() {
-        assert_eq!(expanded_ruby_draw_width(40, 100), 40 + ((60.0_f32 * 0.75).round() as i32));
-        assert_eq!(expanded_ruby_draw_width(100, 80), 100);
-        assert_eq!(expanded_ruby_draw_width(0, 80), 0);
-    }
-
-    #[test]
     fn base_top_for_line_keeps_above_bands_until_last_line() {
-        // 3行: 0,1 は上 / 2 は下。行1の手前に上ルビ帯が入る。
         assert_eq!(base_top_for_line(100, 0, 120, 40, 3), 100);
         assert_eq!(base_top_for_line(100, 1, 120, 40, 3), 260);
         assert_eq!(base_top_for_line(100, 2, 120, 40, 3), 380);
-        // 2行: 最終行手前に上ルビ帯は不要。
         assert_eq!(base_top_for_line(100, 1, 120, 40, 2), 220);
     }
 
@@ -424,5 +303,32 @@ mod tests {
         assert!(!line_uses_ruby_below(0, 3));
         assert!(!line_uses_ruby_below(1, 3));
         assert!(line_uses_ruby_below(2, 3));
+    }
+
+    #[test]
+    fn lower_wrap_percent_does_not_change_short_line_texture_floor() {
+        // 短い本文では wrap 幅に届かないため、テクスチャ幅の下限ロジックは従来どおり。
+        let mut wide = RenderSettings::default();
+        wide.wrap_width_percent = 100;
+        let mut narrow = RenderSettings::default();
+        narrow.wrap_width_percent = 40;
+
+        let scale = 1.0;
+        let padding_x = 96;
+        assert_eq!(
+            available_content_width(&wide, scale, padding_x),
+            available_content_width(&narrow, scale, padding_x)
+        );
+        assert!(
+            content_wrap_width(
+                available_content_width(&narrow, scale, padding_x),
+                narrow.wrap_width_percent,
+                53
+            ) < content_wrap_width(
+                available_content_width(&wide, scale, padding_x),
+                wide.wrap_width_percent,
+                53
+            )
+        );
     }
 }

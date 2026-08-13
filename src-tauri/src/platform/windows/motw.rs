@@ -22,8 +22,10 @@ pub fn unblock_portable_executables(root: &Path) {
     let candidates = [
         root.join(layout::LAUNCHER_EXE),
         root.join(layout::MAINTENANCE_DIR).join(layout::APPLY_EXE),
-        root.join(layout::MAINTENANCE_DIR).join(layout::LEGACY_APPLY_EXE),
-        root.join(layout::MAINTENANCE_DIR).join(layout::APPLY_PENDING_EXE),
+        root.join(layout::MAINTENANCE_DIR)
+            .join(layout::LEGACY_APPLY_EXE),
+        root.join(layout::MAINTENANCE_DIR)
+            .join(layout::APPLY_PENDING_EXE),
         root.join(layout::RESOURCE_DIR).join(layout::APP_EXE),
     ];
 

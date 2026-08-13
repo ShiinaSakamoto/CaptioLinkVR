@@ -7,6 +7,7 @@ export const STANDALONE_STYLE_SETTING_KEYS = ["textColor", "textOpacityPercent"]
 // 見せているが、Visual QAは元の renderSettingsAtom のキーを直接動かせばよい。
 export const BASIC_ADJUSTABLE_SETTING_KEYS = [
   "fontSizePercent",
+  "wrapWidthPercent",
   "renderScale",
   "positionX",
   "positionY",

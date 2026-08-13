@@ -15,7 +15,12 @@ pub(super) struct TextMask {
 }
 
 impl TextMask {
-    pub(super) fn new(width: u32, height: u32, font_size: u32, ruby_font_size: u32) -> Result<Self, String> {
+    pub(super) fn new(
+        width: u32,
+        height: u32,
+        font_size: u32,
+        ruby_font_size: u32,
+    ) -> Result<Self, String> {
         let dib = DibSection::new(width, height)?;
         let font = GdiFont::new(font_size)?;
         let ruby_font = GdiFont::new(ruby_font_size)?;
@@ -171,14 +176,25 @@ impl TextMask {
             cursor += piece_width;
             if index + 1 < chars.len() {
                 // 余りは先頭ギャップから配る。
-                let pad = extra / gaps + if index < (extra % gaps) as usize { 1 } else { 0 };
+                let pad = extra / gaps
+                    + if index < (extra % gaps) as usize {
+                        1
+                    } else {
+                        0
+                    };
                 cursor += pad;
             }
         }
         Ok(())
     }
 
-    pub(super) fn draw_text(&self, font: &GdiFont, x: i32, y: i32, text: &str) -> Result<(), String> {
+    pub(super) fn draw_text(
+        &self,
+        font: &GdiFont,
+        x: i32,
+        y: i32,
+        text: &str,
+    ) -> Result<(), String> {
         if text.is_empty() {
             return Ok(());
         }

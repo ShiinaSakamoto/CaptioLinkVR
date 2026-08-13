@@ -23,9 +23,18 @@ pub struct UpdateManifest {
     pub size: Option<u64>,
 }
 
+/// 最新リリースの更新パッケージ情報と、UI 表示用のリリースノート。
+#[derive(Debug, Clone)]
+pub struct LatestUpdate {
+    pub manifest: UpdateManifest,
+    pub notes: Option<String>,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 struct GithubRelease {
     tag_name: String,
+    #[serde(default)]
+    body: Option<String>,
     assets: Vec<GithubAsset>,
 }
 
@@ -58,12 +67,12 @@ fn parse_version(value: &str) -> Vec<u64> {
         .collect()
 }
 
-/// 公開リポジトリの最新リリースから manifest.json を取得する。
+/// 公開リポジトリの最新リリースから manifest.json とリリースノートを取得する。
 /// 公開リポジトリのため認証は不要（未認証のGitHub APIはIPあたり60回/時の制限がある）。
 ///
 /// リリースがまだ公開されていない場合はエラーではなく `Ok(None)` を返す。
 /// 公開直後でリリース0件のときに、起動ごとエラー表示になるのを避けるため。
-pub fn fetch_latest_manifest(owner: &str, repo: &str) -> Result<Option<UpdateManifest>, String> {
+pub fn fetch_latest_manifest(owner: &str, repo: &str) -> Result<Option<LatestUpdate>, String> {
     let owner = owner.trim();
     let repo = repo.trim();
     if owner.is_empty() {
@@ -112,7 +121,52 @@ pub fn fetch_latest_manifest(owner: &str, repo: &str) -> Result<Option<UpdateMan
     // 更新候補としてUIへ返す前に配布元を検証し、不正なURLの manifest は弾く。
     validate_download_url(&manifest.url)?;
 
-    Ok(Some(manifest))
+    Ok(Some(LatestUpdate {
+        manifest,
+        notes: normalize_release_notes(release.body.as_deref()),
+    }))
+}
+
+fn normalize_release_notes(body: Option<&str>) -> Option<String> {
+    let trimmed = body?.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+
+    // bump テンプレの HTML コメントを落としてから表示する
+    let without_comments = strip_html_comments(trimmed);
+    let cleaned = without_comments
+        .lines()
+        .map(str::trim_end)
+        .collect::<Vec<_>>()
+        .join("\n")
+        .trim()
+        .to_string();
+
+    if cleaned.is_empty() {
+        None
+    } else {
+        Some(cleaned)
+    }
+}
+
+fn strip_html_comments(input: &str) -> String {
+    let mut out = String::with_capacity(input.len());
+    let mut rest = input;
+    while let Some(start) = rest.find("<!--") {
+        out.push_str(&rest[..start]);
+        match rest[start + 4..].find("-->") {
+            Some(end) => {
+                rest = &rest[start + 4 + end + 3..];
+            }
+            None => {
+                // 閉じが無ければ残りは捨てる（コメント開始以降を表示しない）
+                return out;
+            }
+        }
+    }
+    out.push_str(rest);
+    out
 }
 
 /// 更新パッケージ本体を取得する。配布元ホストを検証してから要求する。
@@ -222,22 +276,42 @@ mod tests {
     #[test]
     fn parses_github_release_asset_snake_case_fields() {
         let release: GithubRelease = serde_json::from_str(
-            r#"{
+            r###"{
               "tag_name": "v0.2.2",
+              "body": "## Changes\n\n- improve subtitle wrap\n",
               "assets": [
                 {
                   "name": "manifest.json",
                   "browser_download_url": "https://github.com/owner/repo/releases/download/v0.2.2/manifest.json"
                 }
               ]
-            }"#,
+            }"###,
         )
         .expect("GitHub release JSON should deserialize");
 
         assert_eq!(release.tag_name, "v0.2.2");
+        assert_eq!(
+            release.body.as_deref(),
+            Some("## Changes\n\n- improve subtitle wrap\n")
+        );
         assert_eq!(release.assets[0].name, "manifest.json");
         assert!(release.assets[0]
             .browser_download_url
             .ends_with("/manifest.json"));
+    }
+
+    #[test]
+    fn normalizes_blank_release_notes_to_none() {
+        assert_eq!(normalize_release_notes(None), None);
+        assert_eq!(normalize_release_notes(Some("")), None);
+        assert_eq!(normalize_release_notes(Some("  \n  ")), None);
+        assert_eq!(
+            normalize_release_notes(Some("  - fix overlay\n")),
+            Some("- fix overlay".to_string())
+        );
+        assert_eq!(
+            normalize_release_notes(Some("## 変更内容\n\n- fix\n\n<!-- edit before push -->\n")),
+            Some("## 変更内容\n\n- fix".to_string())
+        );
     }
 }

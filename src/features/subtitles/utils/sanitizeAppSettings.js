@@ -26,6 +26,7 @@ export const SETTINGS_FIELD_LABELS = {
   overlayWidthMeters: "オーバーレイ幅",
   fontSize: "フォントサイズ基準",
   fontSizePercent: "字幕サイズ",
+  wrapWidthPercent: "折り返し幅",
   rubyEnabled: "ルビ",
   rubyDistance: "本文とのルビの距離",
   vrchatChatboxEnabled: "VRChatチャットボックスにも送信",
@@ -89,6 +90,7 @@ const FIELD_VALIDATORS = {
     return num === DEFAULT_RENDER_SETTINGS.fontSize ? num : null;
   },
   fontSizePercent: (value) => acceptNumber(value, 50, 200, { integer: true }),
+  wrapWidthPercent: (value) => acceptNumber(value, 30, 100, { integer: true }),
   rubyEnabled: (value) => (isBool(value) ? value : null),
   rubyDistance: (value) => acceptNumber(value, 0, 50, { integer: true }),
   vrchatChatboxEnabled: (value) => (isBool(value) ? value : null),

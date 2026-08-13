@@ -79,3 +79,12 @@ pub struct CaptionPresetSubtitle {
     pub file_name: String,
     pub content: String,
 }
+
+/// 開始操作案内画像。無いプリセットではコマンドが null を返す。
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CaptionPresetStartTrigger {
+    pub id: String,
+    pub file_name: String,
+    pub data_url: String,
+}

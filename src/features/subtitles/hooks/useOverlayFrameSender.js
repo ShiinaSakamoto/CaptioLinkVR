@@ -62,6 +62,7 @@ export const useOverlayFrameSender = () => {
       settings.overlayWidthMeters,
       settings.fontSize,
       settings.fontSizePercent,
+      settings.wrapWidthPercent,
       settings.rubyEnabled,
       settings.rubyDistance,
       settings.textOffsetX,

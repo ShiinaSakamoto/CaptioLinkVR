@@ -18,9 +18,7 @@ export const ui = {
   affiliationOf: "Affiliation",
   footerNoteLabel: "From the maker",
   footerNoteBody:
-    "字幕表示プロジェクトは、ワールド制作者様、および台詞・楽曲制作者様のご協力のもと、無償・非営利で運営されています。プリセット字幕データの著作権は本プロジェクトにはなく、それぞれの制作者様に帰属します。",
-  footerWorldsCta: "字幕対応ワールドの相談・募集",
-  openWorldsForm: "字幕対応ワールドの相談・募集を開く",
+    "字幕表示プロジェクトは、ワールド制作者様、および台詞・楽曲制作者様のご協力のもと、無償・非営利で運営されています。プリセット字幕データの著作権は本プロジェクトにはなく、それぞれの制作者様に帰属します。\n何かございましたら各種制作者様へのお問い合わせは避け、本プロジェクト責任者（Shiina Sakamoto）まで直接ご連絡をお願いいたします。",
   openX: "X（旧Twitter）を開く",
   openGitHub: "GitHubリポジトリを開く",
   booth: "Booth",
@@ -47,6 +45,9 @@ export const ui = {
   position: "位置",
   rotation: "回転",
   textSize: (percent) => `字幕サイズ（ ${percent}% ）`,
+  wrapWidth: (percent) => `折り返し幅（ ${percent}% ）`,
+  wrapWidthDescription:
+    "長い字幕を自動で折り返す幅です。小さくするほど視界内に収まりやすく、大きくするほど1行が長くなります。",
   subtitleQuality: (scale) => `字幕画質（ ${parseFloat(Number(scale).toFixed(2))}倍 ）`,
   subtitleQualityDescription:
     "基準の描画倍率です。距離に応じて解像度を自動加減し、遠いときは負荷を抑えつつ見た目の画質を保ちます。",
@@ -91,9 +92,10 @@ export const ui = {
   stopSample: "字幕テスト停止",
   sampleTexts: [
     "字幕の{表示|ひょうじ}テストです。",
-    "{位置|いち}や{文字色|もじしょく}などを確認してください。",
-    "この{表示|ひょうじ}はサンプルです。\n改行した{字幕|じまく}が表示されることもあります。",
-    "この{表示|ひょうじ}はサンプルです。\n改行した{字幕|じまく}が表示されることもあります。",
+    "もし見にくければ、{位置|いち}や{文字色|もじしょく}などを確認しながら、VR設定や字幕スタイルを{調節|ちょうせつ}してください。",
+    "もし見にくければ、{位置|いち}や{文字色|もじしょく}などを確認しながら、VR設定や字幕スタイルを{調節|ちょうせつ}してください。",
+    "字幕が視界に収まらず見にくい場合は、VR設定の「折り返し幅」を縮めて{調節|ちょうせつ}してみてください。",
+    "字幕が視界に収まらず見にくい場合は、VR設定の「折り返し幅」を縮めて{調節|ちょうせつ}してみてください。",
   ],
   vrchatChatbox: "VRChatチャットボックスにも送信",
   yAxis: "Y軸（上下）",
@@ -156,4 +158,5 @@ export const ui = {
   updateAvailable: (version) => `新しいバージョン v${version} が利用可能です`,
   updateConfirmBody: (current, next) =>
     `v${current} から v${next} へ更新します。アプリを終了し、更新処理が続行されます。`,
+  updateNotesTitle: "更新内容",
 };
