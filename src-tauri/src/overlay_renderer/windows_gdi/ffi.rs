@@ -96,7 +96,12 @@ extern "system" {
     pub(super) fn SetBkMode(hdc: Hdc, mode: i32) -> i32;
     pub(super) fn SetTextAlign(hdc: Hdc, align: u32) -> u32;
     pub(super) fn SetTextColor(hdc: Hdc, color: u32) -> u32;
-    pub(super) fn GetTextExtentPoint32W(hdc: Hdc, lp_string: *const u16, c: i32, psizl: *mut SIZE) -> i32;
+    pub(super) fn GetTextExtentPoint32W(
+        hdc: Hdc,
+        lp_string: *const u16,
+        c: i32,
+        psizl: *mut SIZE,
+    ) -> i32;
     pub(super) fn GetTextMetricsW(hdc: Hdc, lptm: *mut TEXTMETRICW) -> i32;
     pub(super) fn TextOutW(hdc: Hdc, x: i32, y: i32, lp_string: *const u16, c: i32) -> i32;
     pub(super) fn AddFontResourceExW(name: *const u16, fl: u32, res: *mut c_void) -> i32;

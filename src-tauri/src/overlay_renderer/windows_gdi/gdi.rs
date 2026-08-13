@@ -211,7 +211,10 @@ pub(super) struct FontMetrics {
 }
 
 /// 代表字形の実インクから、セル上下の空きを測る（ルビ間隔を視覚基準にするため）。
-pub(super) fn measure_font_ink_bearings(handle: Hfont, cell_height: i32) -> Result<(i32, i32), String> {
+pub(super) fn measure_font_ink_bearings(
+    handle: Hfont,
+    cell_height: i32,
+) -> Result<(i32, i32), String> {
     let cell_height = cell_height.max(1);
     let width = (cell_height * 2).max(8) as u32;
     let height = (cell_height + 4).max(8) as u32;
@@ -317,10 +320,7 @@ pub(super) fn ensure_bundled_subtitle_font() -> Result<(), String> {
         let wide = to_wide(path.to_string_lossy().as_ref());
         let added = unsafe { AddFontResourceExW(wide.as_ptr(), FR_PRIVATE, null_mut()) };
         if added == 0 {
-            return Err(format!(
-                "AddFontResourceExW failed for {}",
-                path.display()
-            ));
+            return Err(format!("AddFontResourceExW failed for {}", path.display()));
         }
         Ok(path)
     });

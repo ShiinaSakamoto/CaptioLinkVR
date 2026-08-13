@@ -8,9 +8,9 @@ use ovr_overlay::overlay::{EVROverlayError, OverlayHandle};
 #[cfg(feature = "steamvr-overlay")]
 use ovr_overlay::{sys, Context};
 
-use super::error::OverlayError;
 #[cfg(all(windows, feature = "steamvr-overlay"))]
 use super::d3d11_texture::D3d11OverlayTexture;
+use super::error::OverlayError;
 #[cfg(feature = "steamvr-overlay")]
 use super::transform;
 
@@ -307,9 +307,8 @@ impl OverlayRuntime {
         #[cfg(all(windows, feature = "steamvr-overlay"))]
         let texture_ptr = {
             if self.d3d11_texture.is_none() {
-                self.d3d11_texture = Some(
-                    D3d11OverlayTexture::new().map_err(|error| OverlayError::SteamVr(error))?,
-                );
+                self.d3d11_texture =
+                    Some(D3d11OverlayTexture::new().map_err(|error| OverlayError::SteamVr(error))?);
             }
             self.d3d11_texture
                 .as_mut()

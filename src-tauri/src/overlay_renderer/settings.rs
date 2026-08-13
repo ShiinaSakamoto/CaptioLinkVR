@@ -164,8 +164,14 @@ mod tests {
     fn render_settings_missing_fields_fall_back_to_defaults() {
         // #[serde(default)] により、旧バージョンの保存ファイル（新フィールド欠落）でも読み込める。
         let restored: RenderSettings = serde_json::from_str("{}").unwrap();
-        assert_eq!(restored.text_opacity_percent, RenderSettings::default().text_opacity_percent);
-        assert_eq!(restored.wrap_width_percent, RenderSettings::default().wrap_width_percent);
+        assert_eq!(
+            restored.text_opacity_percent,
+            RenderSettings::default().text_opacity_percent
+        );
+        assert_eq!(
+            restored.wrap_width_percent,
+            RenderSettings::default().wrap_width_percent
+        );
     }
 
     #[test]

@@ -46,7 +46,9 @@ pub fn preset_dir(root: &Path, preset_id: &str) -> Result<PathBuf, String> {
         .metadata()
         .map_err(|_| format!("caption preset was not found: {preset_id}"))?;
     if !metadata.is_dir() {
-        return Err(format!("caption preset path is not a directory: {preset_id}"));
+        return Err(format!(
+            "caption preset path is not a directory: {preset_id}"
+        ));
     }
     Ok(dir)
 }

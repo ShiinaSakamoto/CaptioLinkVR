@@ -1,11 +1,11 @@
+use super::super::ruby::parse_text_lines;
+use super::super::settings::RenderSettings;
 use super::gdi::{GdiFont, TextMeasurer};
 use super::scale::{
     calc_body_line_height, calc_ruby_font_size, effective_font_size, max_texture_dimension,
     scale_i32, scale_u32,
 };
 use super::wrap::{content_wrap_width, wrap_parsed_line};
-use super::super::ruby::parse_text_lines;
-use super::super::settings::RenderSettings;
 
 pub(super) use super::text_line::{TextLine, TextSegment};
 
@@ -26,7 +26,11 @@ pub(super) struct TextLayout {
     pub(super) block_height: u32,
 }
 
-pub(super) fn calculate_texture_width(settings: &RenderSettings, scale: f32, layout: &TextLayout) -> u32 {
+pub(super) fn calculate_texture_width(
+    settings: &RenderSettings,
+    scale: f32,
+    layout: &TextLayout,
+) -> u32 {
     let min_width = scale_u32(settings.width, scale);
     let max_width = max_texture_dimension(settings.max_texture_width);
     let max_line_width = layout.widths.iter().copied().max().unwrap_or(0).max(0) as u32;
@@ -199,14 +203,22 @@ pub(super) fn optical_ruby_extra_below(base: &GdiFont, ruby: &GdiFont, ruby_dist
 }
 
 /// base_top から見て、ルビセル上端をどれだけ上に置くか（正の値）。
-pub(super) fn optical_ruby_gap_above_base(base: &GdiFont, ruby: &GdiFont, ruby_distance: u32) -> i32 {
+pub(super) fn optical_ruby_gap_above_base(
+    base: &GdiFont,
+    ruby: &GdiFont,
+    ruby_distance: u32,
+) -> i32 {
     let ruby_to_ink_bottom = ruby.height - ruby.bottom_bearing;
     let gap = ruby_to_ink_bottom - base.top_bearing + ruby_distance as i32;
     gap.max(ruby.ink_height().max(1) / 2)
 }
 
 /// base_top から見て、下ルビのセル上端をどれだけ下に置くか（正の値）。
-pub(super) fn optical_ruby_gap_below_base(base: &GdiFont, ruby: &GdiFont, ruby_distance: u32) -> i32 {
+pub(super) fn optical_ruby_gap_below_base(
+    base: &GdiFont,
+    ruby: &GdiFont,
+    ruby_distance: u32,
+) -> i32 {
     let base_to_ink_bottom = base.height - base.bottom_bearing;
     let gap = base_to_ink_bottom - ruby.top_bearing + ruby_distance as i32;
     gap.max(ruby.ink_height().max(1) / 2)
@@ -257,7 +269,11 @@ pub(super) fn base_top_for_line(
 }
 
 /// テクスチャ最大幅から余白を除いた、1行に載せられる本文幅（ハード上限）。
-pub(super) fn available_content_width(settings: &RenderSettings, scale: f32, padding_x: u32) -> u32 {
+pub(super) fn available_content_width(
+    settings: &RenderSettings,
+    scale: f32,
+    padding_x: u32,
+) -> u32 {
     let max_width = max_texture_dimension(settings.max_texture_width);
     let side_margin = padding_x.saturating_add(horizontal_effect_margin(settings, scale));
     let offset_margin = scale_i32(settings.text_offset_x, scale)
@@ -303,14 +319,16 @@ mod tests {
             available_content_width(&wide, scale, padding_x),
             available_content_width(&narrow, scale, padding_x)
         );
-        assert!(content_wrap_width(
-            available_content_width(&narrow, scale, padding_x),
-            narrow.wrap_width_percent,
-            53
-        ) < content_wrap_width(
-            available_content_width(&wide, scale, padding_x),
-            wide.wrap_width_percent,
-            53
-        ));
+        assert!(
+            content_wrap_width(
+                available_content_width(&narrow, scale, padding_x),
+                narrow.wrap_width_percent,
+                53
+            ) < content_wrap_width(
+                available_content_width(&wide, scale, padding_x),
+                wide.wrap_width_percent,
+                53
+            )
+        );
     }
 }

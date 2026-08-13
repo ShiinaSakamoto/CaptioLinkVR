@@ -11,7 +11,10 @@ pub fn list_caption_presets(app: AppHandle) -> Result<Vec<CaptionPresetSummary>,
 }
 
 #[tauri::command]
-pub fn get_caption_preset_meta(app: AppHandle, preset_id: String) -> Result<CaptionPresetMeta, String> {
+pub fn get_caption_preset_meta(
+    app: AppHandle,
+    preset_id: String,
+) -> Result<CaptionPresetMeta, String> {
     catalog::load_preset_meta(&app, &preset_id)
 }
 

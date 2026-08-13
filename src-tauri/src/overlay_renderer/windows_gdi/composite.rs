@@ -1,9 +1,9 @@
+use super::super::settings::RenderSettings;
 use super::blend::{draw_rounded_rect, write_or_blend_pixel};
 use super::color::{effective_background_opacity, parse_hex_rgb};
 use super::edt::euclidean_edt_with_coverage;
 use super::geometry::Rect;
 use super::scale::scale_u32;
-use super::super::settings::RenderSettings;
 
 pub(super) fn draw_text_background(
     pixels: &mut [u8],
