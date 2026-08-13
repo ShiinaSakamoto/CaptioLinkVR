@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatInvokeError } from "../formatInvokeError.js";
 import { startUpdate } from "../updateApi.js";
+import { renderSimpleMarkdown } from "../../subtitles/utils/simpleMarkdown.jsx";
 import { ui } from "../../../shared/uiText.js";
 import styles from "./UpdateBanner.module.scss";
 
@@ -8,6 +9,12 @@ export const UpdateBanner = ({ updateInfo }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [launching, setLaunching] = useState(false);
   const [error, setError] = useState("");
+
+  const notesMarkdown = useMemo(() => {
+    const notes = updateInfo?.notes?.trim();
+    if (!notes) return null;
+    return renderSimpleMarkdown(notes);
+  }, [updateInfo?.notes]);
 
   if (!updateInfo) {
     return null;
@@ -43,6 +50,12 @@ export const UpdateBanner = ({ updateInfo }) => {
           <div className={styles.dialog}>
             <h2 id="update-confirm-title">{ui.updateConfirmTitle}</h2>
             <p>{ui.updateConfirmBody(updateInfo.currentVersion, updateInfo.version)}</p>
+            {notesMarkdown ? (
+              <section className={styles.notesSection} aria-label={ui.updateNotesTitle}>
+                <h3 className={styles.notesTitle}>{ui.updateNotesTitle}</h3>
+                <div className={styles.notesMarkdown}>{notesMarkdown}</div>
+              </section>
+            ) : null}
             {error && (
               <div className={styles.errorBox} role="alert">
                 <p className={styles.errorTitle}>{ui.updateFailed}</p>

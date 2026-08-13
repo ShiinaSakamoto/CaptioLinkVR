@@ -158,4 +158,5 @@ export const ui = {
   updateAvailable: (version) => `新しいバージョン v${version} が利用可能です`,
   updateConfirmBody: (current, next) =>
     `v${current} から v${next} へ更新します。アプリを終了し、更新処理が続行されます。`,
+  updateNotesTitle: "更新内容",
 };

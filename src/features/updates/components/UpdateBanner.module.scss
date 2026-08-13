@@ -44,7 +44,10 @@
 }
 
 .dialog {
-  width: min(100%, 28rem);
+  width: min(100%, 32rem);
+  max-height: min(90vh, 40rem);
+  display: flex;
+  flex-direction: column;
   border: 1px solid $borderAccent;
   border-radius: 8px;
   background: $surfacePanel;
@@ -55,13 +58,123 @@
     margin: 0 0 0.65rem;
     color: $textStrong;
     font-size: 1rem;
+    flex-shrink: 0;
   }
 
-  p {
+  > p {
     margin: 0;
     color: $textSecondary;
     font-size: 0.88rem;
     line-height: 1.55;
+    flex-shrink: 0;
+  }
+}
+
+.notesSection {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 0.85rem;
+  flex: 1 1 auto;
+}
+
+.notesTitle {
+  margin: 0 0 0.45rem;
+  color: $textLabel;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.notesMarkdown {
+  min-height: 0;
+  max-height: 14rem;
+  margin: 0;
+  overflow: auto;
+  color: $textSecondary;
+  background: $dark950;
+  border: 1px solid rgba($dark700, 0.7);
+  border-radius: 6px;
+  padding: 0.7rem 0.8rem 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0.85rem 0 0.35rem;
+    color: $textStrong;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  h1 {
+    font-size: 0.95rem;
+  }
+
+  h2 {
+    font-size: 0.88rem;
+  }
+
+  h3,
+  h4 {
+    font-size: 0.82rem;
+  }
+
+  p {
+    margin: 0.45rem 0;
+    color: $textSecondary;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  ul,
+  ol {
+    margin: 0.35rem 0;
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin: 0.15rem 0;
+  }
+
+  a {
+    color: $textStrong;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  strong {
+    color: $textEmphasis;
+    font-weight: 700;
+  }
+
+  hr {
+    margin: 0.75rem 0;
+    border: 0;
+    border-top: 1px solid rgba($dark700, 0.85);
+  }
+
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.78em;
   }
 }
 
@@ -71,6 +184,7 @@
   border-radius: 6px;
   background: $errorBg;
   padding: 0.65rem 0.75rem;
+  flex-shrink: 0;
 }
 
 .errorTitle {
@@ -95,6 +209,7 @@
   justify-content: flex-end;
   gap: 0.55rem;
   margin-top: 1rem;
+  flex-shrink: 0;
 
   button {
     min-height: 2.1rem;

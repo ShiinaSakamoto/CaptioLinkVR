@@ -90,7 +90,10 @@ mod tests {
     #[test]
     fn render_scale_decreases_when_farther() {
         let near = effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M, 1.0));
-        let far = effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M * 2.0, 1.0));
+        let far = effective_render_scale(&settings_at_distance(
+            RENDER_SCALE_REF_DISTANCE_M * 2.0,
+            1.0,
+        ));
         assert!(far < near);
         // 遠い側 LOD 下限 0.5 × 品質底上げ
         assert!((far - RENDER_SCALE_QUALITY_BASELINE * 0.5).abs() < 0.001);
@@ -105,8 +108,10 @@ mod tests {
 
     #[test]
     fn render_scale_preserves_slider_headroom_above_one() {
-        let at_one = effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M, 1.0));
-        let at_max = effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M, 1.5));
+        let at_one =
+            effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M, 1.0));
+        let at_max =
+            effective_render_scale(&settings_at_distance(RENDER_SCALE_REF_DISTANCE_M, 1.5));
         assert!(at_max > at_one + 0.2);
         assert!((at_max - 1.5 * RENDER_SCALE_QUALITY_BASELINE).abs() < 0.001);
     }

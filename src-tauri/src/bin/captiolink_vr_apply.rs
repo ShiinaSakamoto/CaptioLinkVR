@@ -70,11 +70,7 @@ fn resolve_root_from_apply_location() -> Result<PathBuf, String> {
     let maintenance_dir = exe
         .parent()
         .ok_or_else(|| "failed to resolve apply executable directory".to_string())?;
-    if maintenance_dir
-        .file_name()
-        .and_then(|name| name.to_str())
-        != Some(layout::MAINTENANCE_DIR)
-    {
+    if maintenance_dir.file_name().and_then(|name| name.to_str()) != Some(layout::MAINTENANCE_DIR) {
         return Err(format!(
             "apply helper is not running from {} directory: {}",
             layout::MAINTENANCE_DIR,

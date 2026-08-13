@@ -7,12 +7,10 @@ use windows::Win32::Foundation::HMODULE;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_HARDWARE, D3D_DRIVER_TYPE_WARP};
 use windows::Win32::Graphics::Direct3D11::{
     D3D11CreateDevice, ID3D11Device, ID3D11DeviceContext, ID3D11Texture2D,
-    D3D11_BIND_SHADER_RESOURCE, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
-    D3D11_TEXTURE2D_DESC, D3D11_USAGE_DEFAULT,
+    D3D11_BIND_SHADER_RESOURCE, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION, D3D11_TEXTURE2D_DESC,
+    D3D11_USAGE_DEFAULT,
 };
-use windows::Win32::Graphics::Dxgi::Common::{
-    DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SAMPLE_DESC,
-};
+use windows::Win32::Graphics::Dxgi::Common::{DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_SAMPLE_DESC};
 
 pub struct D3d11OverlayTexture {
     device: ID3D11Device,
@@ -96,14 +94,8 @@ impl D3d11OverlayTexture {
             .ok_or_else(|| "D3D11 texture missing".to_string())?;
 
         unsafe {
-            self.context.UpdateSubresource(
-                texture,
-                0,
-                None,
-                pixels.as_ptr().cast(),
-                width * 4,
-                0,
-            );
+            self.context
+                .UpdateSubresource(texture, 0, None, pixels.as_ptr().cast(), width * 4, 0);
         }
 
         Ok(texture.as_raw())

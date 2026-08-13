@@ -9,6 +9,7 @@
     "dev": "node scripts/generate-caption-catalog.mjs && vite --host 127.0.0.1",
     "build": "node scripts/generate-caption-catalog.mjs && vite build",
     "sync-version": "node scripts/sync-version.mjs",
+    "bump-version": "node scripts/bump-version.mjs",
     "tauri": "node scripts/tauri-wrapper.mjs",
     "tauri:dev": "node scripts/tauri-wrapper.mjs dev",
     "tauri:build": "node scripts/tauri-wrapper.mjs build",

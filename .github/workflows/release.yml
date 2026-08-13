@@ -93,6 +93,17 @@ jobs:
         shell: bash
         run: echo "value=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
+      - name: Ensure release notes exist
+        shell: bash
+        run: |
+          notes="releases/v${{ steps.version.outputs.value }}.md"
+          if [[ ! -f "$notes" ]]; then
+            echo "Missing release notes: $notes"
+            echo "Create it with: npm run bump-version -- ${{ steps.version.outputs.value }}"
+            exit 1
+          fi
+          echo "Using release notes: $notes"
+
       - name: Configure update metadata
         shell: pwsh
         run: |
@@ -127,7 +138,7 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.value }}
           name: CaptioLinkVR v${{ steps.version.outputs.value }}
-          body: CaptioLinkVR v${{ steps.version.outputs.value }} has been released.
+          body_path: releases/v${{ steps.version.outputs.value }}.md
           generate_release_notes: false
           files: |
             src-tauri/target/release/portable/*.zip

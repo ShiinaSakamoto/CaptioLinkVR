@@ -8,21 +8,21 @@ pub mod update;
 pub mod vrchat_osc;
 pub mod window_layout;
 
-use overlay_renderer::{
-    metrics::frame_width_meters, render_subtitle_frame, settings::RenderSettings,
-};
-#[cfg(target_os = "windows")]
-use platform::windows::motw;
-use platform::commands::open_external_url;
-use portable::paths;
-use settings::{load_settings, save_settings, AppSettings};
-use std::sync::Mutex;
-use steamvr_overlay::{is_steamvr_running, OverlayConfig, OverlayRuntime};
-use tauri::{State};
 use captions::{
     get_caption_preset_meta, list_caption_presets, read_caption_preset_start_trigger,
     read_caption_preset_subtitle,
 };
+use overlay_renderer::{
+    metrics::frame_width_meters, render_subtitle_frame, settings::RenderSettings,
+};
+use platform::commands::open_external_url;
+#[cfg(target_os = "windows")]
+use platform::windows::motw;
+use portable::paths;
+use settings::{load_settings, save_settings, AppSettings};
+use std::sync::Mutex;
+use steamvr_overlay::{is_steamvr_running, OverlayConfig, OverlayRuntime};
+use tauri::State;
 use update::{check_for_updates, get_app_version, start_update};
 use vrchat_osc::send_chatbox_message;
 
@@ -158,7 +158,6 @@ fn check_steamvr_running() -> bool {
 fn send_vrchat_chatbox_message(text: String, host: String, port: u16) -> Result<(), String> {
     send_chatbox_message(&text, &host, port)
 }
-
 
 pub fn run() {
     tauri::Builder::default()

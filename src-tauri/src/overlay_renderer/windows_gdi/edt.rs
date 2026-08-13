@@ -2,7 +2,11 @@
 
 /// Felzenszwalb & Huttenlocher の 2D 二乗ユークリッド距離変換。
 /// 各画素について「最も近いインク画素」の距離^2 とそのカバレッジを返す。
-pub(super) fn euclidean_edt_with_coverage(src: &[u8], width: usize, height: usize) -> (Vec<i64>, Vec<u8>) {
+pub(super) fn euclidean_edt_with_coverage(
+    src: &[u8],
+    width: usize,
+    height: usize,
+) -> (Vec<i64>, Vec<u8>) {
     const INF: i64 = 1_000_000_000;
     let n = width * height;
     let mut dist_v = vec![INF; n];

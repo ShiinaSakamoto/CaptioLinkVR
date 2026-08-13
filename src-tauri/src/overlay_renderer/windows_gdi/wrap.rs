@@ -1,6 +1,6 @@
+use super::super::ruby::{ParsedLine, ParsedSegment};
 use super::gdi::TextMeasurer;
 use super::text_line::{expanded_ruby_draw_width, TextLine, TextSegment};
-use super::super::ruby::{ParsedLine, ParsedSegment};
 
 /// 折り返し幅の下限/上限（設定スライダーと一致）。
 pub(super) const WRAP_WIDTH_PERCENT_MIN: u32 = 30;
@@ -33,8 +33,13 @@ impl WrapUnit {
 
 /// 最大テクスチャ由来の本文幅に、ユーザーの折り返し幅%を掛けた実折返し幅。
 /// フォント縮小はせず、長い行はここで折り返してテクスチャ/オーバーレイ幅の膨張を抑える。
-pub(super) fn content_wrap_width(hard_limit_px: u32, wrap_width_percent: u32, font_size: u32) -> i32 {
-    let percent = wrap_width_percent.clamp(WRAP_WIDTH_PERCENT_MIN, WRAP_WIDTH_PERCENT_MAX) as f32 / 100.0;
+pub(super) fn content_wrap_width(
+    hard_limit_px: u32,
+    wrap_width_percent: u32,
+    font_size: u32,
+) -> i32 {
+    let percent =
+        wrap_width_percent.clamp(WRAP_WIDTH_PERCENT_MIN, WRAP_WIDTH_PERCENT_MAX) as f32 / 100.0;
     let soft_limit = ((hard_limit_px as f32) * percent).round() as u32;
     soft_limit
         .max(font_size.max(1))
@@ -259,16 +264,7 @@ pub(super) fn is_break_after_char(ch: char) -> bool {
 pub(super) fn is_break_before_char(ch: char) -> bool {
     matches!(
         ch,
-        '「' | '『'
-            | '（'
-            | '('
-            | '【'
-            | '［'
-            | '['
-            | '〈'
-            | '《'
-            | '“'
-            | '"'
+        '「' | '『' | '（' | '(' | '【' | '［' | '[' | '〈' | '《' | '“' | '"'
     )
 }
 
@@ -328,7 +324,10 @@ fn units_to_text_line(units: Vec<WrapUnit>) -> TextLine {
 
     for unit in units {
         match unit {
-            WrapUnit::Char { ch, width: piece_width } => {
+            WrapUnit::Char {
+                ch,
+                width: piece_width,
+            } => {
                 match segments.last_mut() {
                     Some(TextSegment::Plain {
                         text: plain,

@@ -79,8 +79,14 @@ mod tests {
             font_size_percent: 999,
             ..RenderSettings::default()
         };
-        assert_eq!(effective_font_size(&low, 1.0), (96.0_f32 * 0.10).round() as u32);
-        assert_eq!(effective_font_size(&high, 1.0), (96.0_f32 * 3.0).round() as u32);
+        assert_eq!(
+            effective_font_size(&low, 1.0),
+            (96.0_f32 * 0.10).round() as u32
+        );
+        assert_eq!(
+            effective_font_size(&high, 1.0),
+            (96.0_f32 * 3.0).round() as u32
+        );
     }
 
     #[test]
