@@ -33,6 +33,21 @@ export const DEFAULT_VISUAL_QA_SCENARIO = [
     }),
   },
   {
+    id: "wrap-width",
+    label: "折り返し幅",
+    tab: "settings",
+    category: "general",
+    settingKeys: ["wrapWidthPercent"],
+    baseValue: DEFAULT_RENDER_SETTINGS.wrapWidthPercent,
+    actions: buildNumericSweepActions({
+      key: "wrapWidthPercent",
+      min: 30,
+      max: 100,
+      step: 5,
+      base: DEFAULT_RENDER_SETTINGS.wrapWidthPercent,
+    }),
+  },
+  {
     id: "render-scale",
     label: "字幕画質（描画倍率）",
     tab: "settings",

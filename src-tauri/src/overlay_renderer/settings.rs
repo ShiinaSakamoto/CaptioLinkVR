@@ -16,6 +16,8 @@ pub struct RenderSettings {
     pub overlay_width_meters: f32,
     pub font_size: u32,
     pub font_size_percent: u32,
+    /// 最大テクスチャ本文幅に対する折り返し幅（%）。低いほど早く折り返し、オーバーレイ横幅の膨張を抑える。
+    pub wrap_width_percent: u32,
     pub ruby_enabled: bool,
     pub ruby_distance: u32,
     pub vrchat_chatbox_enabled: bool,
@@ -59,6 +61,7 @@ impl Default for RenderSettings {
             overlay_width_meters: 1.45,
             font_size: 53,
             font_size_percent: 100,
+            wrap_width_percent: 80,
             ruby_enabled: true,
             ruby_distance: 6,
             vrchat_chatbox_enabled: false,
@@ -122,6 +125,7 @@ mod tests {
         assert_eq!(settings.max_texture_height, 4096);
         assert_eq!(settings.font_size, 53);
         assert_eq!(settings.font_size_percent, 100);
+        assert_eq!(settings.wrap_width_percent, 80);
         assert_eq!(settings.text_opacity_percent, 100);
         assert_eq!(settings.background_opacity_percent, 90);
         assert_eq!(settings.ruby_distance, 6);
@@ -139,6 +143,7 @@ mod tests {
         assert!(json.get("textOpacityPercent").is_some());
         assert!(json.get("backgroundOpacityPercent").is_some());
         assert!(json.get("fontSizePercent").is_some());
+        assert!(json.get("wrapWidthPercent").is_some());
         assert!(json.get("text_opacity_percent").is_none());
     }
 
@@ -160,6 +165,7 @@ mod tests {
         // #[serde(default)] により、旧バージョンの保存ファイル（新フィールド欠落）でも読み込める。
         let restored: RenderSettings = serde_json::from_str("{}").unwrap();
         assert_eq!(restored.text_opacity_percent, RenderSettings::default().text_opacity_percent);
+        assert_eq!(restored.wrap_width_percent, RenderSettings::default().wrap_width_percent);
     }
 
     #[test]

@@ -11,6 +11,7 @@ export const getFrameSettings = (settings) => ({
   overlayWidthMeters: settings.overlayWidthMeters,
   fontSize: settings.fontSize,
   fontSizePercent: settings.fontSizePercent,
+  wrapWidthPercent: settings.wrapWidthPercent,
   rubyEnabled: settings.rubyEnabled,
   rubyDistance: settings.rubyDistance,
   textOffsetX: settings.textOffsetX,
