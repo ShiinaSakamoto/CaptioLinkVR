@@ -23,23 +23,31 @@ if (!newVersion || !VERSION_RE.test(newVersion)) {
 
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
 const previousVersion = packageJson.version;
-if (previousVersion === newVersion) {
-  console.error(`Version is already ${newVersion}.`);
-  process.exit(1);
-}
-
-packageJson.version = newVersion;
-fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
-console.log(`Updated package.json: ${previousVersion} → ${newVersion}`);
-
-execFileSync(process.execPath, [path.join(__dirname, "sync-version.mjs")], {
-  cwd: root,
-  stdio: "inherit",
-});
+const versionUnchanged = previousVersion === newVersion;
 
 fs.mkdirSync(releasesDir, { recursive: true });
 const notesPath = path.join(releasesDir, `v${newVersion}.md`);
-if (fs.existsSync(notesPath)) {
+const notesExist = fs.existsSync(notesPath);
+
+if (versionUnchanged && notesExist) {
+  console.error(`Version is already ${newVersion}, and ${path.relative(root, notesPath)} already exists.`);
+  process.exit(1);
+}
+
+if (versionUnchanged) {
+  console.log(`Version is already ${newVersion}. Creating missing release notes only.`);
+} else {
+  packageJson.version = newVersion;
+  fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+  console.log(`Updated package.json: ${previousVersion} → ${newVersion}`);
+
+  execFileSync(process.execPath, [path.join(__dirname, "sync-version.mjs")], {
+    cwd: root,
+    stdio: "inherit",
+  });
+}
+
+if (notesExist) {
   console.log(`Release notes already exist (left unchanged): ${path.relative(root, notesPath)}`);
 } else {
   const commitLines = collectCommitDraft(previousVersion);
@@ -63,39 +71,110 @@ ${draftBullets}
 
 console.log("\nNext: edit the release notes, then commit and push to main.");
 
-function collectCommitDraft(fromVersion) {
-  const ranges = [`v${fromVersion}..HEAD`, `${fromVersion}..HEAD`];
-  for (const range of ranges) {
-    try {
-      const output = execFileSync("git", ["log", range, "--pretty=format:%s"], {
-        cwd: root,
-        encoding: "utf8",
-        stdio: ["ignore", "pipe", "ignore"],
-      }).trim();
-      if (output) {
-        return output
-          .split("\n")
-          .map((line) => line.trim())
-          .filter(Boolean)
-          .slice(0, 30);
-      }
-    } catch {
-      // タグが無い場合などは次の候補へ
-    }
-  }
-
+function git(args) {
   try {
-    const output = execFileSync("git", ["log", "-n", "15", "--pretty=format:%s"], {
+    return execFileSync("git", args, {
       cwd: root,
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
     }).trim();
-    if (!output) return [];
-    return output
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean);
   } catch {
-    return [];
+    return "";
   }
+}
+
+function resolveMainRef() {
+  for (const ref of ["origin/main", "main"]) {
+    const ok = git(["rev-parse", "--verify", ref]);
+    if (ok) return ref;
+  }
+  return "";
+}
+
+function parseCommitSubjects(output) {
+  if (!output) return [];
+  return output
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function isMergeCommit(ref) {
+  // マージコミットは親が2つ以上
+  const parents = git(["rev-list", "--parents", "-n", "1", ref]);
+  if (!parents) return false;
+  return parents.split(/\s+/).length > 2;
+}
+
+/**
+ * 前回 main への反映時点から、今の作業ブランチ先端までのコミットを集める。
+ * develop など main 以外で bump → あとで main へマージしてリリース、の流れを想定。
+ */
+function collectCommitDraft(_fromVersion) {
+  const mainRef = resolveMainRef();
+  if (!mainRef) {
+    return parseCommitSubjects(git(["log", "--no-merges", "--pretty=format:%s", "HEAD"]));
+  }
+
+  const mainTip = git(["rev-parse", mainRef]);
+  if (!mainTip) return [];
+
+  // 1) main にまだ入っていない作業ブランチ側のコミット（これからマージする分）
+  const unmerged = parseCommitSubjects(
+    git(["log", "--no-merges", `${mainTip}..HEAD`, "--pretty=format:%s"]),
+  );
+  if (unmerged.length > 0) {
+    console.log(
+      `Release notes draft from ${mainRef}..HEAD (${unmerged.length} commits, not yet on main)`,
+    );
+    return unmerged;
+  }
+
+  // 2) すでに main へマージ済みなら、直前の main マージで取り込まれたコミット
+  //    （マージ直後に bump してリリースする想定）
+  if (isMergeCommit(mainTip)) {
+    const mergedIn = parseCommitSubjects(
+      git(["log", "--no-merges", `${mainTip}^1..${mainTip}^2`, "--pretty=format:%s"]),
+    );
+    if (mergedIn.length > 0) {
+      console.log(
+        `Release notes draft from last merge into ${mainRef} (${mergedIn.length} commits)`,
+      );
+      return mergedIn;
+    }
+  }
+
+  // 3) 直近の main マージが先端でない場合のフォールバック
+  const lastMerge = git([
+    "log",
+    "--first-parent",
+    "--merges",
+    "-n",
+    "1",
+    mainRef,
+    "--pretty=format:%H",
+  ]);
+  if (lastMerge) {
+    const sinceLastMerge = parseCommitSubjects(
+      git(["log", "--no-merges", `${lastMerge}..HEAD`, "--pretty=format:%s"]),
+    );
+    if (sinceLastMerge.length > 0) {
+      console.log(
+        `Release notes draft from ${lastMerge.slice(0, 7)}..HEAD (${sinceLastMerge.length} commits)`,
+      );
+      return sinceLastMerge;
+    }
+
+    const mergedIn = parseCommitSubjects(
+      git(["log", "--no-merges", `${lastMerge}^1..${lastMerge}^2`, "--pretty=format:%s"]),
+    );
+    if (mergedIn.length > 0) {
+      console.log(
+        `Release notes draft from last merge ${lastMerge.slice(0, 7)} (${mergedIn.length} commits)`,
+      );
+      return mergedIn;
+    }
+  }
+
+  return [];
 }
