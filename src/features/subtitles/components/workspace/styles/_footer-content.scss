@@ -221,45 +221,11 @@
 .footerNoteBody {
   margin: 0;
   color: $textSecondary;
-  font-size: 0.84rem;
+  font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.55;
   letter-spacing: 0.01em;
-}
-
-.footerNoteCta {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  gap: 0.55rem;
-  margin: 0;
-  border: 0;
-  border-bottom: 1px solid rgba($primary, 0.55);
-  border-radius: 0;
-  padding: 0.2rem 0 0.28rem;
-  color: $textAccent;
-  background: transparent;
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  cursor: pointer;
-
-  &:hover {
-    color: $textStrong;
-    border-bottom-color: rgba($primaryHover, 0.9);
-
-    .footerNoteCtaArrow {
-      transform: translateX(0.2rem);
-    }
-  }
-}
-
-.footerNoteCtaArrow {
-  display: inline-block;
-  color: $primary;
-  transition: transform 140ms ease;
+  white-space: pre-line;
 }
 
 .footerLicense {

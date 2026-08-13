@@ -18,9 +18,7 @@ export const ui = {
   affiliationOf: "Affiliation",
   footerNoteLabel: "From the maker",
   footerNoteBody:
-    "字幕表示プロジェクトは、ワールド制作者様、および台詞・楽曲制作者様のご協力のもと、無償・非営利で運営されています。プリセット字幕データの著作権は本プロジェクトにはなく、それぞれの制作者様に帰属します。",
-  footerWorldsCta: "字幕対応ワールドの相談・募集",
-  openWorldsForm: "字幕対応ワールドの相談・募集を開く",
+    "字幕表示プロジェクトは、ワールド制作者様、および台詞・楽曲制作者様のご協力のもと、無償・非営利で運営されています。プリセット字幕データの著作権は本プロジェクトにはなく、それぞれの制作者様に帰属します。\n何かございましたら各種制作者様へのお問い合わせは避け、本プロジェクト責任者（Shiina Sakamoto）まで直接ご連絡をお願いいたします。",
   openX: "X（旧Twitter）を開く",
   openGitHub: "GitHubリポジトリを開く",
   booth: "Booth",
