@@ -19,7 +19,10 @@ use settings::{load_settings, save_settings, AppSettings};
 use std::sync::Mutex;
 use steamvr_overlay::{is_steamvr_running, OverlayConfig, OverlayRuntime};
 use tauri::{State};
-use captions::{get_caption_preset_meta, list_caption_presets, read_caption_preset_subtitle};
+use captions::{
+    get_caption_preset_meta, list_caption_presets, read_caption_preset_start_trigger,
+    read_caption_preset_subtitle,
+};
 use update::{check_for_updates, get_app_version, start_update};
 use vrchat_osc::send_chatbox_message;
 
@@ -185,6 +188,7 @@ pub fn run() {
             list_caption_presets,
             get_caption_preset_meta,
             read_caption_preset_subtitle,
+            read_caption_preset_start_trigger,
             open_external_url,
         ])
         .run(tauri::generate_context!())

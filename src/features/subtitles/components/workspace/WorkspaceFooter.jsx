@@ -17,8 +17,6 @@ const FOOTER_LINKS = {
   github: "https://github.com/ShiinaSakamoto/CaptioLinkVR",
   // Booth ショップURLが確定したら差し替え
   booth: "https://booth.pm/",
-  // 募集用の専用フォームができたら差し替え
-  worlds: "https://x.com/Shiina_12siy",
 };
 
 const openLink = (url) => {
@@ -148,21 +146,9 @@ export const WorkspaceFooter = memo(({ onLicenseClick }) => {
           </div>
         </div>
 
-        {/* [ 文章 | 対応ワールド募集リンク ] */}
+        {/* 制作者メッセージ */}
         <div className={styles.footerMessage}>
           <p className={styles.footerNoteBody}>{ui.footerNoteBody}</p>
-          <button
-            type="button"
-            className={styles.footerNoteCta}
-            onClick={() => openLink(FOOTER_LINKS.worlds)}
-            aria-label={ui.openWorldsForm}
-            title={ui.openWorldsForm}
-          >
-            <span>{ui.footerWorldsCta}</span>
-            <span className={styles.footerNoteCtaArrow} aria-hidden="true">
-              →
-            </span>
-          </button>
         </div>
 
         {/* ライセンス */}

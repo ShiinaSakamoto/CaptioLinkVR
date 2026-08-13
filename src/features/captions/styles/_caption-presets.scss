@@ -202,6 +202,81 @@
   border-radius: 0 0 5px 5px;
 }
 
+.presetInfoPanelSplit {
+  // 文章側と画像側のバランス。開始タイミング文言が横並びしやすいよう画像列を広めに。
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 1.15fr);
+  column-gap: 1rem;
+  align-items: stretch;
+
+  @media (max-width: 720px) {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .presetInfoText {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    height: 100%;
+  }
+
+  .presetInfoLinks {
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+}
+
+.presetInfoText {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.presetStartTrigger {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  min-width: 0;
+  justify-items: stretch;
+  align-content: start;
+}
+
+.presetStartTriggerImage {
+  display: block;
+  width: 100%;
+  max-height: 14rem;
+  object-fit: contain;
+  object-position: center;
+  border: 1px solid rgba($dark700, 0.7);
+  border-radius: 6px;
+  background: $dark900;
+}
+
+.presetStartTriggerCaption {
+  // 狭い画像列でも「ラベル | 本文」を横並びのまま保ち、本文側だけ折り返す。
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.45rem;
+  margin: 0;
+  color: $textBody;
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.presetStartTriggerCaptionText {
+  min-width: 0;
+}
+
+.presetStartTriggerCaption .presetInfoLabel {
+  white-space: nowrap;
+
+  &::after {
+    content: ":";
+  }
+}
+
 .presetInfoLinks {
   display: flex;
   flex-wrap: wrap;
