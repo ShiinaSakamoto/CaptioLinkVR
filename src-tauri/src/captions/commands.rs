@@ -2,7 +2,7 @@ use tauri::AppHandle;
 
 use super::catalog;
 use super::types::{
-    CaptionPresetMeta, CaptionPresetStartTrigger, CaptionPresetSubtitle, CaptionPresetSummary,
+    CaptionPresetMeta, CaptionPresetStartTriggerAssets, CaptionPresetSubtitle, CaptionPresetSummary,
 };
 
 #[tauri::command]
@@ -30,6 +30,6 @@ pub fn read_caption_preset_subtitle(
 pub fn read_caption_preset_start_trigger(
     app: AppHandle,
     preset_id: String,
-) -> Result<Option<CaptionPresetStartTrigger>, String> {
+) -> Result<CaptionPresetStartTriggerAssets, String> {
     catalog::read_preset_start_trigger(&app, &preset_id)
 }

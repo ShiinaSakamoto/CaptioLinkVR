@@ -2,5 +2,10 @@ pub const CAPTIONS_DIR: &str = "captions";
 pub const CATALOG_FILE: &str = "catalog.json";
 pub const META_FILE: &str = "meta.json";
 pub const SUBTITLE_FILE: &str = "subtitle.ass";
-/// プリセット説明パネル右に出す開始操作の案内画像（ファイル名固定）。
-pub const START_TRIGGER_FILE: &str = "start_trigger.png";
+/// 右列で 3→2→1→0 と切り替える連番フレーム（存在する分だけ使う）。
+pub const START_TRIGGER_FRAME_FILES: &[&str] = &[
+    "start_trigger_3.png",
+    "start_trigger_2.png",
+    "start_trigger_1.png",
+    "start_trigger_0.png",
+];
