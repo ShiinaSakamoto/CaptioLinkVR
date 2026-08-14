@@ -80,11 +80,18 @@ pub struct CaptionPresetSubtitle {
     pub content: String,
 }
 
-/// 開始操作案内画像。無いプリセットではコマンドが null を返す。
+/// 開始操作案内の連番フレーム1枚。
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CaptionPresetStartTrigger {
-    pub id: String,
     pub file_name: String,
     pub data_url: String,
+}
+
+/// プリセット説明パネル右列用の連番画像。無いものは空配列。
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CaptionPresetStartTriggerAssets {
+    pub id: String,
+    pub frames: Vec<CaptionPresetStartTrigger>,
 }

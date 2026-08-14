@@ -6,8 +6,8 @@ use tauri::AppHandle;
 use super::layout;
 use super::paths::{self, captions_root};
 use super::types::{
-    CaptionCatalog, CaptionPresetMeta, CaptionPresetStartTrigger, CaptionPresetSubtitle,
-    CaptionPresetSummary,
+    CaptionCatalog, CaptionPresetMeta, CaptionPresetStartTrigger, CaptionPresetStartTriggerAssets,
+    CaptionPresetSubtitle, CaptionPresetSummary,
 };
 
 pub fn list_presets(app: &AppHandle) -> Result<Vec<CaptionPresetSummary>, String> {
@@ -54,25 +54,42 @@ pub fn read_preset_subtitle(
     })
 }
 
-/// プリセットフォルダの start_trigger.png を読む。無ければ Ok(None)。
+/// プリセットフォルダの start_trigger_3.png〜0.png を読む。無ければ空。
 pub fn read_preset_start_trigger(
     app: &AppHandle,
     preset_id: &str,
-) -> Result<Option<CaptionPresetStartTrigger>, String> {
+) -> Result<CaptionPresetStartTriggerAssets, String> {
     let root = captions_root(app)?;
     let preset_dir = paths::preset_dir(&root, preset_id)?;
-    let image_path = preset_dir.join(layout::START_TRIGGER_FILE);
-    if !image_path.is_file() {
+    let mut frames = Vec::new();
+    for file_name in layout::START_TRIGGER_FRAME_FILES {
+        if let Some(image) = read_png_if_present(&preset_dir.join(file_name))? {
+            frames.push(image);
+        }
+    }
+
+    Ok(CaptionPresetStartTriggerAssets {
+        id: preset_id.to_string(),
+        frames,
+    })
+}
+
+fn read_png_if_present(path: &Path) -> Result<Option<CaptionPresetStartTrigger>, String> {
+    if !path.is_file() {
         return Ok(None);
     }
 
-    let bytes = fs::read(&image_path)
-        .map_err(|error| format!("failed to read {}: {error}", image_path.display()))?;
+    let bytes =
+        fs::read(path).map_err(|error| format!("failed to read {}: {error}", path.display()))?;
     let data_url = format!("data:image/png;base64,{}", encode_base64(&bytes));
+    let file_name = path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("start_trigger.png")
+        .to_string();
 
     Ok(Some(CaptionPresetStartTrigger {
-        id: preset_id.to_string(),
-        file_name: layout::START_TRIGGER_FILE.to_string(),
+        file_name,
         data_url,
     }))
 }
@@ -130,5 +147,18 @@ mod tests {
         assert_eq!(encode_base64(b"fo"), "Zm8=");
         assert_eq!(encode_base64(b"foo"), "Zm9v");
         assert_eq!(encode_base64(b"foobar"), "Zm9vYmFy");
+    }
+
+    #[test]
+    fn start_trigger_frames_are_countdown_order() {
+        assert_eq!(
+            crate::captions::layout::START_TRIGGER_FRAME_FILES,
+            [
+                "start_trigger_3.png",
+                "start_trigger_2.png",
+                "start_trigger_1.png",
+                "start_trigger_0.png",
+            ]
+        );
     }
 }

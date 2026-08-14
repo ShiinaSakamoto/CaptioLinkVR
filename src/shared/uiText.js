@@ -135,8 +135,8 @@ export const ui = {
   editor: "字幕制作",
   usageSummary: "使い方",
   usageStartTiming: "開始タイミング",
+  replayStartTrigger: "もう一度見る",
   worldLink: "ワールドリンク",
-  openGuideVideo: "説明動画を見る",
   fileLoaded: "字幕ファイルを読み込みました",
   presetLockedWhilePlaying: "再生中は変更できません。停止してから選び直してください。",
 

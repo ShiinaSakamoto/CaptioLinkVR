@@ -1,11 +1,14 @@
 import { memo, useEffect, useState } from "react";
 import { ExternalLinkButton } from "./ExternalLinkButton.jsx";
+import { PresetStartTriggerSequence } from "./PresetStartTriggerSequence.jsx";
 import { readCaptionPresetStartTrigger } from "../captionPresetApi.js";
 import { getPresetPickerCredits } from "../captionPresetUtils.js";
 import { DividerLabelToggle } from "../../../shared/forms/DividerLabelToggle.jsx";
 import { PresetPickerCreditSubtitle } from "./PresetPickerCreditSubtitle.jsx";
 import { ui } from "../../../shared/uiText.js";
 import styles from "../Captions.module.scss";
+
+const emptyAssets = { presetId: "", frameUrls: [] };
 
 const PresetDescriptionToggle = memo(({ open, panelId, onToggle, credits }) => (
   <div className={styles.presetComboSideContent}>
@@ -59,7 +62,6 @@ const PresetInfoText = memo(({ meta, hasLinks, showStartTiming }) => (
     {hasLinks ? (
       <div className={styles.presetInfoLinks}>
         <ExternalLinkButton label={ui.worldLink} url={meta.worldUrl} />
-        <ExternalLinkButton label={ui.openGuideVideo} url={meta.links?.demoVideo} />
       </div>
     ) : null}
   </div>
@@ -67,23 +69,9 @@ const PresetInfoText = memo(({ meta, hasLinks, showStartTiming }) => (
 
 PresetInfoText.displayName = "PresetInfoText";
 
-const PresetStartTriggerFigure = memo(({ src, alt, startTiming }) => (
-  <figure className={styles.presetStartTrigger}>
-    <img className={styles.presetStartTriggerImage} src={src} alt={alt} />
-    {startTiming ? (
-      <figcaption className={styles.presetStartTriggerCaption}>
-        <span className={styles.presetInfoLabel}>{ui.usageStartTiming}</span>
-        <span className={styles.presetStartTriggerCaptionText}>{startTiming}</span>
-      </figcaption>
-    ) : null}
-  </figure>
-));
-
-PresetStartTriggerFigure.displayName = "PresetStartTriggerFigure";
-
-const PresetInfoBody = memo(({ panelId, meta, hasLinks, startTriggerSrc }) => {
+const PresetInfoBody = memo(({ panelId, meta, hasLinks, frameUrls }) => {
   const startTiming = meta.usage?.startTiming?.trim() || "";
-  const hasImage = Boolean(startTriggerSrc);
+  const hasFrames = frameUrls.length >= 2;
 
   return (
     <div
@@ -91,15 +79,16 @@ const PresetInfoBody = memo(({ panelId, meta, hasLinks, startTriggerSrc }) => {
       className={[
         styles.presetInfoPanel,
         styles.presetInfoPanelMerged,
-        hasImage ? styles.presetInfoPanelSplit : "",
+        hasFrames ? styles.presetInfoPanelSplit : "",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <PresetInfoText meta={meta} hasLinks={hasLinks} showStartTiming={!hasImage} />
-      {hasImage ? (
-        <PresetStartTriggerFigure
-          src={startTriggerSrc}
+      <PresetInfoText meta={meta} hasLinks={hasLinks} showStartTiming={!hasFrames} />
+      {hasFrames ? (
+        <PresetStartTriggerSequence
+          key={meta.id}
+          frames={frameUrls}
           alt={`${meta.displayName ?? meta.id} ${ui.usageStartTiming}`}
           startTiming={startTiming}
         />
@@ -114,10 +103,10 @@ PresetInfoBody.displayName = "PresetInfoBody";
 export const CaptionPresetInfo = memo(({ meta, error, loading, presetLabel = "", presetSelect = null }) => {
   const [descriptionOpen, setDescriptionOpen] = useState(true);
   // presetId と対で保持し、切替直後に別プリセットの画像が残らないようにする
-  const [startTrigger, setStartTrigger] = useState({ presetId: "", dataUrl: null });
+  const [assets, setAssets] = useState(emptyAssets);
   const metaKey = meta?.id ?? meta?.displayName ?? "";
-  const startTriggerSrc =
-    meta?.id && startTrigger.presetId === meta.id ? startTrigger.dataUrl : null;
+  const matched = meta?.id && assets.presetId === meta.id;
+  const frameUrls = matched ? assets.frameUrls : [];
 
   useEffect(() => {
     setDescriptionOpen(true);
@@ -127,21 +116,27 @@ export const CaptionPresetInfo = memo(({ meta, error, loading, presetLabel = "",
     let cancelled = false;
     const presetId = meta?.id;
     if (!presetId) {
-      setStartTrigger({ presetId: "", dataUrl: null });
+      setAssets(emptyAssets);
       return undefined;
     }
 
-    setStartTrigger({ presetId, dataUrl: null });
+    setAssets({ ...emptyAssets, presetId });
 
     readCaptionPresetStartTrigger(presetId)
       .then((image) => {
         if (cancelled) return;
-        const dataUrl = image?.id === presetId ? image.dataUrl ?? null : null;
-        setStartTrigger({ presetId, dataUrl });
+        if (image?.id !== presetId) {
+          setAssets({ ...emptyAssets, presetId });
+          return;
+        }
+        setAssets({
+          presetId,
+          frameUrls: (image.frames ?? []).map((frame) => frame.dataUrl).filter(Boolean),
+        });
       })
       .catch((loadError) => {
-        console.warn("[captions] failed to load start_trigger.png:", loadError);
-        if (!cancelled) setStartTrigger({ presetId, dataUrl: null });
+        console.warn("[captions] failed to load start_trigger images:", loadError);
+        if (!cancelled) setAssets({ ...emptyAssets, presetId });
       });
 
     return () => {
@@ -172,7 +167,7 @@ export const CaptionPresetInfo = memo(({ meta, error, loading, presetLabel = "",
     />
   ) : null;
 
-  const hasLinks = Boolean(meta?.worldUrl || meta?.links?.demoVideo);
+  const hasLinks = Boolean(meta?.worldUrl);
 
   return (
     <>
@@ -187,7 +182,7 @@ export const CaptionPresetInfo = memo(({ meta, error, loading, presetLabel = "",
           panelId={panelId}
           meta={meta}
           hasLinks={hasLinks}
-          startTriggerSrc={startTriggerSrc}
+          frameUrls={frameUrls}
         />
       ) : null}
     </>

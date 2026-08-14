@@ -378,7 +378,7 @@ dependencies = [
 
 [[package]]
 name = "captiolink-vr"
-version = "0.2.5"
+version = "0.2.7"
 dependencies = [
  "embed-manifest",
  "ovr_overlay",
