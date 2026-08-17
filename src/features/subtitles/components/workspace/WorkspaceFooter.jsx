@@ -15,8 +15,7 @@ const VISUAL_QA_UNLOCK_CLICK_WINDOW_MS = 2500;
 const FOOTER_LINKS = {
   x: "https://x.com/Shiina_12siy",
   github: "https://github.com/ShiinaSakamoto/CaptioLinkVR",
-  // Booth ショップURLが確定したら差し替え
-  booth: "https://booth.pm/",
+  booth: "https://shiinarium.booth.pm/items/8723054",
 };
 
 const openLink = (url) => {
